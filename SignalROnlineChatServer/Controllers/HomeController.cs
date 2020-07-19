@@ -38,6 +38,8 @@ namespace SignalROnlineChatServer.Controllers
                 myChats.Add(new ChatViewModel(chat.Id, chat.Messages, chat.ChatParticipants, chat.Name));
             }
 
+            ViewBag.CreateGroupModelView = new CreateGroupModelView();
+
             return View("Index", myChats);
         }
 
@@ -63,9 +65,13 @@ namespace SignalROnlineChatServer.Controllers
             return View("GetPrivateChats", myChats);
         }
 
-        [Route("CreateGroup")]
+
+        [HttpGet]
+        public IActionResult DisplayCreateGroupForm() => View("CreateGroup", new CreateGroupModelView());
+
+        [Route("Home/CreateGroupAsync")]
         [HttpPost]
-        public async Task<IActionResult> CreateGroupAsync([FromBody] CreateGroupModelView groupModel)
+        public async Task<IActionResult> CreateGroupAsync(CreateGroupModelView groupModel)
         {
             var chat = new Chat
             {

@@ -54,6 +54,9 @@ namespace SignalROnlineChatServer.Controllers
 
 
             //await _chat.Clients.Group(groupId)
+            //    .SendAsync("ReceiveMessage", newMessage);
+
+            //await _chat.Clients.Group(groupId)
             //    .SendAsync("ReceiveMessage", new {
             //        Text = newMessage.Text,
             //        Name = newMessage.Name,
