@@ -20,7 +20,7 @@ namespace SignalROnlineChatServer
         public static IWebHostBuilder CreateHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>();
-
+        //test
 
     }
 }
