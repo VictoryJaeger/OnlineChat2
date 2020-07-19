@@ -1,0 +1,13 @@
+﻿@model LoginViewModel
+
+@*<form method="post" >
+    <input type="text" name="login" placeholder="Username" />
+    <input type="password" name="password" placeholder="Password" />
+    <button type="submit" asp-controller="Account" asp-action="LoginAsync">Submit</button>
+</form>*@
+
+<form asp-controller="Account" asp-action="LoginAsync">
+    Login:  <input asp-for="Login" /> <br />
+    Password: <input asp-for="Password" /><br />
+    <button type="submit">Login</button>
+</form>

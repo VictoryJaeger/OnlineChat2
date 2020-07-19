@@ -1,0 +1,12 @@
+﻿@model IEnumerable<ChatViewModel>
+
+    <div class="chat-body">
+       
+        @foreach (var chat in Model)
+        {
+            <a class="group-button" asp-controller="Home" asp-action="JoinGroupAsync" asp-route-id="@chat.Id">
+                @chat.Name
+            </a>
+        }
+
+    </div>
