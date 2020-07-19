@@ -22,6 +22,7 @@ namespace SignalROnlineChatServer.Controllers
             _context = context;
         }
 
+        [Route("Index")]
         [HttpGet]
         public IActionResult Index()
         {
@@ -32,7 +33,7 @@ namespace SignalROnlineChatServer.Controllers
 
             var myChats = new List<ChatViewModel>();
 
-            foreach(Chat chat in chats)
+            foreach (Chat chat in chats)
             {
                 myChats.Add(new ChatViewModel(chat.Id, chat.Messages, chat.ChatParticipants, chat.Name));
             }
@@ -88,8 +89,8 @@ namespace SignalROnlineChatServer.Controllers
 
 
         //TODO
-        [Route("JoinGroup")]
-        [HttpGet]
+        [Route("Home/JoinGroup")]
+        [HttpPost] //("{id}")
         public async Task<IActionResult> JoinGroupAsync(int id)
         {
             var chatMember = new ChatUser

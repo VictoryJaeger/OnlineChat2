@@ -4,7 +4,7 @@
        
         @foreach (var chat in Model)
         {
-            <a class="group-button" asp-controller="Home" asp-action="JoinGroupAsync" asp-route-id="@chat.Id">
+            <a class="group-button" asp-controller="Home" asp-action="GetChat" asp-route-id="@chat.Id">
                 @chat.Name
             </a>
         }

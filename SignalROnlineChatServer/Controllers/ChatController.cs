@@ -22,25 +22,25 @@ namespace SignalROnlineChatServer.Controllers
         }
 
         [HttpPost("[action]/{connectionId}/groupId")]
-        public async Task<IActionResult> JoinGroupAsync(string connectionId, string groupId)
+        public async Task<IActionResult> JoinChatAsync(string connectionId, string groupId)
         {
             await _chat.Groups.AddToGroupAsync(connectionId, groupId);
             return Ok();
         }
 
         [HttpPost("[action]/{connectionId}/groupId")]
-        public async Task<IActionResult> LeaveGroupAsync(string connectionId, string groupId)
+        public async Task<IActionResult> LeaveChatAsync(string connectionId, string groupId)
         {
             await _chat.Groups.RemoveFromGroupAsync(connectionId, groupId);
             return Ok();
         }
 
         [HttpPost("[action]")]
-        public async Task<IActionResult> SendMessageAsync(int groupId, string message, [FromServices] OnlineChatDBContext context)
+        public async Task<IActionResult> SendMessageAsync(int chatId, string message, [FromServices] OnlineChatDBContext context)
         {
             var newMessage = new Message
             {
-                ChatId = groupId,
+                ChatId = chatId,
                 Timestamp = DateTime.Now,
                 Text = message,
                 Name = User.Identity.Name
@@ -49,7 +49,7 @@ namespace SignalROnlineChatServer.Controllers
             context.Messages.Add(newMessage);
             await context.SaveChangesAsync();
 
-            await _chat.Clients.Group(groupId.ToString())
+            await _chat.Clients.Group(chatId.ToString())
                 .SendAsync("ReceiveMessage", newMessage);
 
 
