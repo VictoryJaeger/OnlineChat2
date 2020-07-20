@@ -13,12 +13,12 @@
         }
         
     </div>
-<form class="chat-input" onsubmit="sendMessage(event)" asp-controller="Home" asp-action="CreateMessage">
-    <input type="hidden" name="groupId" value="@Model.Id" />
-    <input type="text" name="message" id="message-input"/>
-    <button type="submit">Send</button>
+    <form class="chat-input" onsubmit="sendMessage(event)" asp-controller="Home" asp-action="CreateMessageAsync"> 
+        <input type="hidden" name="groupId" value="@Model.Id" />
+        <input type="text" name="message" id="message-input" />
+        <button type="submit">Send</button>
 
-</form>
+    </form>
 
 @section scripts{
     <script src="~/js/signalr.min.js"></script>

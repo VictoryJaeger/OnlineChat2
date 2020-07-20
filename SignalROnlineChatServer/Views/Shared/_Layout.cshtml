@@ -23,9 +23,12 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
+                        <li class="logout-button">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="LogoutAsync">Logout</a>
                         </li>
+                        @*<li class="nav-item">
+            <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
+        </li>*@
                     </ul>
                 </div>
             </div>

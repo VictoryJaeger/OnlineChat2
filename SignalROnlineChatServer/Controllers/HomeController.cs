@@ -125,26 +125,29 @@ namespace SignalROnlineChatServer.Controllers
 
             var chatView = new ChatViewModel(chat.Id, chat.Messages, chat.ChatParticipants, chat.Name);
 
+            //ViewBag.MessageViewModel = new MessageViewModel();
+            //ViewBag.ChatViewModel = chatView;
+
             return View(chatView);
         }
 
-        [Route("CreateMessage")]
+        [Route("Home/CreateMessageAsync")]
         [HttpPost]
-        public async Task<IActionResult> CreateMessageAsync([FromBody] MessageViewModel messageModel)
+        public async Task<IActionResult> CreateMessageAsync(int groupId, string message)
         {
 
-            var message = new Message
+            var newMessage = new Message
             {
-                ChatId = messageModel.ChatId,
+                ChatId = groupId,
                 Timestamp = DateTime.Now,
-                Text = messageModel.Text,
+                Text = message,
                 Name = User.Identity.Name
             };
 
-            _context.Messages.Add(message);
+            _context.Messages.Add(newMessage);
             await _context.SaveChangesAsync();
 
-            return RedirectToAction("GetChat", new { id = messageModel.ChatId });
+            return RedirectToAction("GetChat", new { id = groupId });
         }
 
         [Route("FindUsers")]

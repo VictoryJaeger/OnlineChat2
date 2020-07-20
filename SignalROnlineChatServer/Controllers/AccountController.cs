@@ -69,11 +69,11 @@ namespace SignalROnlineChatServer.Controllers
             return RedirectToAction("DisplayRegister", "Account");
         }
 
-        [Route("Logout")]
+        [Route("Account/LogoutAsync")]
         public async Task<IActionResult> LogoutAsync()
         {
             await _signInManager.SignOutAsync();
-            return RedirectToAction("LoginAsync", "Account");
+            return RedirectToAction("DisplayLogin", "Account");
         }
     }
 }
