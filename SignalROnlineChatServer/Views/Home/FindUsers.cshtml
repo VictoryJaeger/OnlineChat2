@@ -2,14 +2,14 @@
 
 @foreach (var user in Model)
 {
-<form asp-controller="Home" asp-action="CreatePrivateChatAsync" asp-route-id="@user.Id">
-    <button style="background: none !important; border: none; padding: 0 !important; /*optional*/ font-family: arial, sans-serif; /*input has OS specific font-family*/ color: #069; text-decoration: underline; cursor: pointer;" asp-controller="Home" asp-action="CreatePrivateChatAsync" asp-route-id="@user.Id">
+<a asp-controller="Home" asp-action="CheckPrivateChat" asp-route-id="@user.Id">
+    <button style="background: none !important; border: none; padding: 0 !important; /*optional*/ font-family: arial, sans-serif; /*input has OS specific font-family*/ color: #069; text-decoration: underline; cursor: pointer;" asp-controller="Home" asp-action="CheckPrivateChat" asp-route-id="@user.Id">
         @* asp-route-id="@user.Id"
         *@
         @*<input type="hidden" name="Id" value="@user.Id" />*@
         <p>@user.UserName</p>
     </button>
-</form>}
+</a>}
 
 
 

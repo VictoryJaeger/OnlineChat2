@@ -1,0 +1,8 @@
+﻿@model CreatePrivateChatViewModel
+
+
+    <form asp-controller="Home" asp-action="CreatePrivateChatAsync" asp-route-id="@Model.UserId">
+        <button style="background: none !important; border: none; padding: 0 !important; /*optional*/ font-family: arial, sans-serif; /*input has OS specific font-family*/ color: #069; text-decoration: underline; cursor: pointer;" asp-controller="Home" asp-action="CreatePrivateChatAsync" asp-route-id="@Model.UserId">
+            <p>Create chat with this user?</p>
+        </button>
+    </form>

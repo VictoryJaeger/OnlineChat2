@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Security.Claims;
 using System.Security.Cryptography.X509Certificates;
 using System.Text.RegularExpressions;
@@ -168,12 +169,42 @@ namespace SignalROnlineChatServer.Controllers
             return View("FindUsers", userList);
         }
 
+        [Route("Home/CheckPrivateChat")]
+        [HttpGet("{Id}")]
+        public IActionResult CheckPrivateChat(string Id)
+        {
+            var chat = _context.Chats
+                .Include(x => x.ChatParticipants).ThenInclude(x => x.User)
+                .Where(x => x.Type == ChatType.Private &&
+                 x.ChatParticipants.Any(y => y.UserId == User.FindFirst(ClaimTypes.NameIdentifier).Value
+                 && x.ChatParticipants.Any(y => y.UserId == _context.Users.Where(x => x.Id == Id).FirstOrDefault().Id)))
+                .FirstOrDefault();
+
+            //var chats = _context.Chats
+            //   .Include(x => x.ChatParticipants).ThenInclude(x => x.User)
+            //   .Where(x => x.Type == ChatType.Private
+            //       && x.ChatParticipants.Any(y => y.UserId == User.FindFirst(ClaimTypes.NameIdentifier).Value))
+            //   .ToList();
+
+            if (chat == null)
+            {
+                var chatCreateInfo = new CreatePrivateChatViewModel() {UserId = Id};
+                
+                return View("CreatePrivateChatSubmit", chatCreateInfo);
+            }
+
+            return RedirectToAction("GetChat", new { id = chat.Id });
+
+        }
+
+
+
         [Route("Home/CreatePrivateChatAsync")] //, Name ="createPrivateChat"
         [HttpPost]
-
+                
         public async Task<IActionResult> CreatePrivateChatAsync(string Id) //[FromBody] CreatePrivateChatViewModel chatOptions
         {
-
+            
             var chat = new Chat
             {
                 Type = ChatType.Private,
