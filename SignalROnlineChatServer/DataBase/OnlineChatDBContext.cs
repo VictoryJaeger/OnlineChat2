@@ -21,6 +21,17 @@ namespace SignalROnlineChatServer.DataBase
         {
             base.OnModelCreating(builder);
 
+            //builder.Entity<ChatUser>().HasNoKey();
+
+            //builder.Entity<ChatUser>()
+            //    .HasIndex(x => x.ChatId)
+            //    .IsUnique();
+
+            //builder.Entity<ChatUser>()
+            //    .HasIndex(x => x.UserId)
+            //    .IsUnique();
+
+
             builder.Entity<Message>()
                 .HasOne(c => c.Chat)
                 .WithMany(m => m.Messages)

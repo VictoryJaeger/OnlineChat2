@@ -1,7 +1,28 @@
 ﻿@model IEnumerable<UserViewModel>
 
-@foreach(var user in Model)
+@foreach (var user in Model)
 {
-    <a asp-controller="Home" asp-action="CreatePrivateChatAsync" asp-route-userId="@user.Id"></a>
-        @user.UserName
-}
+<form asp-controller="Home" asp-action="CreatePrivateChatAsync" asp-route-id="@user.Id">
+    <button style="background: none !important; border: none; padding: 0 !important; /*optional*/ font-family: arial, sans-serif; /*input has OS specific font-family*/ color: #069; text-decoration: underline; cursor: pointer;" asp-controller="Home" asp-action="CreatePrivateChatAsync" asp-route-id="@user.Id">
+        @* asp-route-id="@user.Id"
+        *@
+        @*<input type="hidden" name="Id" value="@user.Id" />*@
+        <p>@user.UserName</p>
+    </button>
+</form>}
+
+
+
+@*<a asp-controller="Home" asp-action="CreatePrivateChatAsync" asp-route-userId="@user.Id"></a>
+                @user.UserName
+    asp-route-userId="@user.Id"
+
+    asp-controller="Home" asp-action="CreatePrivateChatAsync"*@
+
+@* asp-route-id="@user.Id" *@
+
+
+@* <a class="group-button" asp-controller="Home" asp-action="CreatePrivateChatAsync">
+        <input type="hidden" name="Id" value="@user.Id" />
+        <p>@user.UserName</p>
+    </a> *@

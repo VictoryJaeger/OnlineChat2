@@ -120,7 +120,7 @@ namespace SignalROnlineChatServer.Controllers
         {
             var chat = _context.Chats
                 .Include(x => x.Messages)
-               // .Include(y => y.ChatParticipants).ThenInclude(y => y.User)
+                // .Include(y => y.ChatParticipants).ThenInclude(y => y.User)
                 .FirstOrDefault(x => x.Id == id);
 
             var chatView = new ChatViewModel(chat.Id, chat.Messages, chat.ChatParticipants, chat.Name);
@@ -168,21 +168,22 @@ namespace SignalROnlineChatServer.Controllers
             return View("FindUsers", userList);
         }
 
-        [Route("CreatePrivateChat")]
+        [Route("Home/CreatePrivateChatAsync")] //, Name ="createPrivateChat"
         [HttpPost]
 
-        public async Task<IActionResult> CreatePrivateChatAsync([FromBody] CreatePrivateChatViewModel chatOptions)
+        public async Task<IActionResult> CreatePrivateChatAsync(string Id) //[FromBody] CreatePrivateChatViewModel chatOptions
         {
 
             var chat = new Chat
             {
                 Type = ChatType.Private,
-                Name = _context.Users.Where(x => x.Id == chatOptions.UserId).FirstOrDefault().UserName
+                Name = _context.Users.Where(x => x.Id == Id).FirstOrDefault().UserName + ',' +
+                    _context.Users.Where(x => x.Id == User.FindFirst(ClaimTypes.NameIdentifier).Value).FirstOrDefault().UserName
             };
 
             chat.ChatParticipants.Add(new ChatUser
             {
-                UserId = chatOptions.UserId
+                UserId = Id
             });
 
             chat.ChatParticipants.Add(new ChatUser

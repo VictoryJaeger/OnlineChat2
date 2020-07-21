@@ -14,6 +14,7 @@ using SignalROnlineChatServer.Models;
 using Microsoft.EntityFrameworkCore;
 using SignalROnlineChatServer.Hubs;
 using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Routing.Patterns;
 
 namespace SignalROnlineChatServer
 {
@@ -84,19 +85,28 @@ namespace SignalROnlineChatServer
             app.UseAuthentication();
             app.UseAuthorization();
 
+           // app.UseMvcWithDefaultRoute();
+
+
+            
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Account}/{action=DisplayRegister}/{id?}");
+                    pattern: "{controller=Account}/{action=DisplayRegister}");
             });
 
             ///
-            //app.UseMvcWithDefaultRoute();
+           
             app.UseSignalR(routes =>
                 routes.MapHub<ChatHub>("/chatHub"));
 
 
+            app.Run(context =>
+            {
+                context.Response.StatusCode = 404;
+                return Task.FromResult(0);
+            });
             //app.Use(async (context, next) =>
             //{
             //    await next();
