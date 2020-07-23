@@ -1,6 +1,15 @@
 ﻿@model CreateGroupModelView
 
-    <form asp-controller="Home" asp-action="CreateGroupAsync">
-        Name:  <input asp-for="Name" /> <br />
-        <button type="submit">Create</button>
-    </form>
+<form asp-controller="Home" asp-action="CreateGroupAsync">
+    Name:  <input asp-for="Name" /> <br />
+    <p>
+        <div class="form-group">
+            <h3>Select chat participants (press Shift for multiple choise)</h3>
+            <select asp-for="ChatParticipantsId" asp-items="ViewBag.Users" ></select>  
+        </div>
+    </p>
+    <input type="submit" />
+</form>
+
+
+

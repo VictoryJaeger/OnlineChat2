@@ -8,5 +8,6 @@ namespace SignalROnlineChatServer.Models.ModelViews
     public class CreatePrivateChatViewModel
     {
         public string UserId { get; set; }
+        public string UserName { get; set; }
     }
 }
