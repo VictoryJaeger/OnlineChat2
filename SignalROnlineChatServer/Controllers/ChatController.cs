@@ -21,21 +21,21 @@ namespace SignalROnlineChatServer.Controllers
             _chat = chat;
         }
 
-        [HttpPost("[action]/{connectionId}/groupId")]
-        public async Task<IActionResult> JoinChatAsync(string connectionId, string groupId)
-        {
-            await _chat.Groups.AddToGroupAsync(connectionId, groupId);
-            return Ok();
-        }
+        //[HttpPost("[action]/{connectionId}/groupId")]
+        //public async Task<IActionResult> JoinChatAsync(string connectionId, string groupId)
+        //{
+        //    await _chat.Groups.AddToGroupAsync(connectionId, groupId);
+        //    return Ok();
+        //}
 
-        [HttpPost("[action]/{connectionId}/groupId")]
-        public async Task<IActionResult> LeaveChatAsync(string connectionId, string groupId)
-        {
-            await _chat.Groups.RemoveFromGroupAsync(connectionId, groupId);
-            return Ok();
-        }
+        //[HttpPost("[action]/{connectionId}/groupId")]
+        //public async Task<IActionResult> LeaveChatAsync(string connectionId, string groupId)
+        //{
+        //    await _chat.Groups.RemoveFromGroupAsync(connectionId, groupId);
+        //    return Ok();
+        //}
 
-        [Route("SendMessageAsync")]
+        [Route("Chat/SendMessageAsync")]
         [HttpPost] //("[action]")
         public async Task<IActionResult> SendMessageAsync(int chatId, string message, [FromServices] OnlineChatDBContext context)
         {

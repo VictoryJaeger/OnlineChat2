@@ -1,99 +1,140 @@
 ﻿@model ChatViewModel
 
-    <div class="chat-body">
-        
+<div class="chat-body">
 
-        @foreach (var message in Model.Messages)
-        {
-            <div class="message">
-                <header>@message.Name:</header>
-                <p>@message.Text</p>
-                <footer>@message.Timestamp</footer>
-            </div>
-        }
-        
-    </div>
-    <form class="chat-input" onsubmit="sendMessage(event)" asp-controller="Home" asp-action="CreateMessageAsync"> 
-        <input type="hidden" name="groupId" value="@Model.Id" />
-        <input type="text" name="message" id="message-input" />
-        <button type="submit">Send</button>
 
-    </form>
+    @foreach (var message in Model.Messages)
+    {
+        <div class="message">
+            <header>@message.Name:</header>
+            <p>@message.Text</p>
+            <footer>@message.Timestamp</footer>
+        </div>
+    }
 
-@section Scripts{
-    <script src="~/js/signalr.min.js"></script>
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</div>
+<form class="chat-input" onsubmit="sendMessage(event)" asp-controller="Home" asp-action="CreateMessageAsync">
+    <input type="hidden" name="groupId" value="@Model.Id" />
+    <input type="text" name="message" id="message-input" />
+    <button type="submit">Send</button>
 
-    <script>
-        var connection = new signalR.HubConnectionBuider()
-            .withUrl("/chatHub")
-            .build();
+</form>
 
-        var _connectionId = '';
 
-        connection.on("ReceiveMessage", function (data) {
-            console.log(data);
+<script src="~/js/signalr.min.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+@*<script src="~/js/site.js"></script>*@
 
-            var message = document.createElement("div");
-            message.classList.add("message");
 
-            var header = document.createElement("header");
-            header.appendChild(document.createTextNode(data.name));
+@*@section scripts{*@
+@*<script src="wwwroot/js/signalr/dist/browser/signalr.js"></script>*@
 
-            var p = document.createElement("p");
-            p.appendChild(document.createTextNode(data.text));
 
-            var footer = document.createElement("footer")
-            footer.appendChild(document.createTextNode(data.timestamp));
 
-            message.appendChild(header);
-            message.appendChild(p);
-            message.appendChild(footer);
+<script>
 
-            document.querySelector('.chat-body').append(message);
+    //let connection = new signalR.HubConnectionBuilder()
+    //    .withUrl("/chatHub")
+    //    .build();
+
+    //connection.on("send", data => {
+    //    console.log(data);
+    //});
+
+    //connection.start()
+    //    .then(() => connection.invoke("send", "Hello"));
+
+
+    //const connection = new signalR.HubConnectionBuider()
+    //    .withUrl("/chatHub")
+    //    .configureLogging(signalR.LogLevel.Information)
+    //    .build();
+
+    var connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
+
+
+
+    var _connectionId = '';
+
+    connection.on("ReceiveMessage", function (data) {
+        console.log(data);
+
+        var message = document.createElement("div");
+        message.classList.add("message");
+
+        var header = document.createElement("header");
+        header.appendChild(document.createTextNode(data.name));
+
+        var p = document.createElement("p");
+        p.appendChild(document.createTextNode(data.text));
+
+        var footer = document.createElement("footer")
+        footer.appendChild(document.createTextNode(data.timestamp));
+
+        message.appendChild(header);
+        message.appendChild(p);
+        message.appendChild(footer);
+
+        document.querySelector('.chat-body').append(message);
+    })
+
+    connection.start()
+        //.then(function () {
+        //    connection.invoke('GetConnectionId')
+        //        .then(function (connectionId) {
+        //            _connectionId = connectionId
+        //            joinGroup();
+        //        })
+        //})
+        .catch(function (err) {
+            console.log(err)
         })
 
-        connection.start()
-            .then(function () {
-                connection.invoke('getConnectionString')
-                    .then(function (connectionId) {
-                        _connectionId = connectionId
-                        joinGroup();
-                    })
-            })
-            .catch(function (err) {
-                console.log(err)
-            })
+    //var joinGroup = function () {
+    //    var url = '/Chat/JoinGroupAsync/' + _connectionId + '/@@Model.Name'
+    //    axios.post(url, null)
+    //        .then(res => {
+    //            console.log("Group joined!", res);
+    //        })
+    //        .catch(err => {
+    //            console.err("Failed to join this group", err);
+    //        })
+    //}
 
-        var joinGroup = function () {
-            var url = '/Chat/JoinGroupAsync/' + _connectionId + '/@@Model.Name'
-            axios.post(url, null)
-                .then(res => {
-                    console.log("Group joined!", res);
-                })
-                .catch(err => {
-                    console.err("Failed to join this group", err);
-                })
-        }
+    var form = null;
 
-        var form = null;
+    var sendMessage = function (event) {
+        event.preventDefault();
+        debugger;
 
-        var sendMessage = function (event) {
-            event.preventDefault();
+        var data = new FormData(event.target);
 
-            var data = new FormData(event.target);
-
-            document.getElementById('message-input').value = '';
+        document.getElementById('message-input').value = '';
 
 
-            axios.post('Chat/SendMessageAsync', data)
-                .then(res => {
-                    console.log("Message Sent");
-                })
-                .catch(err => {
-                    console.log("Failed to send message");
-                })
+        //axios.post('Chat/SendMessageAsync', data)
+        //    .then(res => {
+        //        console.log("Message Sent");
+        //    })
+        //    .catch(err => {
+        //        console.log("Failed to send message");
+        //    })
 
-        }
-    </script>
- } 
+    }
+</script>
+@*}*@
+
+
+
+
+
+
+@*//async function start() {
+    //    try {
+    //        await connection.start();
+    //        console.log("connected");
+    //    } catch (err) {
+    //        console.log(err);
+    //        settimeout(() => start(), 5000);
+    //    }
+    //};*@

@@ -56,6 +56,14 @@ namespace SignalROnlineChatServer
                 .AddDefaultTokenProviders();
 
             services.AddSignalR();
+
+            services.AddCors(options => options.AddPolicy("CorsPolicy",
+            builder =>
+            {
+                builder.AllowAnyMethod().AllowAnyHeader()
+                       .WithOrigins("http://localhost:44318")  // 55830
+                       .AllowCredentials();
+            }));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -79,6 +87,8 @@ namespace SignalROnlineChatServer
             app.UseAuthorization();
             app.UseAuthentication();
 
+            app.UseCors("CorsPolicy");
+
             app.UseEndpoints(endpoints =>
             {
                 //endpoints.MapRazorPages();
@@ -87,6 +97,8 @@ namespace SignalROnlineChatServer
                     pattern: "{controller=Account}/{action=DisplayLogin}/{id?}");
                 endpoints.MapHub<ChatHub>("/chatHub");
             });
+
+
         }
     }
 }

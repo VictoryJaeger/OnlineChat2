@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNet.SignalR.Hubs;
+﻿//using Microsoft.AspNet.SignalR.Hubs;
 using Microsoft.AspNetCore.SignalR;
 using System;
 using System.Collections.Generic;
