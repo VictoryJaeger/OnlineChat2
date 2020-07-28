@@ -10,6 +10,8 @@ using SignalROnlineChatServer.Models.ModelViews;
 
 namespace SignalROnlineChatServer.Controllers
 {
+    [Route("/")]
+    [Route("[controller]/[action]")]
     public class AccountController : Controller
     {
         private UserManager<User> _userManager;
@@ -21,7 +23,7 @@ namespace SignalROnlineChatServer.Controllers
             _signInManager = signInManager;
         }
 
-        [Route("DisplayLogin")]
+        //[Route("Account/DisplayLogin")]
         [HttpGet]
         public IActionResult DisplayLogin() => View("Login", new LoginViewModel());
 

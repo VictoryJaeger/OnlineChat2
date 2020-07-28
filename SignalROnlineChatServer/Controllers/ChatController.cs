@@ -35,7 +35,8 @@ namespace SignalROnlineChatServer.Controllers
             return Ok();
         }
 
-        [HttpPost("[action]")]
+        [Route("SendMessageAsync")]
+        [HttpPost] //("[action]")
         public async Task<IActionResult> SendMessageAsync(int chatId, string message, [FromServices] OnlineChatDBContext context)
         {
             var newMessage = new Message

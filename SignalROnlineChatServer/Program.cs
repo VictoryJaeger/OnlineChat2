@@ -19,8 +19,8 @@ namespace SignalROnlineChatServer
 
         public static IWebHostBuilder CreateHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .UseUrls("https://localhost:44318")
-                .UseStartup<Startup>();
+                //.UseUrls("https://localhost:44318")
+                .UseStartup<Startup>();                
         //test
 
     }

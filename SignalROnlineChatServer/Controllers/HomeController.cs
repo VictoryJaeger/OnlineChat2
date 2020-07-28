@@ -40,8 +40,6 @@ namespace SignalROnlineChatServer.Controllers
                 myChats.Add(new ChatViewModel(chat.Id, chat.Messages, chat.ChatParticipants, chat.Name));
             }
 
-           // ViewBag.CreateGroupModelView = new CreateGroupModelView();
-
             return View("Index", myChats);
         }
 
@@ -159,18 +157,11 @@ namespace SignalROnlineChatServer.Controllers
             await _context.SaveChangesAsync();
 
             return RedirectToAction("GetChat", new { id = groupId });
-        }
-
-        
+        }        
 
         [Route("FindUsers")]
         [HttpGet]
         public IActionResult FindUsers() => View("FindUsers", GetUsers());
-        //{
-        //    var users = GetUsers();
-
-        //    return View("FindUsers", users);
-        //}
 
         [Route("Home/CheckPrivateChat")]
         [HttpGet("{Id}")]
