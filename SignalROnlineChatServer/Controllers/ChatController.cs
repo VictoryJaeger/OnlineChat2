@@ -11,7 +11,7 @@ using SignalROnlineChatServer.Models;
 
 namespace SignalROnlineChatServer.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [Route("[controller]")]
     public class ChatController : Controller
     {

@@ -17,6 +17,7 @@ using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Routing.Patterns;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace SignalROnlineChatServer
 {
@@ -57,6 +58,17 @@ namespace SignalROnlineChatServer
 
             services.AddSignalR();
 
+            services.ConfigureApplicationCookie(options =>
+            {
+                // Cookie settings
+                options.Cookie.HttpOnly = true;
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
+
+                options.LoginPath = "/Identity/Account/Login";
+                options.AccessDeniedPath = "/Identity/Account/AccessDenied";
+                options.SlidingExpiration = true;
+            });
+
             services.AddCors(options => options.AddPolicy("CorsPolicy",
             builder =>
             {
@@ -84,11 +96,10 @@ namespace SignalROnlineChatServer
 
             app.UseRouting();
 
-            app.UseAuthorization();
             app.UseAuthentication();
 
-            app.UseCors("CorsPolicy");
-
+            app.UseAuthorization();
+                        
             app.UseEndpoints(endpoints =>
             {
                 //endpoints.MapRazorPages();
@@ -97,6 +108,8 @@ namespace SignalROnlineChatServer
                     pattern: "{controller=Account}/{action=DisplayLogin}/{id?}");
                 endpoints.MapHub<ChatHub>("/chatHub");
             });
+
+            app.UseCors("CorsPolicy");
 
 
         }

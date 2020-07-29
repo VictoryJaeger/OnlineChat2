@@ -29,7 +29,7 @@ namespace SignalROnlineChatServer.Controllers
         public IActionResult DisplayLogin() => View("Login", new LoginViewModel());
 
         [Route("Account/LoginAsync")]
-        [HttpPost]//("{login}/{password}")
+        [HttpPost]
         public async Task<IActionResult> LoginAsync(LoginViewModel loginModel)
         {
             var user = await _userManager.FindByNameAsync(loginModel.Login);
@@ -51,8 +51,8 @@ namespace SignalROnlineChatServer.Controllers
         public IActionResult DisplayRegister() => View("Register", new RegisterViewModel());
 
         [Route("Account/RegisterAsync")]
-        [HttpPost]//("{login}/{password}")
-        public async Task<IActionResult> RegisterAsync(RegisterViewModel registerModel) //[FromHeader(Name ="login")]string login, [FromHeader(Name = "password")] string password
+        [HttpPost]
+        public async Task<IActionResult> RegisterAsync(RegisterViewModel registerModel) 
         {
             var user = new User
             {
@@ -68,7 +68,6 @@ namespace SignalROnlineChatServer.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
-            //return 
             return RedirectToAction("DisplayRegister", "Account");
         }
 

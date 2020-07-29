@@ -18,7 +18,7 @@ using SignalROnlineChatServer.Models.ModelViews;
 
 namespace SignalROnlineChatServer.Controllers
 {
-    //[Authorize]
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly OnlineChatDBContext _context;
