@@ -19,6 +19,7 @@ using SignalROnlineChatServer.Models.ModelViews;
 namespace SignalROnlineChatServer.Controllers
 {
     [Authorize]
+    [Route("[controller]")]
     public class HomeController : Controller
     {
         private readonly OnlineChatDBContext _context;
@@ -77,7 +78,7 @@ namespace SignalROnlineChatServer.Controllers
             return View("CreateGroup", new CreateGroupModelView());
         }
 
-        [Route("Home/CreateGroupAsync")]
+        [Route("CreateGroupAsync")]
         [HttpPost]
         public async Task<IActionResult> CreateGroupAsync(CreateGroupModelView groupModel)
         {
@@ -217,9 +218,10 @@ namespace SignalROnlineChatServer.Controllers
 
         }
 
-        [Route("Home/CreatePrivateChatAsync")] //, Name ="createPrivateChat"
-        [HttpPost]
-                
+
+        //[AllowAnonymous]
+        [Route("CreatePrivateChatAsync")] //, Name ="createPrivateChat"
+        [HttpPost]                
         public async Task<IActionResult> CreatePrivateChatAsync(string Id) //[FromBody] CreatePrivateChatViewModel chatOptions
         {
             
