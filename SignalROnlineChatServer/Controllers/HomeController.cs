@@ -6,22 +6,27 @@ using System.Security.Claims;
 using System.Security.Cryptography.X509Certificates;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using SignalROnlineChatServer.DataBase;
+using SignalROnlineChatServer.Hubs;
 using SignalROnlineChatServer.Models;
 using SignalROnlineChatServer.Models.ModelViews;
 
 namespace SignalROnlineChatServer.Controllers
 {
+    //[Authorize]
     public class HomeController : Controller
     {
         private readonly OnlineChatDBContext _context;
-
-        public HomeController(OnlineChatDBContext context)
+        private readonly IHubContext<ChatHub> _chat;
+        public HomeController(OnlineChatDBContext context, IHubContext<ChatHub> chat)
         {
             _context = context;
+            _chat = chat;
         }
 
         [Route("Index")]
@@ -140,6 +145,30 @@ namespace SignalROnlineChatServer.Controllers
             return View(chatView);
         }
 
+        //[Route("Home/CreateMessageAsync")]
+        //[HttpPost]
+        //public async Task<IActionResult> CreateMessageAsync(int groupId, string message, string groupName)
+        //{
+
+        //    var newMessage = new Message
+        //    {
+        //        ChatId = groupId,
+        //        Timestamp = DateTime.Now,
+        //        Text = message,
+        //        Name = User.Identity.Name
+        //    };
+
+        //    _context.Messages.Add(newMessage);
+        //    await _context.SaveChangesAsync();
+
+        //    await _chat.Clients.Group(groupName)  
+        //        .SendAsync("ReceiveMessage", newMessage);
+
+        //    return Ok();
+        //    //return RedirectToAction("GetChat", new { id = groupId });
+        //}
+
+
         [Route("Home/CreateMessageAsync")]
         [HttpPost]
         public async Task<IActionResult> CreateMessageAsync(int groupId, string message)
@@ -157,7 +186,7 @@ namespace SignalROnlineChatServer.Controllers
             await _context.SaveChangesAsync();
 
             return RedirectToAction("GetChat", new { id = groupId });
-        }        
+        }
 
         [Route("FindUsers")]
         [HttpGet]

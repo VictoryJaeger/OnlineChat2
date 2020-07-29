@@ -11,7 +11,7 @@ using SignalROnlineChatServer.Models;
 
 namespace SignalROnlineChatServer.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [Route("[controller]")]
     public class ChatController : Controller
     {
@@ -21,27 +21,29 @@ namespace SignalROnlineChatServer.Controllers
             _chat = chat;
         }
 
-        //[HttpPost("[action]/{connectionId}/groupId")]
-        //public async Task<IActionResult> JoinChatAsync(string connectionId, string groupId)
-        //{
-        //    await _chat.Groups.AddToGroupAsync(connectionId, groupId);
-        //    return Ok();
-        //}
+        [Route("JoinChatAsync")]
+        [HttpPost]
+        public async Task<IActionResult> JoinChatAsync(string connectionId, string groupName)
+        {
+            await _chat.Groups.AddToGroupAsync(connectionId, groupName);
+            return Ok();
+        }
 
-        //[HttpPost("[action]/{connectionId}/groupId")]
-        //public async Task<IActionResult> LeaveChatAsync(string connectionId, string groupId)
-        //{
-        //    await _chat.Groups.RemoveFromGroupAsync(connectionId, groupId);
-        //    return Ok();
-        //}
 
-        [Route("Chat/SendMessageAsync")]
-        [HttpPost] //("[action]")
-        public async Task<IActionResult> SendMessageAsync(int chatId, string message, [FromServices] OnlineChatDBContext context)
+        [HttpPost("[action]/{connectionId}/{groupName}")]
+        public async Task<IActionResult> LeaveChatAsync(string connectionId, string groupName)
+        {
+            await _chat.Groups.RemoveFromGroupAsync(connectionId, groupName);
+            return Ok();
+        }
+
+        [Route("SendMessageAsync")]
+        [HttpPost]
+        public async Task<IActionResult> SendMessageAsync(int groupId, string message, string groupName, [FromServices] OnlineChatDBContext context)
         {
             var newMessage = new Message
             {
-                ChatId = chatId,
+                ChatId = groupId,
                 Timestamp = DateTime.Now,
                 Text = message,
                 Name = User.Identity.Name
@@ -50,20 +52,18 @@ namespace SignalROnlineChatServer.Controllers
             context.Messages.Add(newMessage);
             await context.SaveChangesAsync();
 
-            await _chat.Clients.Group(chatId.ToString())
-                .SendAsync("ReceiveMessage", newMessage);
-
-
-            //await _chat.Clients.Group(groupId)
+            //await _chat.Clients.Group(groupName)
             //    .SendAsync("ReceiveMessage", newMessage);
 
-            //await _chat.Clients.Group(groupId)
-            //    .SendAsync("ReceiveMessage", new {
-            //        Text = newMessage.Text,
-            //        Name = newMessage.Name,
-            //        Timestamp = newMessage.Timestamp.ToString("dd/MM/yyyy hh:smm:ss")
 
-            //    });
+            await _chat.Clients.Group(groupName)
+                .SendAsync("ReceiveMessage", new
+                {
+                    Text = newMessage.Text,
+                    Name = newMessage.Name,
+                    Timestamp = newMessage.Timestamp.ToString("dd/MM/yyyy hh:smm:ss")
+
+                });
 
             return Ok();
         }

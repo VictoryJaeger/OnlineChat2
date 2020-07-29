@@ -12,6 +12,7 @@ namespace SignalROnlineChatServer.Controllers
 {
     [Route("/")]
     [Route("[controller]/[action]")]
+
     public class AccountController : Controller
     {
         private UserManager<User> _userManager;
