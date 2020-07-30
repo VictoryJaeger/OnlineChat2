@@ -61,6 +61,7 @@ html {
 body {
   /* Margin bottom by footer height */
   margin-bottom: 60px;
+  background: #d4ffd7
 }
 .footer {
   position: absolute;
@@ -68,4 +69,24 @@ body {
   width: 100%;
   white-space: nowrap;
   line-height: 60px; /* Vertically center the text there */
+  background: #fff
+}
+.field-validation-error {
+    color: red;
+    font-size: smaller;
+}
+
+.validation {
+    color: red;
+    font-size: smaller;
+}
+
+.needs-validation {
+    width: 100%;
+    max-width: 420px;
+    padding: 15px;
+    margin: auto;
+    border: 1px solid;
+    border-radius: 10px 20px;
+    border-color: #100900
 }

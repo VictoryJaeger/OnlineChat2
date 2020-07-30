@@ -21,8 +21,8 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                     <ul class="navbar-nav flex-grow-1">
                         @*<li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
-                        </li>*@
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
+                            </li>*@
                         <li class="logout-button">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="LogoutAsync">Logout</a>
                         </li>
@@ -41,16 +41,16 @@
     </div>
 
     <footer class="border-top footer text-muted">
-        @*<div class="container">
-            &copy; 2020 - SignalROnlineChatServer - <a asp-area="" asp-page="/Privacy">Privacy</a>
-        </div>*@
-    </footer>
+        <div class="container">
+                &copy; 2020 - SignalROnlineChatServer - <a asp-area="" asp-page="/Privacy">Privacy</a>
+            </div>
+    </footer> 
 
-    @*<script src="Scripts/jquery-3.1.1.min.js"></script>*@
     <script src="~/js/signalr.js"></script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    @*<script src="~/js/signalr.js/signalr.min.js"></script>*@
+
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    @*<script src="~/js/bootstrap.min.js"></script>*@
     <script src="~/js/site.js" asp-append-version="true"></script>
 
     @*<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
@@ -61,3 +61,8 @@
 @RenderSection("Scripts", required: false)
 
 </html>
+
+
+@*<script src="~/js/signalr.js/signalr.min.js"></script>*@
+
+@*<script src="Scripts/jquery-3.1.1.min.js"></script>*@
