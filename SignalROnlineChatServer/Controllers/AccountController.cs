@@ -43,7 +43,11 @@ namespace SignalROnlineChatServer.Controllers
                     return RedirectToAction("Index", "Home");
                 }
             }
-            return RedirectToAction("DisplayLogin", "Account");
+
+            ModelState.AddModelError("", "Incorrect login or password");
+
+            return View("Login", loginModel);
+            //return RedirectToAction("DisplayLogin", "Account");
         }
 
         [Route("DisplayRegister")]
@@ -54,21 +58,25 @@ namespace SignalROnlineChatServer.Controllers
         [HttpPost]
         public async Task<IActionResult> RegisterAsync(RegisterViewModel registerModel) 
         {
-            var user = new User
+            if (ModelState.IsValid)
             {
-                UserName = registerModel.Login
-            };
+                var user = new User
+                {
+                    UserName = registerModel.Login
+                };
 
-            var result = await _userManager.CreateAsync(user, registerModel.Password);
+                var result = await _userManager.CreateAsync(user, registerModel.Password);
 
-            if (result.Succeeded)
-            {
-                await _signInManager.SignInAsync(user, false);
+                if (result.Succeeded)
+                {
+                    await _signInManager.SignInAsync(user, false);
 
-                return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Home");
+                }
             }
+            return View("Register", registerModel);
 
-            return RedirectToAction("DisplayRegister", "Account");
+            //return RedirectToAction("DisplayRegister", "Account");
         }
 
         [Route("Account/LogoutAsync")]

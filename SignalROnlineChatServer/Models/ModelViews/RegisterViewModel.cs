@@ -27,12 +27,13 @@ namespace SignalROnlineChatServer.Models.ModelViews
         //[BindProperty]
         [Required]
         [DataType(DataType.Password)]
+        [StringLength(50, MinimumLength = 6, ErrorMessage = "Minimal size - 6 symbols ")]
         public string Password { get; set; }
 
         [Required]
         [Compare("Password", ErrorMessage = "Passwords don't match")]
         [DataType(DataType.Password)]
-        [Display(Name = "Подтвердить пароль")]
+        //[Display(Name = "Подтвердить пароль")]
         public string PasswordConfirm { get; set; }
     }
 }

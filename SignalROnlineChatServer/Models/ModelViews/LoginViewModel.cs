@@ -16,6 +16,8 @@ namespace SignalROnlineChatServer.Models.ModelViews
         //    Password = password;
         //}
         public int Id { get; set; }
+
+        [Required]
         public string Login { get; set; }
 
         [Required]

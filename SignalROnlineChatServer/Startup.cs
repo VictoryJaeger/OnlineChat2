@@ -47,7 +47,8 @@ namespace SignalROnlineChatServer
             services.AddDbContext<OnlineChatDBContext>(options =>
                options.UseSqlServer(Configuration.GetConnectionString("Default")));
 
-            services.AddIdentity<User, IdentityRole>(options => {
+            services.AddIdentity<User, IdentityRole>(options =>
+            {
                 options.Password.RequireDigit = false;
                 options.Password.RequireLowercase = false;
                 options.Password.RequireNonAlphanumeric = false;
@@ -55,6 +56,7 @@ namespace SignalROnlineChatServer
             })
                 .AddEntityFrameworkStores<OnlineChatDBContext>()
                 .AddDefaultTokenProviders();
+                
 
             services.AddSignalR();
 
