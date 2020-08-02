@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@inject SignalROnlineChatServer.Controllers.IHomeController homeController
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -36,6 +37,8 @@
     </header>
     <div class="container">
         <main role="main" class="pb-3">
+            @homeController.Index();
+            <h1>AAAAAAA</h1>
             @RenderBody()
         </main>
     </div>

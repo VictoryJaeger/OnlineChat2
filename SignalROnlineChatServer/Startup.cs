@@ -18,6 +18,8 @@ using Microsoft.AspNetCore.Routing.Patterns;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using SignalROnlineChatServer.Controllers;
+using SignalROnlineChatServer.BLL.Services;
 
 namespace SignalROnlineChatServer
 {
@@ -78,6 +80,12 @@ namespace SignalROnlineChatServer
                        .WithOrigins("http://localhost:44318")  // 55830
                        .AllowCredentials();
             }));
+
+            //services.AddTransient<IHomeController, HomeController>();
+
+            services.AddSingleton<HomeService>();
+            //services.AddSingleton<IHostedService, HomeService>(
+                       //serviceProvider => serviceProvider.GetService<HomeService>());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
