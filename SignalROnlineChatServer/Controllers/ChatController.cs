@@ -12,7 +12,7 @@ using SignalROnlineChatServer.Models;
 namespace SignalROnlineChatServer.Controllers
 {
     [Authorize]
-    [Route("[controller]")]
+    //[Route("[controller]")]
     public class ChatController : Controller
     {
         private readonly IHubContext<ChatHub> _chat;
@@ -21,7 +21,7 @@ namespace SignalROnlineChatServer.Controllers
             _chat = chat;
         }
 
-        [Route("JoinChatAsync")]
+        [Route("Home/Chat/JoinChatAsync")]
         [HttpPost]
         public async Task<IActionResult> JoinChatAsync(string connectionId, string groupName)
         {
@@ -37,7 +37,7 @@ namespace SignalROnlineChatServer.Controllers
             return Ok();
         }
 
-        [Route("SendMessageAsync")]
+        [Route("Home/Chat/SendMessageAsync")]
         [HttpPost]
         public async Task<IActionResult> SendMessageAsync(int groupId, string message, string groupName, [FromServices] OnlineChatDBContext context)
         {
