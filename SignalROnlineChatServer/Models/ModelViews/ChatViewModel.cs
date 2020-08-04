@@ -13,11 +13,15 @@ namespace SignalROnlineChatServer.Models.ModelViews
             this.Name = Name;
             this.Messages = Messages.ToList();
             this.ChatParticipants = ChatParticipants.ToList();
+            LastMessage = this.Messages.Last().Text;
+            LastMessageDate = this.Messages.Last().Timestamp.Date.ToString();
 
         }
         public int Id { get; set; }
         public  List<Message> Messages { get; set; }
         public  List<ChatUser> ChatParticipants { get; set; }
         public string Name { get; set; }
+        public string LastMessageDate { get; set; }
+        public string LastMessage { get; set; }
     }
 }

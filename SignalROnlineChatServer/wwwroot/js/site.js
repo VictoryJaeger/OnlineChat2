@@ -3,19 +3,9 @@
 
 // Write your Javascript code.
 
-//var importCdn = document.createElement('script');
-
-//importCdn.setAttribute('src', '~/js/signalr/dist/browser/signalr.js/signalr.min.js');
-
-//document.head.appendChild(importCdn);
 
 
-
-//var connection = new signalR.HubConnectionBuider()
-//    .withUrl("/chatHub")
-//    .configureLogging(signalR.LogLevel.Information)
-//    .build();
-
+//var connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
 
 
 
@@ -43,9 +33,25 @@
 //    document.querySelector('.chat-body').append(message);
 //})
 
+//var joinGroup = function () {
+//    // var url = 'Chat/JoinChatAsync/' + _connectionId + '/@Model.Name'
+//    const bodyForm = new FormData();
+//    bodyForm.set('connectionId', _connectionId);
+//    bodyForm.append('groupName', '@Model.Name');
+
+//    axios.post('Chat/JoinChatAsync', bodyForm)
+//        //axios.post(url,null)
+//        .then(res => {
+//            console.log("Group joined!", res);
+//        })
+//        .catch(err => {
+//            console.log("Failed to join this group", err);
+//        })
+//}
+
 //connection.start()
 //    .then(function () {
-//        connection.invoke('getConnectionString')
+//        connection.invoke('GetConnectionId')
 //            .then(function (connectionId) {
 //                _connectionId = connectionId
 //                joinGroup();
@@ -55,21 +61,10 @@
 //        console.log(err)
 //    })
 
-//var joinGroup = function () {
-//    var url = '/Chat/JoinGroupAsync/' + _connectionId + '/@@Model.Name'
-//    axios.post(url, null)
-//        .then(res => {
-//            console.log("Group joined!", res);
-//        })
-//        .catch(err => {
-//            console.err("Failed to join this group", err);
-//        })
-//}
-
-//var form = null;
 
 //var sendMessage = function (event) {
 //    event.preventDefault();
+
 
 //    var data = new FormData(event.target);
 

@@ -90,3 +90,56 @@ body {
     border-radius: 10px 20px;
     border-color: #100900
 }
+
+.inbox_chat {
+    height: auto;
+/*    overflow-y: scroll;*/
+}
+
+.chat_list_item {
+    border-bottom: 1px solid #c4c4c4;
+    margin: 0;
+    padding: 18px 16px 10px;
+}
+
+.chat_detail {
+    overflow: hidden;
+    clear: both;
+}
+
+.chat_img {
+    float: left;
+    width: 11%;
+}
+
+.chat_detail_info {
+    float: left;
+    padding: 0 0 0 15px;
+    width: 88%;
+}
+
+.chat_ib h5 span {
+    font-size: 13px;
+    float: right;
+}
+
+.inbox_msg {
+    border: 1px solid #c4c4c4;
+    clear: both;
+    overflow: hidden;
+}
+
+.inbox_people {
+    background: #f8f8f8 none repeat scroll 0 0;
+    float: left;
+    overflow: hidden;
+    width: 40%;
+    border-right: 1px solid #c4c4c4;
+    height: 600px;
+}
+
+.chat_view {
+    float: left;
+    padding: 30px 15px 0 25px;
+    width: 60%;
+}

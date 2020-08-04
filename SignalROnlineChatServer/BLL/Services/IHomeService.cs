@@ -10,7 +10,7 @@ namespace SignalROnlineChatServer.BLL.Services
         void CreateGroupAsync(CreateGroupModelView groupModel, string CreatorId);
         void CreateMessageAsync(int groupId, string message);
         void CreatePrivateChatAsync(string ParticipantId, string CreatorId);
-        IEnumerable<ChatViewModel> GetAllChats(User user);
+        IEnumerable<ChatViewModel> GetAllChats(/*string user*/);
         ChatViewModel GetChat(int id);
         User GetUser(string Id);
         IEnumerable<UserViewModel> GetUsers(string ActiveUserId);

@@ -14,23 +14,28 @@ namespace SignalROnlineChatServer.BLL.Services
     public class HomeService : IHomeService
     {
         private readonly OnlineChatDBContext _context;
-        //private IHttpContextAccessor _httpContextAccessor;
-        public HomeService(OnlineChatDBContext context)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        public HomeService(OnlineChatDBContext context, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
+            _httpContextAccessor = httpContextAccessor;
         }
-        public IEnumerable<ChatViewModel> GetAllChats(User user)
+        public IEnumerable<ChatViewModel> GetAllChats()
         {
             var chats = _context.Chats
                 .Include(x => x.ChatParticipants).ThenInclude(x => x.User)
-                .Where(x => x.ChatParticipants.Any(y => y.UserId == _context.Users.Where(x => x.Id == user.Id).FirstOrDefault().Id))
+                .Include(x => x.Messages)
+                .Where(x => x.ChatParticipants.Any(y => y.UserId == _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value))
                 .ToList();
 
             var myChats = new List<ChatViewModel>();
 
             foreach (Chat chat in chats)
             {
-                myChats.Add(new ChatViewModel(chat.Id, chat.Messages, chat.ChatParticipants, chat.Name));
+                if (chat.Messages.Count() != 0)
+                {
+                    myChats.Add(new ChatViewModel(chat.Id, chat.Messages, chat.ChatParticipants, chat.Name));
+                }
             }
 
             return myChats;

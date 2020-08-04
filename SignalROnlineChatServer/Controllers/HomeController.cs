@@ -21,12 +21,12 @@ namespace SignalROnlineChatServer.Controllers
 {
     [Authorize]
     [Route("[controller]")]
-    public class HomeController : Controller, IHomeController
+    public class HomeController : Controller
     {
         private readonly OnlineChatDBContext _context;
-        private readonly HomeService _homeService;
+        private readonly IHomeService _homeService;
         //private readonly IHubContext<ChatHub> _chat;
-        public HomeController(OnlineChatDBContext context, HomeService service) //, IHubContext<ChatHub> chat
+        public HomeController(OnlineChatDBContext context, IHomeService service) //, IHubContext<ChatHub> chat
         {
             _context = context;
             _homeService = service;
@@ -37,19 +37,23 @@ namespace SignalROnlineChatServer.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            var chats = _context.Chats
-                .Include(x => x.ChatParticipants).ThenInclude(x => x.User)
-                .Where(x => x.ChatParticipants.Any(y => y.UserId == User.FindFirst(ClaimTypes.NameIdentifier).Value))
-                .ToList();
+            //var chats = _context.Chats
+            //    .Include(x => x.ChatParticipants).ThenInclude(x => x.User)
+            //    .Where(x => x.ChatParticipants.Any(y => y.UserId == User.FindFirst(ClaimTypes.NameIdentifier).Value))
+            //    .ToList();
 
-            var myChats = new List<ChatViewModel>();
+            //var myChats = new List<ChatViewModel>();
 
-            foreach (Chat chat in chats)
-            {
-                myChats.Add(new ChatViewModel(chat.Id, chat.Messages, chat.ChatParticipants, chat.Name));
-            }
+            //foreach (Chat chat in chats)
+            //{
+            //    myChats.Add(new ChatViewModel(chat.Id, chat.Messages, chat.ChatParticipants, chat.Name));
+            //}
+            //var userId = _context.Users.Where(x => x.Id == User.FindFirst(ClaimTypes.NameIdentifier).Value).FirstOrDefault().Id;
+
+            var myChats = _homeService.GetAllChats(/*userId*/);
 
             return View("Index", myChats);
+            //return Ok();
         }
 
         [Route("GetPrivateChats")]

@@ -81,11 +81,12 @@ namespace SignalROnlineChatServer
                        .AllowCredentials();
             }));
 
-            //services.AddTransient<IHomeController, HomeController>();
-
-            services.AddSingleton<HomeService>();
+            
+            services.AddHttpContextAccessor();
+            services.AddScoped<IHomeService, HomeService>();
+            services.AddTransient<HomeService>();
             //services.AddSingleton<IHostedService, HomeService>(
-                       //serviceProvider => serviceProvider.GetService<HomeService>());
+            //serviceProvider => serviceProvider.GetService<HomeService>());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

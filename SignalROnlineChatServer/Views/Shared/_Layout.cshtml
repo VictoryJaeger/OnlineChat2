@@ -1,4 +1,7 @@
-﻿@inject SignalROnlineChatServer.Controllers.IHomeController homeController
+﻿@inject SignalROnlineChatServer.BLL.Services.IHomeService homeService
+@{ 
+    var chats = homeService.GetAllChats();
+}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -37,17 +40,41 @@
     </header>
     <div class="container">
         <main role="main" class="pb-3">
-            @homeController.Index();
-            <h1>AAAAAAA</h1>
-            @RenderBody()
+            <div class="messaging">
+                <div class="inbox_msg">
+                    <div class="inbox_people">
+                        <div class="inbox_chat">
+                            @foreach (var chat in chats)
+                            {
+                                <a asp-controller="Home" asp-action="GetChat" asp-route-id="@chat.Id">
+                                    <div class="chat_list_item">
+                                        <div class="chat_detail">
+                                            <div class="chat_img"> @*<img src="https://ptetutorials.com/images/user-profile.png" alt="sunil">*@ </div>
+                                            <div class="chat_detail_info">
+                                                <h5>@chat.Name<span class="chat_date">@chat.LastMessageDate</span></h5>
+                                                <p>
+                                                    @chat.Messages.Last().Name : @chat.LastMessage
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            }
+                        </div>
+                    </div>
+                    <div class="chat_view">
+                        @RenderBody()
+                    </div>
+                </div>
+            </div>            
         </main>
     </div>
 
     <footer class="border-top footer text-muted">
         <div class="container">
-                &copy; 2020 - SignalROnlineChatServer - <a asp-area="" asp-page="/Privacy">Privacy</a>
-            </div>
-    </footer> 
+            &copy; 2020 - SignalROnlineChatServer - <a asp-area="" asp-page="/Privacy">Privacy</a>
+        </div>
+    </footer>
 
     <script src="~/js/signalr.js"></script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
