@@ -17,6 +17,5 @@ namespace SignalROnlineChatServer.Models
         [ForeignKey("ChatId")]
         public Chat Chat { get; set; }
 
-
     }
 }

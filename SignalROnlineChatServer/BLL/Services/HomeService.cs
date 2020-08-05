@@ -41,6 +41,8 @@ namespace SignalROnlineChatServer.BLL.Services
             return myChats;
         }
 
+
+
         //public IActionResult GetPrivateChats()
         //{
         //    var chats = _context.Chats
@@ -130,6 +132,21 @@ namespace SignalROnlineChatServer.BLL.Services
             return chatView;
         }
 
+
+        //public ChatViewModel PrepareChatModelForView(ChatViewModel model)
+        //{
+        //    model.LastMessage = model.Messages.Last().Text;
+        //    model.LastMessageDate = model.Messages.Last().Timestamp.Date.ToString();
+
+        //    var userName = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.Name).Value;
+        //    foreach (var message in model.Messages)
+        //    {
+        //        if (message.Name == userName)
+        //        {
+        //            model.MessageType
+        //        }
+        //    }
+        //}
 
         public async void CreateMessageAsync(int groupId, string message)
         {

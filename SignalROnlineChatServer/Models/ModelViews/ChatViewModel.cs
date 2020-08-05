@@ -13,8 +13,8 @@ namespace SignalROnlineChatServer.Models.ModelViews
             this.Name = Name;
             this.Messages = Messages.ToList();
             this.ChatParticipants = ChatParticipants.ToList();
-            LastMessage = this.Messages.Last().Text;
-            LastMessageDate = this.Messages.Last().Timestamp.Date.ToString();
+            //LastMessage = this.Messages.Last().Text;
+            //LastMessageDate = this.Messages.Last().Timestamp.Date.ToString();
 
         }
         public int Id { get; set; }
@@ -23,5 +23,22 @@ namespace SignalROnlineChatServer.Models.ModelViews
         public string Name { get; set; }
         public string LastMessageDate { get; set; }
         public string LastMessage { get; set; }
+        //public MessageType MessageType { get; set; }
+
+        //public void PrepareModelForView(ChatViewModel model)
+        //{
+        //    model.LastMessage = model.Messages.Last().Text;
+        //    model.LastMessageDate = model.Messages.Last().Timestamp.Date.ToString();
+        //    foreach(var message in model.Messages)
+        //    {
+        //        if(message.Name == )
+        //    }
+        //}
     }
+
+    //public enum MessageType
+    //{
+    //    Incoming,
+    //    Outcoming
+    //}
 }

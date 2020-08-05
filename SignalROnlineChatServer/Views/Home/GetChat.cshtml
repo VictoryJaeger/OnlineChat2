@@ -2,24 +2,38 @@
 @{ 
     Layout = "_Layout";
 }
-<div class="chat-body">
+    @*<div class="chat-body">*@
 
-    @foreach (var message in Model.Messages)
-    {
-        <div class="message">
+
+
+        @foreach (var message in Model.Messages)
+        {
+            <div class="message_info">
+                <div class="user_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
+                <div class="message">
+                    <div class="message_text">
+                        <p>
+                            @message.Text
+                        </p>
+                        <span class="message_date"> @message.Timestamp.Hour:@message.Timestamp.Minute    |    @message.Timestamp.Month @message.Timestamp.Day </span>
+                    </div>
+                </div>
+            </div>
+        }
+
+
+        @*<div class="message">
             <header>@message.Name:</header>
             <p>@message.Text</p>
             <footer>@message.Timestamp</footer>
-        </div>
-    }
+        </div>*@
 
-</div>
+    @*</div>*@
 <form class="chat-input" onsubmit="sendMessage(event)" asp-controller="Home" asp-action="CreateMessageAsync">
     <input type="hidden" name="groupId" value="@Model.Id" />
     <input type="hidden" name="groupName" value="@Model.Name" />
     <input type="text" name="message" id="message-input" />
     <button type="submit">Send</button>
-
 </form>
 
 
