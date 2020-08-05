@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using SignalROnlineChatServer.DataBase;
 using SignalROnlineChatServer.Models;
@@ -15,10 +16,12 @@ namespace SignalROnlineChatServer.BLL.Services
     {
         private readonly OnlineChatDBContext _context;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        public HomeService(OnlineChatDBContext context, IHttpContextAccessor httpContextAccessor)
+        private readonly IMapper _mapper;
+        public HomeService(OnlineChatDBContext context, IHttpContextAccessor httpContextAccessor, IMapper mapper)
         {
             _context = context;
             _httpContextAccessor = httpContextAccessor;
+            _mapper = mapper;
         }
         public IEnumerable<ChatViewModel> GetAllChats()
         {
@@ -34,7 +37,9 @@ namespace SignalROnlineChatServer.BLL.Services
             {
                 if (chat.Messages.Count() != 0)
                 {
-                    myChats.Add(new ChatViewModel(chat.Id, chat.Messages, chat.ChatParticipants, chat.Name));
+                    var chatModel = _mapper.Map<ChatViewModel>(chat);
+                    myChats.Add(chatModel);
+                    //myChats.Add(new ChatViewModel(/*chat.Id, chat.Messages, chat.ChatParticipants, chat.Name*/));
                 }
             }
 
@@ -127,7 +132,8 @@ namespace SignalROnlineChatServer.BLL.Services
                 // .Include(y => y.ChatParticipants).ThenInclude(y => y.User)
                 .FirstOrDefault(x => x.Id == id);
 
-            var chatView = new ChatViewModel(chat.Id, chat.Messages, chat.ChatParticipants, chat.Name);
+            //var chatView = new ChatViewModel(/*chat.Id, chat.Messages, chat.ChatParticipants, chat.Name*/);
+            var chatView = _mapper.Map<ChatViewModel>(chat);
 
             return chatView;
         }

@@ -1,15 +1,34 @@
 ﻿@model ChatViewModel
-@{ 
+@{
     Layout = "_Layout";
 }
-    @*<div class="chat-body">*@
 
 
+@*<div class="chat-body">
 
+
+    @foreach (var message in Model.Messages)
+    {
+        <div class="message">
+            <header>@message.Name:</header>
+            <p>@message.Text</p>
+            <footer>@message.Timestamp</footer>
+        </div>
+    }
+
+</div>*@
+@*<form class="chat-input" onsubmit="sendMessage(event)" asp-controller="Home" asp-action="CreateMessageAsync">
+    <input type="hidden" name="groupId" value="@Model.Id" />
+    <input type="text" name="message" id="message-input" />
+    <button type="submit">Send</button>
+
+</form>*@
+
+    <div class="chat_body">
         @foreach (var message in Model.Messages)
         {
             <div class="message_info">
-                <div class="user_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
+                <div class="user_img">  </div>
                 <div class="message">
                     <div class="message_text">
                         <p>
@@ -20,7 +39,10 @@
                 </div>
             </div>
         }
+    </div>
 
+
+        @*<img src="https://ptetutorials.com/images/user-profile.png" alt="sunil">*@
 
         @*<div class="message">
             <header>@message.Name:</header>
@@ -28,13 +50,12 @@
             <footer>@message.Timestamp</footer>
         </div>*@
 
-    @*</div>*@
-<form class="chat-input" onsubmit="sendMessage(event)" asp-controller="Home" asp-action="CreateMessageAsync">
-    <input type="hidden" name="groupId" value="@Model.Id" />
-    <input type="hidden" name="groupName" value="@Model.Name" />
-    <input type="text" name="message" id="message-input" />
-    <button type="submit">Send</button>
-</form>
+        <form class="chat-input" onsubmit="sendMessage(event)" asp-controller="Home" asp-action="CreateMessageAsync">
+            <input type="hidden" name="groupId" value="@Model.Id" />
+            <input type="hidden" name="groupName" value="@Model.Name" />
+            <input type="text" name="message" id="message-input" />
+            <button type="submit">Send</button>
+        </form>
 
 
 <script src="~/js/signalr.min.js"></script>
@@ -49,23 +70,6 @@
 
 <script>
 
-    //let connection = new signalR.HubConnectionBuilder()
-    //    .withUrl("/chatHub")
-    //    .build();
-
-    //connection.on("send", data => {
-    //    console.log(data);
-    //});
-
-    //connection.start()
-    //    .then(() => connection.invoke("send", "Hello"));
-
-
-    //const connection = new signalR.HubConnectionBuider()
-    //    .withUrl("/chatHub")
-    //    .configureLogging(signalR.LogLevel.Information)
-    //    .build();
-
     var connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
 
 
@@ -75,23 +79,38 @@
     connection.on("ReceiveMessage", function (data) {
         console.log(data);
 
+        var messageInfo = document.createElement("div");
+        messageInfo.classList.add("message_info");
+
+        var userImg = document.createElement("div");
+        userImg.classList.add("user_img");
+
         var message = document.createElement("div");
         message.classList.add("message");
 
-        var header = document.createElement("header");
-        header.appendChild(document.createTextNode(data.name));
+        var messageText = document.createElement("div");
+        messageText.classList.add("message_text");
 
+        //var header = document.createElement("header");
+        //header.appendChild(document.createTextNode(data.name));
+
+        //var p = document.createElement("p");
         var p = document.createElement("p");
         p.appendChild(document.createTextNode(data.text));
 
-        var footer = document.createElement("footer")
-        footer.appendChild(document.createTextNode(data.timestamp));
+        //var footer = document.createElement("footer")
+        var message_date = document.createElement("message_date")
+        message_date.appendChild(document.createTextNode(data.timestamp));
 
-        message.appendChild(header);
-        message.appendChild(p);
-        message.appendChild(footer);
+        //message.appendChild(header);
+        
+        messageInfo.appendChild(userImg);
+        messageInfo.appendChild(message);
+        message.appendChild(messageText);
+        messageText.appendChild(p);
+        message.appendChild(message_date);
 
-        document.querySelector('.chat-body').append(message);
+        document.querySelector('.chat_body').append(message);
     })
 
     var joinGroup = function () {

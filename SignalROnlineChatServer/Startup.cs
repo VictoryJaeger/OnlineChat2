@@ -21,6 +21,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using SignalROnlineChatServer.Controllers;
 using SignalROnlineChatServer.BLL.Services;
 using AutoMapper;
+using SignalROnlineChatServer.BLL.Mapper;
 
 namespace SignalROnlineChatServer
 {
@@ -79,6 +80,13 @@ namespace SignalROnlineChatServer
             services.AddHttpContextAccessor();
             services.AddScoped<IHomeService, HomeService>();
             services.AddTransient<HomeService>();
+
+            //IServiceProvider provider = services.BuildServiceProvider();
+
+            //var mapperConfiguration = new MapperConfiguration(mc =>
+            //{
+            //    mc.AddProfile(new MyAutoMapper(provider.GetRequiredService<IHttpContextAccessor>()));
+            //});
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

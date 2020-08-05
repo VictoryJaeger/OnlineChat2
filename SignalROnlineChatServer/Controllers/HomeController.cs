@@ -70,7 +70,7 @@ namespace SignalROnlineChatServer.Controllers
 
             foreach (Chat chat in chats)
             {
-                chatViews.Add(new ChatViewModel(chat.Id, chat.Messages, chat.ChatParticipants, chat.Name));
+                chatViews.Add(new ChatViewModel(/*chat.Id, chat.Messages, chat.ChatParticipants, chat.Name*/));
             }
 
             var myChats = new UserChatsViewModel(chatViews);
@@ -143,12 +143,13 @@ namespace SignalROnlineChatServer.Controllers
         [HttpGet("{id}")]
         public IActionResult GetChat(int id)
         {
-            var chat = _context.Chats
-                .Include(x => x.Messages)
-                // .Include(y => y.ChatParticipants).ThenInclude(y => y.User)
-                .FirstOrDefault(x => x.Id == id);
+            //var chat = _context.Chats
+            //    .Include(x => x.Messages)
+            //    // .Include(y => y.ChatParticipants).ThenInclude(y => y.User)
+            //    .FirstOrDefault(x => x.Id == id);
 
-            var chatView = new ChatViewModel(chat.Id, chat.Messages, chat.ChatParticipants, chat.Name);
+            //var chatView = new ChatViewModel(/*chat.Id, chat.Messages, chat.ChatParticipants, chat.Name*/);
+            var chatView = _homeService.GetChat(id);
 
             return View(chatView);
         }

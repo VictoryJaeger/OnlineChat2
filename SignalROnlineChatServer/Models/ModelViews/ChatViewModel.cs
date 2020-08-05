@@ -7,18 +7,22 @@ namespace SignalROnlineChatServer.Models.ModelViews
 {
     public class ChatViewModel
     {
-        public ChatViewModel(int Id, ICollection<Message> Messages, ICollection<ChatUser> ChatParticipants, string Name)
+        public ChatViewModel()
         {
-            this.Id = Id;
-            this.Name = Name;
-            this.Messages = Messages.ToList();
-            this.ChatParticipants = ChatParticipants.ToList();
-            //LastMessage = this.Messages.Last().Text;
-            //LastMessageDate = this.Messages.Last().Timestamp.Date.ToString();
 
         }
+        //public ChatViewModel(int Id, ICollection<Message> Messages, ICollection<ChatUser> ChatParticipants, string Name)
+        //{
+        //    this.Id = Id;
+        //    this.Name = Name;
+        //    this.Messages = Messages.ToList();
+        //    this.ChatParticipants = ChatParticipants.ToList();
+        //    LastMessage = this.Messages.Last().Text;
+        //    LastMessageDate = this.Messages.Last().Timestamp.Date.ToString();
+
+        //}
         public int Id { get; set; }
-        public  List<Message> Messages { get; set; }
+        public  List<MessageViewModel> Messages { get; set; }
         public  List<ChatUser> ChatParticipants { get; set; }
         public string Name { get; set; }
         public string LastMessageDate { get; set; }
