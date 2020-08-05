@@ -20,6 +20,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using SignalROnlineChatServer.Controllers;
 using SignalROnlineChatServer.BLL.Services;
+using AutoMapper;
 
 namespace SignalROnlineChatServer
 {
@@ -37,14 +38,7 @@ namespace SignalROnlineChatServer
         {
             services.AddControllersWithViews();
 
-            //services.AddMvc().AddRazorPagesOptions(options =>
-            //{
-            //    options.Conventions.AddAreaPageRoute("Identity", "/Account/DisplayLogin", "/Account/DisplayLogin");
-            //});
-
-            //services.AddRazorPages( options => 
-            //    options.Conventions.AuthorizeAreaPage("Views", "/Login"));
-
+            services.AddAutoMapper(typeof(Startup));
 
             services.AddDbContext<OnlineChatDBContext>(options =>
                options.UseSqlServer(Configuration.GetConnectionString("Default")));
@@ -85,8 +79,6 @@ namespace SignalROnlineChatServer
             services.AddHttpContextAccessor();
             services.AddScoped<IHomeService, HomeService>();
             services.AddTransient<HomeService>();
-            //services.AddSingleton<IHostedService, HomeService>(
-            //serviceProvider => serviceProvider.GetService<HomeService>());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
