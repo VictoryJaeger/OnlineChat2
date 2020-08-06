@@ -24,23 +24,36 @@
 
     </form>*@
 
-<div class="chat_body">
-    @foreach (var message in Model.Messages)
-    {
-        @*@if(message.Type = MessageType.Incoming)*@
-        <div class="message_info">
-            <div class="user_img">  </div>
-            <div class="message">
-                <div class="message_text">
-                    <p>
-                        @message.Text
-                    </p>
-                    <span class="message_date">@message.Timestamp.ToString("hh:mm |d MMM")</span>
+    <div class="chat_body">
+        @foreach (var message in Model.Messages)
+        {
+            @if (message.Type == MessageType.Incoming)
+            {
+                <div class="incoming_message_info">
+                    <div class="incoming_user_img">  </div>
+                    <div class="incoming_message">
+                        <div class="incoming_message_text">
+                            <p>
+                                @message.Text
+                            </p>
+                            <span class="message_date">@message.Timestamp.ToString("hh:mm | d MMM")</span>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-    }
-</div>
+            }
+            else
+            {
+                <div class="outgoing_message_info">
+                    <div class="outgoing_message_text">
+                        <p>
+                            @message.Text
+                        </p>
+                        <span class="message_date">@message.Timestamp.ToString("hh:mm | d MMM")</span>
+                    </div>
+                </div>
+            }
+        }
+    </div>
 
 @*@message.Timestamp.Hour:@message.Timestamp.Minute|@message.Timestamp. @message.Timestamp.Day*@
 
