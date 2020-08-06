@@ -39,40 +39,12 @@ namespace SignalROnlineChatServer.BLL.Services
                 {
                     var chatModel = _mapper.Map<ChatViewModel>(chat);
                     myChats.Add(chatModel);
-                    //myChats.Add(new ChatViewModel(/*chat.Id, chat.Messages, chat.ChatParticipants, chat.Name*/));
                 }
             }
 
             return myChats;
         }
 
-
-
-        //public IActionResult GetPrivateChats()
-        //{
-        //    var chats = _context.Chats
-        //        .Include(x => x.ChatParticipants).ThenInclude(x => x.User)
-        //        .Where(x => x.Type == ChatType.Private
-        //            && x.ChatParticipants.Any(y => y.UserId == User.FindFirst(ClaimTypes.NameIdentifier).Value))
-        //        .ToList();
-
-        //    var chatViews = new List<ChatViewModel>();
-
-        //    foreach (Chat chat in chats)
-        //    {
-        //        chatViews.Add(new ChatViewModel(chat.Id, chat.Messages, chat.ChatParticipants, chat.Name));
-        //    }
-
-        //    var myChats = new UserChatsViewModel(chatViews);
-
-        //    return View("GetPrivateChats", myChats);
-        //}
-
-        //public IActionResult DisplayCreateGroupForm()
-        //{
-        //    ViewData["Users"] = new SelectList(GetUsers(), "Id", "UserName");
-        //    return View("CreateGroup", new CreateGroupModelView());
-        //}
 
         public async void CreateGroupAsync(CreateGroupModelView groupModel, string CreatorId)
         {
