@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
+using SignalROnlineChatServer.BLL.Services;
 using SignalROnlineChatServer.DataBase;
 using SignalROnlineChatServer.Hubs;
 using SignalROnlineChatServer.Models;
+using SignalROnlineChatServer.Models.ModelViews;
 
 namespace SignalROnlineChatServer.Controllers
 {
@@ -16,9 +19,13 @@ namespace SignalROnlineChatServer.Controllers
     public class ChatController : Controller
     {
         private readonly IHubContext<ChatHub> _chat;
-        public ChatController(IHubContext<ChatHub> chat)
+        private readonly IHomeService _homeService;
+        private readonly IMapper _mapper;
+        public ChatController(IHubContext<ChatHub> chat, IHomeService homeService, IMapper mapper)
         {
             _chat = chat;
+            _homeService = homeService;
+            _mapper = mapper;
         }
 
         [Route("Home/Chat/JoinChatAsync")]
@@ -54,15 +61,17 @@ namespace SignalROnlineChatServer.Controllers
 
             //await _chat.Clients.Group(groupName)
             //    .SendAsync("ReceiveMessage", newMessage);
-
+            var messageView = _mapper.Map<MessageViewModel>(newMessage);
+            messageView.Type = _homeService.CheckMessagesType(messageView);
 
             await _chat.Clients.Group(groupName)
-                .SendAsync("ReceiveMessage", new
-                {
-                    Text = newMessage.Text,
-                    Name = newMessage.Name,
-                    Timestamp = newMessage.Timestamp.ToString("hh:mm | d MMM")
-                });
+                .SendAsync("ReceiveMessage", messageView);
+                //.SendAsync("ReceiveMessage", new
+                //{
+                //    Text = newMessage.Text,
+                //    Name = newMessage.Name,
+                //    Timestamp = newMessage.Timestamp.ToString("hh:mm | d MMM")
+                //});
 
             return Ok();
         }

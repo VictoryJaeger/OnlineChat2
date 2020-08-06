@@ -94,35 +94,50 @@
     connection.on("ReceiveMessage", function (data) {
         console.log(data);
 
-        //if(data.type)
+        if (data.type == 1) {               
 
-        var messageInfo = document.createElement("div");
-        messageInfo.classList.add("message_info");
+            var messageInfo = document.createElement("div");
+            messageInfo.classList.add("outgoing_message_info");
 
-        var userImg = document.createElement("div");
-        userImg.classList.add("user_img");
+            var messageText = document.createElement("div");
+            messageText.classList.add("outgoing_message_text");
 
-        var message = document.createElement("div");
-        message.classList.add("message");
+            var p = document.createElement("p");
+            p.appendChild(document.createTextNode(data.text));
 
-        messageInfo.appendChild(userImg);
-        messageInfo.appendChild(message);
+            var message_date = document.createElement("span");
+            message_date.classList.add("message_date");
+            message_date.appendChild(document.createTextNode(data.timestamp));
 
-        var messageText = document.createElement("div");
-        messageText.classList.add("message_text");
+            messageInfo.appendChild(messageText);
+            messageText.appendChild(p);
+            messageText.appendChild(message_date);
 
-        var p = document.createElement("p");
-        p.appendChild(document.createTextNode(data.text));
+            document.querySelector('.chat_body').append(messageInfo);
 
-        var message_date = document.createElement("span");
-        message_date.classList.add("message_date");
-        message_date.appendChild(document.createTextNode(data.timestamp));
+            //var messageInfo = document.createElement("div");
+            //messageInfo.classList.add("message_info");
 
-        message.appendChild(messageText);
-        messageText.appendChild(p);
-        message.appendChild(message_date);
+            //var userImg = document.createElement("div");
+            //userImg.classList.add("user_img");
 
-        document.querySelector('.chat_body').append(messageInfo);
+            //var message = document.createElement("div");
+            //message.classList.add("message");
+
+            //messageInfo.appendChild(userImg);
+            //messageInfo.appendChild(message);
+
+            //var messageText = document.createElement("div");
+            //messageText.classList.add("message_text");
+
+            
+
+            //message.appendChild(messageText);
+            //messageText.appendChild(p);
+            //message.appendChild(message_date);
+
+           
+        }
     })
 
     var joinGroup = function () {
