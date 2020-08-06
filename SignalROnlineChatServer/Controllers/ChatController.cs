@@ -62,7 +62,6 @@ namespace SignalROnlineChatServer.Controllers
                     Text = newMessage.Text,
                     Name = newMessage.Name,
                     Timestamp = newMessage.Timestamp.ToString("hh:mm | d MMM")
-
                 });
 
             return Ok();

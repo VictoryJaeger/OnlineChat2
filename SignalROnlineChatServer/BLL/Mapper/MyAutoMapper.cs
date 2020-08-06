@@ -18,7 +18,8 @@ namespace SignalROnlineChatServer.BLL.Mapper
         {
             //_httpContextAccessor = httpContextAccessor;
 
-            CreateMap<Message, MessageViewModel>();
+            CreateMap<Message, MessageViewModel>()
+                .ForMember(x => x.Timestamp, opt => opt.MapFrom(src => src.Timestamp.ToString("hh:mm | d MMM")));
                 //.ForMember(x => x.Type, opt => opt
                 //.MapFrom(src => (src.Name == _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.Name).Value) ? MessageType.Outgoing  : MessageType.Incoming)
              

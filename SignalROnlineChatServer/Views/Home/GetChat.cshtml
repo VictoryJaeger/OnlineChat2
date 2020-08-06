@@ -36,7 +36,7 @@
                             <p>
                                 @message.Text
                             </p>
-                            <span class="message_date">@message.Timestamp.ToString("hh:mm | d MMM")</span>
+                            <span class="message_date">@message.Timestamp@*.ToString("hh:mm | d MMM")*@</span>
                         </div>
                     </div>
                 </div>
@@ -48,7 +48,7 @@
                         <p>
                             @message.Text
                         </p>
-                        <span class="message_date">@message.Timestamp.ToString("hh:mm | d MMM")</span>
+                        <span class="message_date">@message.Timestamp@*.ToString("hh:mm | d MMM")*@</span>
                     </div>
                 </div>
             }
@@ -94,6 +94,8 @@
     connection.on("ReceiveMessage", function (data) {
         console.log(data);
 
+        //if(data.type)
+
         var messageInfo = document.createElement("div");
         messageInfo.classList.add("message_info");
 
@@ -109,20 +111,12 @@
         var messageText = document.createElement("div");
         messageText.classList.add("message_text");
 
-        //var header = document.createElement("header");
-        //header.appendChild(document.createTextNode(data.name));
-
-        //var p = document.createElement("p");
         var p = document.createElement("p");
         p.appendChild(document.createTextNode(data.text));
 
-        //var footer = document.createElement("footer")
         var message_date = document.createElement("span");
         message_date.classList.add("message_date");
         message_date.appendChild(document.createTextNode(data.timestamp));
-
-        //message.appendChild(header);
-
 
         message.appendChild(messageText);
         messageText.appendChild(p);
