@@ -134,8 +134,19 @@ namespace SignalROnlineChatServer.BLL.Services
 
             //var chatView = new ChatViewModel(/*chat.Id, chat.Messages, chat.ChatParticipants, chat.Name*/);
             var chatView = _mapper.Map<ChatViewModel>(chat);
-
+            chatView = CheckMessagesType(chatView);
             return chatView;
+        }
+
+        public ChatViewModel CheckMessagesType(ChatViewModel model)
+        {
+            var activeAccount = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.Name).Value;
+            foreach (var message in model.Messages)
+            {
+                if (message.Name == activeAccount) message.Type = MessageType.Outgoing;
+                else message.Type = MessageType.Incoming;
+            }
+            return model;
         }
 
 

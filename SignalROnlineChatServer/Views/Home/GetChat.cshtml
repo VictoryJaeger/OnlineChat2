@@ -27,6 +27,7 @@
 <div class="chat_body">
     @foreach (var message in Model.Messages)
     {
+        @*@if(message.Type = MessageType.Incoming)*@
         <div class="message_info">
             <div class="user_img">  </div>
             <div class="message">

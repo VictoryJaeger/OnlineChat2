@@ -59,9 +59,10 @@ html {
 }
 
 body {
-  /* Margin bottom by footer height */
-  margin-bottom: 60px;
-  background: #d4ffd7
+    /* Margin bottom by footer height */
+    background: linear-gradient(45deg, #ff7efc, #9dc6ff);
+    margin-bottom: 60px;
+/*    background: #d4ffd7*/
 }
 .footer {
   position: absolute;
@@ -170,4 +171,18 @@ body {
     display: block;
     font-size: 12px;
     margin: 8px 0 0;
+}
+
+.message_text p {
+    background: #ebebeb none repeat scroll 0 0;
+    border-radius: 3px;
+    color: #646464;
+    font-size: 14px;
+    margin: 0;
+    padding: 5px 10px 5px 12px;
+    width: 100%;
+}
+
+.messaging {
+    box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
 }
