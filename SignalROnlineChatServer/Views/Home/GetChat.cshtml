@@ -65,12 +65,15 @@
         <footer>@message.Timestamp</footer>
     </div>*@
 
-<form class="chat-input" onsubmit="sendMessage(event)" asp-controller="Home" asp-action="CreateMessageAsync">
-    <input type="hidden" name="groupId" value="@Model.Id" />
-    <input type="hidden" name="groupName" value="@Model.Name" />
-    <input type="text" name="message" id="message-input" />
-    <button type="submit">Send</button>
-</form>
+<div class="input_message_area">
+    <form class="chat_input" onsubmit="sendMessage(event)" asp-controller="Home" asp-action="CreateMessageAsync">
+        <input type="hidden" name="groupId" value="@Model.Id" />
+        <input type="hidden" name="groupName" value="@Model.Name" />
+        <input class="text" type="text" name="message" id="message-input" placeholder="Type a message here..." required />
+        @*<button type="submit">Send</button>*@
+        <button type="submit" class="btn btn-light submit">Send</button>
+    </form>
+</div>
 
 
 <script src="~/js/signalr.min.js"></script>
