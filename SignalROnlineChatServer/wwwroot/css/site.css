@@ -295,3 +295,18 @@ body {
     background-color: transparent;
     font-size: 20px;
 }
+
+li{
+    list-style-type: none;
+}
+
+.users {
+    font-size: 50px;
+}
+
+svg {
+    vertical-align: inherit;
+}
+
+/*list users*/
+

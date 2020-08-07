@@ -81,7 +81,7 @@ namespace SignalROnlineChatServer.Controllers
         [HttpGet]
         public IActionResult DisplayCreateGroupForm()
         {
-            ViewData["Users"] = new SelectList(GetUsers(), "Id", "UserName");
+            ViewData["Users"] = new SelectList(_homeService.GetUsers(), "Id", "UserName");
             return View("CreateGroup", new CreateGroupModelView());
         }
 
@@ -264,7 +264,16 @@ namespace SignalROnlineChatServer.Controllers
                 .Where(x => x.Id == Id)
                 .FirstOrDefault();
 
-        public IEnumerable<UserViewModel> GetUsers()
+        
+    }
+}
+
+
+
+
+
+/*
+ public IEnumerable<UserViewModel> GetUsers()
         {
             var users = _context.Users
                   .Where(x => x.Id != User.FindFirst(ClaimTypes.NameIdentifier).Value);
@@ -272,11 +281,10 @@ namespace SignalROnlineChatServer.Controllers
 
             foreach (User user in users)
             {
-                userList.Add(new UserViewModel(/*user.UserName, user.Id*/));
+                userList.Add(new UserViewModel());
             }
 
             return userList;
 
         }
-    }
-}
+ */
