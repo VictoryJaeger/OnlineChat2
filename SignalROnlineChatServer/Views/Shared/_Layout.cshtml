@@ -50,7 +50,8 @@
                                             <div class="chat_detail_info">
                                                 <h5>@chat.Name<span class="chat_date">@chat.LastMessageDate</span></h5>
                                                 <p>
-                                                    @chat.Messages.Last().Name : @chat.LastMessage
+                                                    @*@chat.Messages.Last().Name : @chat.LastMessage*@
+                                                    @chat.LastMessageAuthor : @chat.LastMessage
                                                 </p>
                                             </div>
                                         </div>

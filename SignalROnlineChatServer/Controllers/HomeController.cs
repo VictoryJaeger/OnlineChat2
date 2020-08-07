@@ -20,7 +20,7 @@ using SignalROnlineChatServer.Models.ModelViews;
 namespace SignalROnlineChatServer.Controllers
 {
     [Authorize]
-    [Route("[controller]")]
+    //[Route("[controller]")]
     public class HomeController : Controller
     {
         private readonly OnlineChatDBContext _context;

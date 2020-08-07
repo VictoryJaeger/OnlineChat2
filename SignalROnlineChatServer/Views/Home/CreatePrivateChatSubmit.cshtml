@@ -22,15 +22,31 @@
     var _connectionId = '';
 
     connection.on("PrivateChatCreated", function (data) {
+
+        debugger;
         console.log(data);
 
-        //if (data.type == 1) {
+        var chatListItem = document.createElement("div");
+        chatListItem.classList.add("chat_list_item");
 
-        //    var messageInfo = document.createElement("div");
-        //    messageInfo.classList.add("outgoing_message_info");
+        var chatDetail = document.createElement("div");
+        chatDetail.classList.add("chat_detail");
 
-        //    var messageText = document.createElement("div");
-        //    messageText.classList.add("outgoing_message_text");
+        var chatImg = document.createElement("div");
+        chatImg.classList.add("chat_img");
+
+        var chatDetailInfo = document.createElement("div");
+        chatDetailInfo.classList.add("chat_detail_info");
+
+        var chatName = document.createElement("h5");
+        chatName.appendChild(document.createTextNode(data.name));
+
+        var chatDate = document.createElement("span");
+        chatDate.classList.add("chat_date");
+        chatDate.appendChild(document.createTextNode(data.lastmessagedate));
+
+        var p = document.createElement("p");
+        p.appendChild(document.createTextNode(data.lastmessageauthor, ':', data.lastmessage));
 
         //    var p = document.createElement("p");
         //    p.appendChild(document.createTextNode(data.text));
@@ -43,29 +59,10 @@
         //    messageText.appendChild(p);
         //    messageText.appendChild(message_date);
 
-        //    document.querySelector('.chat_body').append(messageInfo);
+        document.querySelector('.inbox_chat').append(chat_list_item);
 
-        //}
     })
-
-
-    var createPrivateChat = function (event) {
-        event.preventDefault();
-
-        var data = new FormData(event.target);
-        data.append('connectionId', _connectionId);
-
-        //document.getElementById('message-input').value = '';
-
-        axios.post('Home/CreatePrivateChatAsync', data)
-            .then(res => {
-                console.log("Private Chat created!");
-            })
-            .catch(err => {
-                console.log("Failed to create private Chat");
-            })
-
-    }
+   
 
     connection.start()
         .then(function () {
@@ -79,6 +76,28 @@
         .catch(function (err) {
             console.log(err)
         })
+
+
+    var createPrivateChat = function (event) {
+        if(event)
+        event.preventDefault();
+
+        //debugger;
+        var data = new FormData(event.target);
+        data.append('connectionId', _connectionId);
+
+        //document.getElementById('message-input').value = '';
+
+        axios.post('Home/CreatePrivateChatAsync', data)
+            .then(res => {
+                console.log("Private Chat created!", res);
+                //debugger;
+            })
+            .catch(err => {
+                console.log("Failed to create private Chat");
+            })
+
+    }
     
 </script>
 
