@@ -206,6 +206,15 @@ namespace SignalROnlineChatServer.BLL.Services
 
         }
 
+        public async Task<ChatViewModel> ReturnCreatedPrivateChatAsync(string ParticipantId)
+        {
+            var chat = await CreatePrivateChatAsync(ParticipantId);
+
+            var chatModel = _mapper.Map<ChatViewModel>(chat);
+
+            return chatModel;
+        }
+
         public User GetUser(string Id) =>
          _context.Users
                 .Where(x => x.Id == Id)

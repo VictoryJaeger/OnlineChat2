@@ -4,106 +4,91 @@
     Layout = "_Layout";
 }
 
-    <form class="create_pr_chat_form" asp-controller="Home" asp-action="CreatePrivateChatAsync">
-        <input type="hidden" name="Id" value="@Model.UserId" />
-        <button type="submit" class="btn btn-light crt_p_chat">Create chat with @Model.UserName?</button>
-        @*<button style="background: none !important; border: none; padding: 0 !important; /*optional*/ font-family: arial, sans-serif; /*input has OS specific font-family*/ color: #069; text-decoration: underline; cursor: pointer;">
-            <p>Create chat with @Model.UserName?</p>
-        </button>*@
-    </form>
+<form class="create_pr_chat_form" onsubmit="createPrivateChat(event)" asp-controller="Home" asp-action="CreatePrivateChatAsync">
+    <input type="hidden" name="Id" value="@Model.UserId" />
+    <button type="submit" class="btn btn-light crt_p_chat">Create chat with @Model.UserName?</button>
+</form>
 
 
 
 
+<script src="~/js/signalr.min.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
-@*<script src="~/js/signalr.min.js"></script>
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
 
-    <script>
+    var connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
 
-        var connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
+    var _connectionId = '';
 
-        var _connectionId = '';
+    connection.on("PrivateChatCreated", function (data) {
+        console.log(data);
 
-        connection.on("PrivateChatCreated", function (data) {
-            console.log(data);
+        //if (data.type == 1) {
 
-            if (data.type == 1) {
+        //    var messageInfo = document.createElement("div");
+        //    messageInfo.classList.add("outgoing_message_info");
 
-                var messageInfo = document.createElement("div");
-                messageInfo.classList.add("outgoing_message_info");
+        //    var messageText = document.createElement("div");
+        //    messageText.classList.add("outgoing_message_text");
 
-                var messageText = document.createElement("div");
-                messageText.classList.add("outgoing_message_text");
+        //    var p = document.createElement("p");
+        //    p.appendChild(document.createTextNode(data.text));
 
-                var p = document.createElement("p");
-                p.appendChild(document.createTextNode(data.text));
+        //    var message_date = document.createElement("span");
+        //    message_date.classList.add("message_date");
+        //    message_date.appendChild(document.createTextNode(data.timestamp));
 
-                var message_date = document.createElement("span");
-                message_date.classList.add("message_date");
-                message_date.appendChild(document.createTextNode(data.timestamp));
+        //    messageInfo.appendChild(messageText);
+        //    messageText.appendChild(p);
+        //    messageText.appendChild(message_date);
 
-                messageInfo.appendChild(messageText);
-                messageText.appendChild(p);
-                messageText.appendChild(message_date);
+        //    document.querySelector('.chat_body').append(messageInfo);
 
-                document.querySelector('.chat_body').append(messageInfo);
+        //}
+    })
 
-            }
+
+    var createPrivateChat = function (event) {
+        event.preventDefault();
+
+        var data = new FormData(event.target);
+        data.append('connectionId', _connectionId);
+
+        //document.getElementById('message-input').value = '';
+
+        axios.post('Home/CreatePrivateChatAsync', data)
+            .then(res => {
+                console.log("Private Chat created!");
+            })
+            .catch(err => {
+                console.log("Failed to create private Chat");
+            })
+
+    }
+
+    connection.start()
+        .then(function () {
+            connection.invoke('GetConnectionId')
+                .then(function (connectionId) {
+                    _connectionId = connectionId
+                    console.log("connected to hub");
+                    createPrivateChat();
+                })
         })
-
-        var joinGroup = function () {
-            // var url = 'Chat/JoinChatAsync/' + _connectionId + '/@Model.Name'
-            const bodyForm = new FormData();
-            bodyForm.set('connectionId', _connectionId);
-            bodyForm.append('groupName', '@Model.Name');
-
-            axios.post('Chat/JoinChatAsync', bodyForm)
-            //axios.post(url,null)
-                .then(res => {
-                    console.log("Group joined!", res);
-                })
-                .catch(err => {
-                    console.log("Failed to join this group", err);
-                })
-        }
-
-        connection.start()
-            .then(function () {
-                connection.invoke('GetConnectionId')
-                    .then(function (connectionId) {
-                        _connectionId = connectionId
-                        joinGroup();
-                    })
-            })
-            .catch(function (err) {
-                console.log(err)
-            })
-
-
-        var sendMessage = function (event) {
-            event.preventDefault();
-
-
-            var data = new FormData(event.target);
-
-            document.getElementById('message-input').value = '';
-
-
-            axios.post('Chat/SendMessageAsync', data)
-                .then(res => {
-                    console.log("Message Sent");
-                })
-                .catch(err => {
-                    console.log("Failed to send message");
-                })
-
-        }
-    </script>*@
-@*}*@
+        .catch(function (err) {
+            console.log(err)
+        })
+    
+</script>
 
 
 
+
+
+@*<button style="background: none !important; border: none; padding: 0 !important; /*optional*/ font-family: arial, sans-serif; /*input has OS specific font-family*/ color: #069; text-decoration: underline; cursor: pointer;">
+        <p>Create chat with @Model.UserName?</p>
+    </button>*@
 
 @*asp-controller="Home" asp-action="CreatePrivateChatAsync" asp-route-id="@Model.UserId"*@
 
@@ -157,3 +142,23 @@
         </div>
     </div>
 *@
+
+
+
+
+
+
+@*var joinGroup = function () {
+
+        const bodyForm = new FormData();
+        bodyForm.set('connectionId', _connectionId);
+        bodyForm.append('groupName', '@Model.Name');
+
+        axios.post('Chat/JoinChatAsync', bodyForm)
+            .then(res => {
+                console.log("Group joined!", res);
+            })
+            .catch(err => {
+                console.log("Failed to join this group", err);
+            })
+    }*@

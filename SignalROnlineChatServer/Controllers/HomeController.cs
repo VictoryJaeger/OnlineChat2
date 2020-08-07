@@ -25,12 +25,12 @@ namespace SignalROnlineChatServer.Controllers
     {
         private readonly OnlineChatDBContext _context;
         private readonly IHomeService _homeService;
-        //private readonly IHubContext<ChatHub> _chat;
-        public HomeController(OnlineChatDBContext context, IHomeService service) //, IHubContext<ChatHub> chat
+        private readonly IHubContext<ChatHub> _chat;
+        public HomeController(OnlineChatDBContext context, IHomeService service, IHubContext<ChatHub> chat) //
         {
             _context = context;
             _homeService = service;
-            //_chat = chat;
+            _chat = chat;
         }
 
         [Route("Index")]
@@ -123,12 +123,6 @@ namespace SignalROnlineChatServer.Controllers
         [HttpGet("{id}")]
         public IActionResult GetChat(int id)
         {
-            //var chat = _context.Chats
-            //    .Include(x => x.Messages)
-            //    // .Include(y => y.ChatParticipants).ThenInclude(y => y.User)
-            //    .FirstOrDefault(x => x.Id == id);
-
-            //var chatView = new ChatViewModel(/*chat.Id, chat.Messages, chat.ChatParticipants, chat.Name*/);
             var chatView = _homeService.GetChat(id);
 
             return View(chatView);
@@ -189,16 +183,22 @@ namespace SignalROnlineChatServer.Controllers
 
 
         //[AllowAnonymous]
-        [Route("CreatePrivateChatAsync")] //, Name ="createPrivateChat"
+        [Route("Home/Home/CreatePrivateChatAsync")] //, Name ="createPrivateChat"
         [HttpPost]
-        public async Task<IActionResult> CreatePrivateChatAsync(string Id) //[FromBody] CreatePrivateChatViewModel chatOptions
+        public async Task<IActionResult> CreatePrivateChatAsync(string Id, string connectionId) //[FromBody] CreatePrivateChatViewModel chatOptions
         {          
 
-            var chat = await _homeService.CreatePrivateChatAsync(Id);
+            var chatView = await _homeService.ReturnCreatedPrivateChatAsync(Id);
 
-            return RedirectToAction("GetChat", new { id = chat.Id });
+            await _chat.Groups.AddToGroupAsync(connectionId, chatView.Name);
+            await _chat.Clients.Group(chatView.Name).SendAsync("PrivateChatCreated", chatView);
 
-            //return Ok();
+            //return View("GetChat",chatView);
+
+
+            //return RedirectToAction("GetChat", new { id = chat.Id });
+
+            return Ok();
 
         }
 
@@ -276,6 +276,15 @@ namespace SignalROnlineChatServer.Controllers
             //_context.Chats.Add(chat);
 
             //await _context.SaveChangesAsync();
+}
+
+GetChat(){
+//var chat = _context.Chats
+            //    .Include(x => x.Messages)
+            //    // .Include(y => y.ChatParticipants).ThenInclude(y => y.User)
+            //    .FirstOrDefault(x => x.Id == id);
+
+            //var chatView = new ChatViewModel();
 }
  */
 

@@ -16,5 +16,6 @@ namespace SignalROnlineChatServer.BLL.Services
         User GetUser(string Id);
         List<UserViewModel> GetUsers(/*string ActiveUserId*/);
         MessageType CheckMessagesType(MessageViewModel model);
+        Task<ChatViewModel> ReturnCreatedPrivateChatAsync(string ParticipantId);
     }
 }
