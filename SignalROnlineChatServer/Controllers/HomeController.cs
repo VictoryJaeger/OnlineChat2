@@ -199,7 +199,7 @@ namespace SignalROnlineChatServer.Controllers
 
         [Route("FindUsers")]
         [HttpGet]
-        public IActionResult FindUsers() => View("FindUsers", GetUsers());
+        public IActionResult FindUsers() => View("FindUsers", _homeService.GetUsers());
 
         [Route("Home/CheckPrivateChat")]
         [HttpGet("{Id}")]
@@ -272,7 +272,7 @@ namespace SignalROnlineChatServer.Controllers
 
             foreach (User user in users)
             {
-                userList.Add(new UserViewModel(user.UserName, user.Id));
+                userList.Add(new UserViewModel(/*user.UserName, user.Id*/));
             }
 
             return userList;

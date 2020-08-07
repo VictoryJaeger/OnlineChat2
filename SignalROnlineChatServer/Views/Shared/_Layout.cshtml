@@ -42,15 +42,19 @@
             </div>*@
             <div class="messaging">
                 <div class="navbar menu">
-                    <div class="navbar-brand" @*asp-area="" asp-controller="Home" asp-action="Index"*@>SignalROnlineChatServer</div>
-                    <div class="dropdown">
-                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Options
-                        </button>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <a class="dropdown-item" href="#">Action</a>
-                            <a class="dropdown-item" href="#">Another action</a>
-                            <a class="dropdown-item" href="#">Something else here</a>
+                    <div class="navbar-brand" @*asp-area="" asp-controller="Home" asp-action="Index"*@>
+                        <div class="dropdown button">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                @*Options*@
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" asp-controller="Home" asp-action="FindUsers">Find Users</a>
+                                <a class="dropdown-item" href="#">Another action</a>
+                                <a class="dropdown-item" href="#">Something else here</a>
+                            </div>
+                        </div>
+                        <div class="chat_app_name">
+                            SignalROnlineChat 
                         </div>
                     </div>
                     <div class="logout-button">

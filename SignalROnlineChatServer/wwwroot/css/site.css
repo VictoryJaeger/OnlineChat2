@@ -257,3 +257,41 @@ body {
     border-color: #c78df3;
     border-bottom-style: double;
 }
+
+
+.chat_app_name {
+    display: inline;
+    position: absolute;
+    vertical-align: top;
+    border-radius: 3px;
+    margin: 0;
+    padding: 5px 10px 5px 12px;
+    left: 60px;
+    bottom: 15px;
+    font-size: large;
+    font-weight: 500;
+    color: #a53fa1;
+}
+
+.dropdown button {
+    display: inline-block;
+/*    width: 6%;*/
+}
+
+.btn-secondary {
+    color: #fff;
+    background-color: #b34fcc59;
+    border-color: #7c289e85;
+}
+
+.btn-secondary:not(:disabled):not(.disabled).active, .btn-secondary:not(:disabled):not(.disabled):active, .show > .btn-secondary.dropdown-toggle {
+    color: #fff;
+    background-color: #8ab4de5c;
+    border-color: #5487b3;
+}
+
+.my {
+    color: #212529;
+    background-color: transparent;
+    font-size: 20px;
+}

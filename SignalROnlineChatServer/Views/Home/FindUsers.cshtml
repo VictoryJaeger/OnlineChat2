@@ -1,17 +1,39 @@
 ﻿@model IEnumerable<UserViewModel>
 
+@{
+    Layout = "_Layout";
+}
+
 @foreach (var user in Model)
 {
-<a asp-controller="Home" asp-action="CheckPrivateChat" asp-route-id="@user.Id">
-    <button style="background: none !important; border: none; padding: 0 !important; /*optional*/ font-family: arial, sans-serif; /*input has OS specific font-family*/ color: #069; text-decoration: underline; cursor: pointer;" asp-controller="Home" asp-action="CheckPrivateChat" asp-route-id="@user.Id">
-        @* asp-route-id="@user.Id"
-        *@
-        @*<input type="hidden" name="Id" value="@user.Id" />*@
-        <p>@user.UserName</p>
-    </button>
-</a>}
+
+    <a asp-controller="Home" asp-action="CheckPrivateChat" asp-route-id="@user.Id" class="my badge badge-light">@user.UserName</a>
+}
 
 
+
+
+@*<a asp-controller="Home" asp-action="CheckPrivateChat" asp-route-id="@user.Id" class="btn btn-light btn-lg disabled" role="button" aria-pressed="true">@user.UserName</a>*@
+
+@*<div class="user_preview">
+        <a asp-controller="Home" asp-action="CheckPrivateChat" asp-route-id="@user.Id">
+            <button style="background: none !important; border: none; padding: 0 !important; /*optional*/ font-family: arial, sans-serif; /*input has OS specific font-family*/ color: #069; text-decoration: underline; cursor: pointer;" asp-controller="Home" asp-action="CheckPrivateChat" asp-route-id="@user.Id">
+            @user.UserName
+            </button>
+        </a>
+    </div>*@
+@*<a asp-controller="Home" asp-action="CheckPrivateChat" asp-route-id="@user.Id" target="_blank" class="stretched-link btn btn-primary">
+        @user.UserName
+    </a>*@
+
+@*aria-disabled="true"*@
+
+
+@*<button type="button" class="btn btn-light" asp-controller="Home" asp-action="CheckPrivateChat" asp-route-id="@user.Id">@user.UserName</button>*@
+
+@* asp-route-id="@user.Id"
+*@
+@*<input type="hidden" name="Id" value="@user.Id" />*@
 
 @*<a asp-controller="Home" asp-action="CreatePrivateChatAsync" asp-route-userId="@user.Id"></a>
                 @user.UserName

@@ -7,6 +7,7 @@ using SignalROnlineChatServer.Models.ModelViews;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -207,17 +208,21 @@ namespace SignalROnlineChatServer.BLL.Services
                 .Where(x => x.Id == Id)
                 .FirstOrDefault();
 
-        public IEnumerable<UserViewModel> GetUsers(string ActiveUserId)
+        public List<UserViewModel> GetUsers(/*string ActiveUserId*/)
         {
             var users = _context.Users
-                  .Where(x => x.Id != _context.Users.Where(x => x.Id == ActiveUserId).FirstOrDefault().Id);
+                  .Where(x => x.Id != _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
             var userList = new List<UserViewModel>();
+
+            //userList = _mapper.Map<List<UserViewModel>>(users);
 
             foreach (User user in users)
             {
-                userList.Add(new UserViewModel(user.UserName, user.Id));
+                var userModel = _mapper.Map<UserViewModel>(user);
+                userList.Add(userModel);
             }
 
+            userList.Sort((a, b) => string.Compare(a.UserName, b.UserName));
             return userList;
         }
     }

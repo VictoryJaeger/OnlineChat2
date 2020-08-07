@@ -13,7 +13,7 @@ namespace SignalROnlineChatServer.BLL.Services
         IEnumerable<ChatViewModel> GetAllChats(/*string user*/);
         ChatViewModel GetChat(int id);
         User GetUser(string Id);
-        IEnumerable<UserViewModel> GetUsers(string ActiveUserId);
+        List<UserViewModel> GetUsers(/*string ActiveUserId*/);
         MessageType CheckMessagesType(MessageViewModel model);
     }
 }

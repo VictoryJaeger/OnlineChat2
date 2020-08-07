@@ -7,11 +7,15 @@ namespace SignalROnlineChatServer.Models.ModelViews
 {
     public class UserViewModel
     {
-        public UserViewModel(string Name, string Id)
+        public UserViewModel()
         {
-            this.Id = Id;
-            UserName = Name;
+
         }
+        //public UserViewModel(string Name, string Id)
+        //{
+        //    this.Id = Id;
+        //    UserName = Name;
+        //}
 
         public string Id { get; set; }
         public string UserName { get; set; }
