@@ -134,28 +134,6 @@ namespace SignalROnlineChatServer.Controllers
             return View(chatView);
         }
 
-        //[Route("Home/CreateMessageAsync")]
-        //[HttpPost]
-        //public async Task<IActionResult> CreateMessageAsync(int groupId, string message, string groupName)
-        //{
-
-        //    var newMessage = new Message
-        //    {
-        //        ChatId = groupId,
-        //        Timestamp = DateTime.Now,
-        //        Text = message,
-        //        Name = User.Identity.Name
-        //    };
-
-        //    _context.Messages.Add(newMessage);
-        //    await _context.SaveChangesAsync();
-
-        //    await _chat.Clients.Group(groupName)  
-        //        .SendAsync("ReceiveMessage", newMessage);
-
-        //    return Ok();
-        //    //return RedirectToAction("GetChat", new { id = groupId });
-        //}
 
 
         [Route("Home/CreateMessageAsync")]
@@ -300,3 +278,28 @@ namespace SignalROnlineChatServer.Controllers
             //await _context.SaveChangesAsync();
 }
  */
+
+
+
+//[Route("Home/CreateMessageAsync")]
+//[HttpPost]
+//public async Task<IActionResult> CreateMessageAsync(int groupId, string message, string groupName)
+//{
+
+//    var newMessage = new Message
+//    {
+//        ChatId = groupId,
+//        Timestamp = DateTime.Now,
+//        Text = message,
+//        Name = User.Identity.Name
+//    };
+
+//    _context.Messages.Add(newMessage);
+//    await _context.SaveChangesAsync();
+
+//    await _chat.Clients.Group(groupName)  
+//        .SendAsync("ReceiveMessage", newMessage);
+
+//    return Ok();
+//    //return RedirectToAction("GetChat", new { id = groupId });
+//}

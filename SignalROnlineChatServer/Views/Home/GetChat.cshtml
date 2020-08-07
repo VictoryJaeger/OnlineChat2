@@ -4,77 +4,49 @@
 }
 
 
-@*<div class="chat-body">
-
-
-        @foreach (var message in Model.Messages)
+<div class="chat_body">
+    @foreach (var message in Model.Messages)
+    {
+        @if (message.Type == MessageType.Incoming)
         {
-            <div class="message">
-                <header>@message.Name:</header>
-                <p>@message.Text</p>
-                <footer>@message.Timestamp</footer>
+            <div class="incoming_message_info">
+                <div class="incoming_user_img">  </div>
+                <div class="incoming_message">
+                    <div class="incoming_message_text">
+                        <p>
+                            @message.Text
+                        </p>
+                        <span class="message_date">@message.Timestamp@*.ToString("hh:mm | d MMM")*@</span>
+                    </div>
+                </div>
             </div>
         }
-
-    </div>*@
-@*<form class="chat-input" onsubmit="sendMessage(event)" asp-controller="Home" asp-action="CreateMessageAsync">
-        <input type="hidden" name="groupId" value="@Model.Id" />
-        <input type="text" name="message" id="message-input" />
-        <button type="submit">Send</button>
-
-    </form>*@
-
-    <div class="chat_body">
-        @foreach (var message in Model.Messages)
+        else if (message.Type == MessageType.Default)
         {
-            @if (message.Type == MessageType.Incoming)
-            {
-                <div class="incoming_message_info">
-                    <div class="incoming_user_img">  </div>
-                    <div class="incoming_message">
-                        <div class="incoming_message_text">
-                            <p>
-                                @message.Text
-                            </p>
-                            <span class="message_date">@message.Timestamp@*.ToString("hh:mm | d MMM")*@</span>
-                        </div>
-                    </div>
+            <div class="default_message_info">
+                <div class="default_message_text">
+                    <p>
+                        @message.Text
+                    </p>
+                    <span class="message_date">@message.Timestamp@*.ToString("hh:mm | d MMM")*@</span>
                 </div>
-            }
-            else if (message.Type == MessageType.Default)
-            {
-                <div class="default_message_info">
-                    <div class="default_message_text">
-                        <p>
-                            @message.Text
-                        </p>
-                        <span class="message_date">@message.Timestamp@*.ToString("hh:mm | d MMM")*@</span>
-                    </div>
-                </div>
-            }
-            else
-            {
-                <div class="outgoing_message_info">
-                    <div class="outgoing_message_text">
-                        <p>
-                            @message.Text
-                        </p>
-                        <span class="message_date">@message.Timestamp@*.ToString("hh:mm | d MMM")*@</span>
-                    </div>
-                </div>
-            }
+            </div>
         }
-    </div>
+        else
+        {
+            <div class="outgoing_message_info">
+                <div class="outgoing_message_text">
+                    <p>
+                        @message.Text
+                    </p>
+                    <span class="message_date">@message.Timestamp@*.ToString("hh:mm | d MMM")*@</span>
+                </div>
+            </div>
+        }
+    }
+</div>
 
-@*@message.Timestamp.Hour:@message.Timestamp.Minute|@message.Timestamp. @message.Timestamp.Day*@
 
-@*<img src="https://ptetutorials.com/images/user-profile.png" alt="sunil">*@
-
-@*<div class="message">
-        <header>@message.Name:</header>
-        <p>@message.Text</p>
-        <footer>@message.Timestamp</footer>
-    </div>*@
 
 <div class="input_message_area">
     <form class="chat_input" onsubmit="sendMessage(event)" asp-controller="Home" asp-action="CreateMessageAsync">
@@ -108,7 +80,7 @@
     connection.on("ReceiveMessage", function (data) {
         console.log(data);
 
-        if (data.type == 1) {               
+        if (data.type == 1) {
 
             var messageInfo = document.createElement("div");
             messageInfo.classList.add("outgoing_message_info");
@@ -129,28 +101,8 @@
 
             document.querySelector('.chat_body').append(messageInfo);
 
-            //var messageInfo = document.createElement("div");
-            //messageInfo.classList.add("message_info");
 
-            //var userImg = document.createElement("div");
-            //userImg.classList.add("user_img");
 
-            //var message = document.createElement("div");
-            //message.classList.add("message");
-
-            //messageInfo.appendChild(userImg);
-            //messageInfo.appendChild(message);
-
-            //var messageText = document.createElement("div");
-            //messageText.classList.add("message_text");
-
-            
-
-            //message.appendChild(messageText);
-            //messageText.appendChild(p);
-            //message.appendChild(message_date);
-
-           
         }
     })
 
@@ -218,3 +170,63 @@
     //        settimeout(() => start(), 5000);
     //    }
     //};*@
+
+
+
+
+@*<div class="chat-body">
+
+
+        @foreach (var message in Model.Messages)
+        {
+            <div class="message">
+                <header>@message.Name:</header>
+                <p>@message.Text</p>
+                <footer>@message.Timestamp</footer>
+            </div>
+        }
+
+    </div>*@
+@*<form class="chat-input" onsubmit="sendMessage(event)" asp-controller="Home" asp-action="CreateMessageAsync">
+        <input type="hidden" name="groupId" value="@Model.Id" />
+        <input type="text" name="message" id="message-input" />
+        <button type="submit">Send</button>
+
+    </form>*@
+
+
+
+
+
+
+@*//var messageInfo = document.createElement("div");
+    //messageInfo.classList.add("message_info");
+
+    //var userImg = document.createElement("div");
+    //userImg.classList.add("user_img");
+
+    //var message = document.createElement("div");
+    //message.classList.add("message");
+
+    //messageInfo.appendChild(userImg);
+    //messageInfo.appendChild(message);
+
+    //var messageText = document.createElement("div");
+    //messageText.classList.add("message_text");
+
+
+
+    //message.appendChild(messageText);
+    //messageText.appendChild(p);
+    //message.appendChild(message_date);*@
+
+
+@*@message.Timestamp.Hour:@message.Timestamp.Minute|@message.Timestamp. @message.Timestamp.Day*@
+
+@*<img src="https://ptetutorials.com/images/user-profile.png" alt="sunil">*@
+
+@*<div class="message">
+        <header>@message.Name:</header>
+        <p>@message.Text</p>
+        <footer>@message.Timestamp</footer>
+    </div>*@

@@ -78,25 +78,6 @@ namespace SignalROnlineChatServer.BLL.Services
         }
 
 
-        ////TODO
-        //[Route("Home/JoinGroup")]
-        //[HttpPost] //("{id}")
-        //public async Task<IActionResult> JoinGroupAsync(int id)
-        //{
-        //    var chatMember = new ChatUser
-        //    {
-        //        ChatId = id,
-        //        UserId = User.FindFirst(ClaimTypes.NameIdentifier).Value,
-        //        Role = UserRole.Member
-        //    };
-
-        //    _context.ChatUsers.Add(chatMember);
-
-        //    await _context.SaveChangesAsync();
-
-        //    return RedirectToAction("GetChat", "Home"); // new {id = id}
-        //}
-
 
         public ChatViewModel GetChat(int id)
         {
@@ -200,6 +181,13 @@ namespace SignalROnlineChatServer.BLL.Services
                        _context.Users.Where(x => x.Id == _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value).FirstOrDefault().UserName
             };
 
+            chat.Messages.Add(new Message
+            {
+                Text = $"Chat \"{chat.Name}\" is created",
+                Timestamp = DateTime.Now,
+                Name = "Default"
+            });
+
             chat.ChatParticipants.Add(new ChatUser
             {
                 UserId = ParticipantId
@@ -242,3 +230,24 @@ namespace SignalROnlineChatServer.BLL.Services
         }
     }
 }
+
+
+
+////TODO
+//[Route("Home/JoinGroup")]
+//[HttpPost] //("{id}")
+//public async Task<IActionResult> JoinGroupAsync(int id)
+//{
+//    var chatMember = new ChatUser
+//    {
+//        ChatId = id,
+//        UserId = User.FindFirst(ClaimTypes.NameIdentifier).Value,
+//        Role = UserRole.Member
+//    };
+
+//    _context.ChatUsers.Add(chatMember);
+
+//    await _context.SaveChangesAsync();
+
+//    return RedirectToAction("GetChat", "Home"); // new {id = id}
+//}

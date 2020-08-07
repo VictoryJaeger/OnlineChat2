@@ -1,14 +1,159 @@
 ﻿@model CreatePrivateChatViewModel
 
+@{
+    Layout = "_Layout";
+}
 
-    <form asp-controller="Home" asp-action="CreatePrivateChatAsync">
-        <button style="background: none !important; border: none; padding: 0 !important; /*optional*/ font-family: arial, sans-serif; /*input has OS specific font-family*/ color: #069; text-decoration: underline; cursor: pointer;">
-            <p>Create chat with @Model.UserName?</p>
-        </button>
+    <form class="create_pr_chat_form" asp-controller="Home" asp-action="CreatePrivateChatAsync">
         <input type="hidden" name="Id" value="@Model.UserId" />
+        <button type="submit" class="btn btn-light crt_p_chat">Create chat with @Model.UserName?</button>
+        @*<button style="background: none !important; border: none; padding: 0 !important; /*optional*/ font-family: arial, sans-serif; /*input has OS specific font-family*/ color: #069; text-decoration: underline; cursor: pointer;">
+            <p>Create chat with @Model.UserName?</p>
+        </button>*@
     </form>
+
+
+
+
+
+@*<script src="~/js/signalr.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    <script>
+
+        var connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
+
+        var _connectionId = '';
+
+        connection.on("PrivateChatCreated", function (data) {
+            console.log(data);
+
+            if (data.type == 1) {
+
+                var messageInfo = document.createElement("div");
+                messageInfo.classList.add("outgoing_message_info");
+
+                var messageText = document.createElement("div");
+                messageText.classList.add("outgoing_message_text");
+
+                var p = document.createElement("p");
+                p.appendChild(document.createTextNode(data.text));
+
+                var message_date = document.createElement("span");
+                message_date.classList.add("message_date");
+                message_date.appendChild(document.createTextNode(data.timestamp));
+
+                messageInfo.appendChild(messageText);
+                messageText.appendChild(p);
+                messageText.appendChild(message_date);
+
+                document.querySelector('.chat_body').append(messageInfo);
+
+            }
+        })
+
+        var joinGroup = function () {
+            // var url = 'Chat/JoinChatAsync/' + _connectionId + '/@Model.Name'
+            const bodyForm = new FormData();
+            bodyForm.set('connectionId', _connectionId);
+            bodyForm.append('groupName', '@Model.Name');
+
+            axios.post('Chat/JoinChatAsync', bodyForm)
+            //axios.post(url,null)
+                .then(res => {
+                    console.log("Group joined!", res);
+                })
+                .catch(err => {
+                    console.log("Failed to join this group", err);
+                })
+        }
+
+        connection.start()
+            .then(function () {
+                connection.invoke('GetConnectionId')
+                    .then(function (connectionId) {
+                        _connectionId = connectionId
+                        joinGroup();
+                    })
+            })
+            .catch(function (err) {
+                console.log(err)
+            })
+
+
+        var sendMessage = function (event) {
+            event.preventDefault();
+
+
+            var data = new FormData(event.target);
+
+            document.getElementById('message-input').value = '';
+
+
+            axios.post('Chat/SendMessageAsync', data)
+                .then(res => {
+                    console.log("Message Sent");
+                })
+                .catch(err => {
+                    console.log("Failed to send message");
+                })
+
+        }
+    </script>*@
+@*}*@
+
+
 
 
 @*asp-controller="Home" asp-action="CreatePrivateChatAsync" asp-route-id="@Model.UserId"*@
 
 @*asp-route-id="@Model.UserId"*@
+
+
+
+
+
+@*  <div class="modal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Modal title</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Modal body text goes here.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    <div class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">@Model.UserName</h5>
+                    <input type="hidden" name="Id" value="@Model.UserId" />
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form asp-controller="Home" asp-action="CreatePrivateChatAsync">
+                        <p>Create chat with this user?</p>
+                        <input type="hidden" name="Id" value="@Model.UserId" />
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary">Create</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+*@
