@@ -212,30 +212,13 @@ namespace SignalROnlineChatServer.Controllers
         [Route("CreatePrivateChatAsync")] //, Name ="createPrivateChat"
         [HttpPost]
         public async Task<IActionResult> CreatePrivateChatAsync(string Id) //[FromBody] CreatePrivateChatViewModel chatOptions
-        {
+        {          
 
-            var chat = new Chat
-            {
-                Type = ChatType.Private,
-                Name = _context.Users.Where(x => x.Id == Id).FirstOrDefault().UserName + ',' +
-                    _context.Users.Where(x => x.Id == User.FindFirst(ClaimTypes.NameIdentifier).Value).FirstOrDefault().UserName
-            };
-
-            chat.ChatParticipants.Add(new ChatUser
-            {
-                UserId = Id
-            });
-
-            chat.ChatParticipants.Add(new ChatUser
-            {
-                UserId = User.FindFirst(ClaimTypes.NameIdentifier).Value
-            });
-
-            _context.Chats.Add(chat);
-
-            await _context.SaveChangesAsync();
+            var chat = await _homeService.CreatePrivateChatAsync(Id);
 
             return RedirectToAction("GetChat", new { id = chat.Id });
+
+            //return Ok();
 
         }
 
@@ -290,3 +273,28 @@ namespace SignalROnlineChatServer.Controllers
 
 //    return View("GetPrivateChats", myChats);
 //}
+
+/*
+ CreatePrivateChat(){
+ //var chat = new Chat
+            //{
+            //    Type = ChatType.Private,
+            //    Name = _context.Users.Where(x => x.Id == Id).FirstOrDefault().UserName + ',' +
+            //        _context.Users.Where(x => x.Id == User.FindFirst(ClaimTypes.NameIdentifier).Value).FirstOrDefault().UserName
+            //};
+
+            //chat.ChatParticipants.Add(new ChatUser
+            //{
+            //    UserId = Id
+            //});
+
+            //chat.ChatParticipants.Add(new ChatUser
+            //{
+            //    UserId = User.FindFirst(ClaimTypes.NameIdentifier).Value
+            //});
+
+            //_context.Chats.Add(chat);
+
+            //await _context.SaveChangesAsync();
+}
+ */

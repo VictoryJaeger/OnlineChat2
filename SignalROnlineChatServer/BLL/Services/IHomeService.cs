@@ -1,6 +1,7 @@
 ﻿using SignalROnlineChatServer.Models;
 using SignalROnlineChatServer.Models.ModelViews;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace SignalROnlineChatServer.BLL.Services
 {
@@ -9,7 +10,7 @@ namespace SignalROnlineChatServer.BLL.Services
         bool CheckPrivateChat(string Id, string ActiveUserId);
         void CreateGroupAsync(CreateGroupModelView groupModel, string CreatorId);
         void CreateMessageAsync(int groupId, string message);
-        void CreatePrivateChatAsync(string ParticipantId, string CreatorId);
+        Task<Chat> CreatePrivateChatAsync(string ParticipantId/*, string CreatorId*/);
         IEnumerable<ChatViewModel> GetAllChats(/*string user*/);
         ChatViewModel GetChat(int id);
         User GetUser(string Id);

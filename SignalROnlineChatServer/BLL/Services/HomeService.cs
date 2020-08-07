@@ -189,14 +189,14 @@ namespace SignalROnlineChatServer.BLL.Services
 
         }
 
-        public async void CreatePrivateChatAsync(string ParticipantId, string CreatorId) //[FromBody] CreatePrivateChatViewModel chatOptions
+        public async Task<Chat> CreatePrivateChatAsync(string ParticipantId/*, string CreatorId*/) //[FromBody] CreatePrivateChatViewModel chatOptions
         {
 
             var chat = new Chat
             {
                 Type = ChatType.Private,
-                Name = _context.Users.Where(x => x.Id == CreatorId).FirstOrDefault().UserName + ',' +
-                       _context.Users.Where(x => x.Id == ParticipantId).FirstOrDefault().UserName
+                Name = _context.Users.Where(x => x.Id == ParticipantId).FirstOrDefault().UserName + ',' +
+                       _context.Users.Where(x => x.Id == _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value).FirstOrDefault().UserName
             };
 
             chat.ChatParticipants.Add(new ChatUser
@@ -206,13 +206,15 @@ namespace SignalROnlineChatServer.BLL.Services
 
             chat.ChatParticipants.Add(new ChatUser
             {
-                UserId = CreatorId
+                UserId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value
             });
 
             _context.Chats.Add(chat);
 
             await _context.SaveChangesAsync();
-            //GetChat(chat.Id);
+
+            return chat;
+
         }
 
         public User GetUser(string Id) =>
