@@ -56,27 +56,7 @@ namespace SignalROnlineChatServer.Controllers
             //return Ok();
         }
 
-        [Route("GetPrivateChats")]
-        [HttpGet]
-        public IActionResult GetPrivateChats()
-        {
-            var chats = _context.Chats
-                .Include(x => x.ChatParticipants).ThenInclude(x => x.User)
-                .Where(x => x.Type == ChatType.Private
-                    && x.ChatParticipants.Any(y => y.UserId == User.FindFirst(ClaimTypes.NameIdentifier).Value))
-                .ToList();
 
-            var chatViews = new List<ChatViewModel>();
-
-            foreach (Chat chat in chats)
-            {
-                chatViews.Add(new ChatViewModel(/*chat.Id, chat.Messages, chat.ChatParticipants, chat.Name*/));
-            }
-
-            var myChats = new UserChatsViewModel(chatViews);
-
-            return View("GetPrivateChats", myChats);
-        }
 
         [HttpGet]
         public IActionResult DisplayCreateGroupForm()
@@ -288,3 +268,25 @@ namespace SignalROnlineChatServer.Controllers
 
         }
  */
+
+//[Route("GetPrivateChats")]
+//[HttpGet]
+//public IActionResult GetPrivateChats()
+//{
+//    var chats = _context.Chats
+//        .Include(x => x.ChatParticipants).ThenInclude(x => x.User)
+//        .Where(x => x.Type == ChatType.Private
+//            && x.ChatParticipants.Any(y => y.UserId == User.FindFirst(ClaimTypes.NameIdentifier).Value))
+//        .ToList();
+
+//    var chatViews = new List<ChatViewModel>();
+
+//    foreach (Chat chat in chats)
+//    {
+//        chatViews.Add(new ChatViewModel(/*chat.Id, chat.Messages, chat.ChatParticipants, chat.Name*/));
+//    }
+
+//    var myChats = new UserChatsViewModel(chatViews);
+
+//    return View("GetPrivateChats", myChats);
+//}

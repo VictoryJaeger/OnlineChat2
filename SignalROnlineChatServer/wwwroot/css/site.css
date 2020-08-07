@@ -237,6 +237,7 @@ body {
     font-size: 15px;
     min-height: 48px;
     width: 100%;
+    outline: none;
 }
 
 
@@ -308,5 +309,31 @@ svg {
     vertical-align: inherit;
 }
 
-/*list users*/
+.default_message_info {
+    overflow: hidden;
+    margin: 26px 0 26px;
+    text-align: center;
+}
+
+.default_message_text p {
+    /* background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
+    border: medium none;
+    color: #4c4c4c;
+    font-size: 15px;
+    min-height: 48px;
+    width: 100%;*/
+    background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
+    border-radius: 3px;
+    font-size: 14px;
+    margin: 0;
+    /*color: #fff;*/
+    padding: 5px 10px 5px 12px;
+    font-weight: 600;
+}
+
+.d_message_date {
+    color: #747474;
+    display: block;
+    font-size: 12px;
+}
 

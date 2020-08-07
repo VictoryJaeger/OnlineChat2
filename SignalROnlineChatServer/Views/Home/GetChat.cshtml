@@ -41,6 +41,17 @@
                     </div>
                 </div>
             }
+            else if (message.Type == MessageType.Default)
+            {
+                <div class="default_message_info">
+                    <div class="default_message_text">
+                        <p>
+                            @message.Text
+                        </p>
+                        <span class="message_date">@message.Timestamp@*.ToString("hh:mm | d MMM")*@</span>
+                    </div>
+                </div>
+            }
             else
             {
                 <div class="outgoing_message_info">

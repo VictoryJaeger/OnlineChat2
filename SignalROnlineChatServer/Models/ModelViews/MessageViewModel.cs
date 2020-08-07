@@ -20,6 +20,7 @@ namespace SignalROnlineChatServer.Models.ModelViews
     public enum MessageType
     {
         Incoming,
-        Outgoing
+        Outgoing,
+        Default
     }
 }

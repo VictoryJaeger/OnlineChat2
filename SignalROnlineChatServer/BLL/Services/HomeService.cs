@@ -105,8 +105,21 @@ namespace SignalROnlineChatServer.BLL.Services
                 // .Include(y => y.ChatParticipants).ThenInclude(y => y.User)
                 .FirstOrDefault(x => x.Id == id);
 
-            //var chatView = new ChatViewModel(/*chat.Id, chat.Messages, chat.ChatParticipants, chat.Name*/);
+            //NEED DELETED///////////
+            if(chat.Messages.Count == 0)
+            {
+                chat.Messages.Add(new Message()
+                {
+                    ChatId = chat.Id,
+                    Timestamp = DateTime.Now,
+                    Text = chat.Name + " created",
+                    Name = "Default"
+                }) ;
+            }
+            //////////////////////////
+
             var chatView = _mapper.Map<ChatViewModel>(chat);
+
             //chatView = CheckMessagesType(chatView);
             foreach(var message in chatView.Messages)
             {
@@ -118,12 +131,11 @@ namespace SignalROnlineChatServer.BLL.Services
         public MessageType CheckMessagesType(MessageViewModel model)
         {
             var activeAccount = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.Name).Value;
-            //foreach (var message in model.Messages)
-            //{
-                if (model.Name == activeAccount)  return /*model.Type =*/ MessageType.Outgoing;
-                else return /*model.Type =*/ MessageType.Incoming;
-            //}
-            //return model;
+          
+            if (model.Name == activeAccount) return MessageType.Outgoing;
+            else if (model.Name == "Default") return MessageType.Default;
+            else return MessageType.Incoming;
+            
         }
 
 
@@ -208,7 +220,7 @@ namespace SignalROnlineChatServer.BLL.Services
                 .Where(x => x.Id == Id)
                 .FirstOrDefault();
 
-        public List<UserViewModel> GetUsers(/*string ActiveUserId*/)
+        public List<UserViewModel> GetUsers()
         {
             var users = _context.Users
                   .Where(x => x.Id != _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
