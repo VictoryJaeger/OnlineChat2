@@ -185,12 +185,14 @@ namespace SignalROnlineChatServer.Controllers
         [HttpGet("{Id}")]
         public IActionResult CheckPrivateChat(string Id)
         {
-            var chat = _context.Chats
-                .Include(x => x.ChatParticipants).ThenInclude(x => x.User)
-                .Where(x => x.Type == ChatType.Private &&
-                 x.ChatParticipants.Any(y => y.UserId == User.FindFirst(ClaimTypes.NameIdentifier).Value
-                 && x.ChatParticipants.Any(y => y.UserId == _context.Users.Where(x => x.Id == Id).FirstOrDefault().Id)))
-                .FirstOrDefault();
+            //var chat = _context.Chats
+            //    .Include(x => x.ChatParticipants).ThenInclude(x => x.User)
+            //    .Where(x => x.Type == ChatType.Private &&
+            //     x.ChatParticipants.Any(y => y.UserId == User.FindFirst(ClaimTypes.NameIdentifier).Value
+            //     && x.ChatParticipants.Any(y => y.UserId == _context.Users.Where(x => x.Id == Id).FirstOrDefault().Id)))
+            //    .FirstOrDefault();
+
+            var chat = _homeService.CheckPrivateChat(Id);
 
             if (chat == null)
             {

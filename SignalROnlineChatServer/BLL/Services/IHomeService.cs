@@ -7,7 +7,7 @@ namespace SignalROnlineChatServer.BLL.Services
 {
     public interface IHomeService
     {
-        bool CheckPrivateChat(string Id, string ActiveUserId);
+        Chat CheckPrivateChat(string Id /*string ActiveUserId*/);
         void CreateGroupAsync(CreateGroupModelView groupModel, string CreatorId);
         void CreateMessageAsync(int groupId, string message);
         Task<Chat> CreatePrivateChatAsync(string ParticipantId/*, string CreatorId*/);

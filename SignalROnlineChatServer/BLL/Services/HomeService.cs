@@ -174,18 +174,19 @@ namespace SignalROnlineChatServer.BLL.Services
         //[HttpGet]
         //public IActionResult FindUsers() => View("FindUsers", GetUsers());
 
-        public bool CheckPrivateChat(string Id, string ActiveUserId)
+        public Chat CheckPrivateChat(string Id/*, string ActiveUserId*/)
         {
             var chat = _context.Chats
                 .Include(x => x.ChatParticipants).ThenInclude(x => x.User)
                 .Where(x => x.Type == ChatType.Private &&
-                 x.ChatParticipants.Any(y => y.UserId == _context.Users.Where(x => x.Id == ActiveUserId).FirstOrDefault().Id
-                 && x.ChatParticipants.Any(y => y.UserId == _context.Users.Where(x => x.Id == Id).FirstOrDefault().Id)))
+                 x.ChatParticipants.Any(y => y.UserId == _context.Users.Where(x => 
+                        x.Id == _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value).FirstOrDefault().Id
+                        && x.ChatParticipants.Any(y => y.UserId == _context.Users.Where(x => x.Id == Id).FirstOrDefault().Id)))
                 .FirstOrDefault();
 
-            if (chat == null) return false;
+            if (chat == null) return null;
 
-            return true;
+            return chat;
 
         }
 
