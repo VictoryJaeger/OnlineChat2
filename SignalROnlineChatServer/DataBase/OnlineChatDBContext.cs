@@ -16,6 +16,7 @@ namespace SignalROnlineChatServer.DataBase
         public DbSet<Chat> Chats { get; set; }
         public DbSet<Message> Messages { get; set; }
         public DbSet<ChatUser> ChatUsers { get; set; }
+        public DbSet<Connection> Connections { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -36,6 +37,10 @@ namespace SignalROnlineChatServer.DataBase
                 .HasOne(c => c.Chat)
                 .WithMany(m => m.Messages)
                 .HasForeignKey(x => x.ChatId);
+
+            //builder.Entity<User>()
+            //    .HasMany(c => c.Connections)
+            //    .WithOne(u => u. )
 
             //builder.Entity<ChatUser>()
             //   .HasOne<Chat>()

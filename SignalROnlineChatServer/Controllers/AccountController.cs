@@ -4,24 +4,28 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
+using SignalROnlineChatServer.Hubs;
 using SignalROnlineChatServer.Models;
 using SignalROnlineChatServer.Models.ModelViews;
 //using SignalROnlineChatServer.Models.ModelViews;
 
 namespace SignalROnlineChatServer.Controllers
 {
-    [Route("/")]
-    [Route("[controller]/[action]")]
+    //[Route("/")]
+    //[Route("[controller]/[action]")]
 
     public class AccountController : Controller
     {
+        private readonly IHubContext<ChatHub> _chat;
         private UserManager<User> _userManager;
         private SignInManager<User> _signInManager;
 
-        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager)
+        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, IHubContext<ChatHub> chat)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _chat = chat;
         }
 
         //[Route("Account/DisplayLogin")]
