@@ -87,16 +87,16 @@ namespace SignalROnlineChatServer.BLL.Services
                 .FirstOrDefault(x => x.Id == id);
 
             //NEED DELETED///////////
-            if(chat.Messages.Count == 0)
-            {
-                chat.Messages.Add(new Message()
-                {
-                    ChatId = chat.Id,
-                    Timestamp = DateTime.Now,
-                    Text = chat.Name + " created",
-                    Name = "Default"
-                }) ;
-            }
+            //if(chat.Messages.Count == 0)
+            //{
+            //    chat.Messages.Add(new Message()
+            //    {
+            //        ChatId = chat.Id,
+            //        Timestamp = DateTime.Now,
+            //        Text = chat.Name + " created",
+            //        Name = "Default"
+            //    }) ;
+            //}
             //////////////////////////
 
             var chatView = _mapper.Map<ChatViewModel>(chat);
@@ -236,6 +236,13 @@ namespace SignalROnlineChatServer.BLL.Services
 
             userList.Sort((a, b) => string.Compare(a.UserName, b.UserName));
             return userList;
+        }
+
+        public ChatViewModel GetPrivateChat(string Id)
+        {
+            var chat = CheckPrivateChat(Id);
+            return _mapper.Map<ChatViewModel>(chat);
+                
         }
     }
 }

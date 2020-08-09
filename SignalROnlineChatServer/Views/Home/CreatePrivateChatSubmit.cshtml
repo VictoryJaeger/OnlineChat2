@@ -4,102 +4,116 @@
     Layout = "_Layout";
 }
 
-<form class="create_pr_chat_form" onsubmit="createPrivateChat(event)" asp-controller="Home" asp-action="CreatePrivateChatAsync">
+<form class="create_pr_chat_form" asp-controller="Home" asp-action="CreatePrivateChatAsync">
     <input type="hidden" name="Id" value="@Model.UserId" />
     <button type="submit" class="btn btn-light crt_p_chat">Create chat with @Model.UserName?</button>
 </form>
 
+@*onsubmit="notifyAboutCreating(event)"*@
 
 
+@*<script src="~/js/signalr.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
-<script src="~/js/signalr.min.js"></script>
-<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
 
-<script>
+        var connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
 
-    var connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
+        var _connectionId = '';
 
-    var _connectionId = '';
+        connection.on("PrivateChatCreated", function (data) {
 
-    connection.on("PrivateChatCreated", function (data) {
+            //debugger;
+            console.log(data);
 
-        debugger;
-        console.log(data);
+            var chatListItem = document.createElement("div");
+            chatListItem.classList.add("chat_list_item");
 
-        var chatListItem = document.createElement("div");
-        chatListItem.classList.add("chat_list_item");
+            var chatDetail = document.createElement("div");
+            chatDetail.classList.add("chat_detail");
 
-        var chatDetail = document.createElement("div");
-        chatDetail.classList.add("chat_detail");
+            var chatImg = document.createElement("div");
+            chatImg.classList.add("chat_img");
 
-        var chatImg = document.createElement("div");
-        chatImg.classList.add("chat_img");
+            var chatDetailInfo = document.createElement("div");
+            chatDetailInfo.classList.add("chat_detail_info");
 
-        var chatDetailInfo = document.createElement("div");
-        chatDetailInfo.classList.add("chat_detail_info");
+            var chatName = document.createElement("h5");
+            chatName.appendChild(document.createTextNode(data.name));
 
-        var chatName = document.createElement("h5");
-        chatName.appendChild(document.createTextNode(data.name));
+            var chatDate = document.createElement("span");
+            chatDate.classList.add("chat_date");
+            chatDate.appendChild(document.createTextNode(data.lastmessagedate));
 
-        var chatDate = document.createElement("span");
-        chatDate.classList.add("chat_date");
-        chatDate.appendChild(document.createTextNode(data.lastmessagedate));
+            var p = document.createElement("p");
+            p.appendChild(document.createTextNode(data.lastmessageauthor, ':', data.lastmessage));
 
-        var p = document.createElement("p");
-        p.appendChild(document.createTextNode(data.lastmessageauthor, ':', data.lastmessage));
+            //    var p = document.createElement("p");
+            //    p.appendChild(document.createTextNode(data.text));
 
-        //    var p = document.createElement("p");
-        //    p.appendChild(document.createTextNode(data.text));
+            //    var message_date = document.createElement("span");
+            //    message_date.classList.add("message_date");
+            //    message_date.appendChild(document.createTextNode(data.timestamp));
 
-        //    var message_date = document.createElement("span");
-        //    message_date.classList.add("message_date");
-        //    message_date.appendChild(document.createTextNode(data.timestamp));
+            //    messageInfo.appendChild(messageText);
+            //    messageText.appendChild(p);
+            //    messageText.appendChild(message_date);
 
-        //    messageInfo.appendChild(messageText);
-        //    messageText.appendChild(p);
-        //    messageText.appendChild(message_date);
+            document.querySelector('.inbox_chat').append(chat_list_item);
 
-        document.querySelector('.inbox_chat').append(chat_list_item);
+        })
 
-    })
-   
+        var createPrivateChat = function () {
+            const bodyForm = new FormData();
+            bodyForm.set('connectionId', _connectionId);
 
-    connection.start()
-        .then(function () {
-            connection.invoke('GetConnectionId')
-                .then(function (connectionId) {
-                    _connectionId = connectionId
-                    console.log("connected to hub");
-                    createPrivateChat();
+            axios.post('Home/CreatePrivateChatAsync', bodyForm)
+                //axios.post(url,null)
+                .then(res => {
+                    console.log("Private Chat created!", res);
                 })
-        })
-        .catch(function (err) {
-            console.log(err)
-        })
+                .catch(err => {
+                    console.log("Failed to create private Chat", err);
+                })
+        }
 
 
-    var createPrivateChat = function (event) {
-        if(event)
-        event.preventDefault();
-
-        //debugger;
-        var data = new FormData(event.target);
-        data.append('connectionId', _connectionId);
-
-        //document.getElementById('message-input').value = '';
-
-        axios.post('Home/CreatePrivateChatAsync', data)
-            .then(res => {
-                console.log("Private Chat created!", res);
-                //debugger;
+        connection.start()
+            .then(function () {
+                connection.invoke('GetConnectionId')
+                    .then(function (connectionId) {
+                        _connectionId = connectionId
+                        console.log("connected to hub");
+                        createPrivateChat();
+                    })
             })
-            .catch(err => {
-                console.log("Failed to create private Chat");
+            .catch(function (err) {
+                console.log(err)
             })
 
-    }
-    
-</script>
+
+        var notifyAboutCreating = function (event) {
+            //if(event)
+            event.preventDefault();
+
+            //debugger;
+            var data = new FormData(event.target);
+            //data.append('connectionId', _connectionId);
+
+            //document.getElementById('message-input').value = '';
+
+            axios.post('Home/SendNotificationAboutCreatingChat', data)
+                .then(res => {
+                    console.log("Notification delivered", res);
+                    //debugger;
+                })
+                .catch(err => {
+                    console.log("Failed to send notification");
+                })
+
+        }
+
+    </script>*@
 
 
 

@@ -183,24 +183,55 @@ namespace SignalROnlineChatServer.Controllers
 
 
         //[AllowAnonymous]
-        [Route("Home/Home/CreatePrivateChatAsync")] //, Name ="createPrivateChat"
+        [Route("Home/CreatePrivateChatAsync")] //, Name ="createPrivateChat"
         [HttpPost]
-        public async Task<IActionResult> CreatePrivateChatAsync(string Id, string connectionId) //[FromBody] CreatePrivateChatViewModel chatOptions
+        public async Task<IActionResult> CreatePrivateChatAsync(string Id/*, string connectionId*/) //[FromBody] CreatePrivateChatViewModel chatOptions
         {          
 
             var chatView = await _homeService.ReturnCreatedPrivateChatAsync(Id);
 
-            await _chat.Groups.AddToGroupAsync(connectionId, chatView.Name);
-            await _chat.Clients.Group(chatView.Name).SendAsync("PrivateChatCreated", chatView);
+            //await _chat.Groups.AddToGroupAsync(connectionId, chatView.Name);
+            //await _chat.Groups.AddToGroupAsync(Id, chatView.Name);
+            //await _chat.Clients.Group(chatView.Name).SendAsync("PrivateChatCreated", chatView);
 
             //return View("GetChat",chatView);
 
 
-            //return RedirectToAction("GetChat", new { id = chat.Id });
+            //return RedirectToAction("GetChat", new { id = chatView.Id });
 
-            return Ok();
+            return View("PrivateChatCreatingNotification", chatView);
 
         }
+
+        [Route("Home/Home/ConnectToPrivateChat")]
+        [HttpPost]
+        public async Task<IActionResult> ConnectToPrivateChat(string connectionId, string groupName)
+        {
+            await _chat.Groups.AddToGroupAsync(connectionId, groupName);
+            return Ok();
+        }
+
+        [Route("Home/Home/SendNotificationAboutCreatingChat")] //, Name ="createPrivateChat"
+        [HttpPost]
+        public async Task<IActionResult> SendNotificationAboutCreatingChat(int chatId, string chatName) //[FromBody] CreatePrivateChatViewModel chatOptions
+        {
+            var chatView = _homeService.GetChat(chatId);
+
+            //var chatView = _homeService.GetPrivateChat(Id);
+
+            await _chat.Clients.Group(chatName).SendAsync("PrivateChatCreated", chatView);
+
+            //return View("GetChat",chatView);
+
+
+            //return RedirectToAction("GetChat", new { id = chatView.Id });
+
+            return Ok();
+            //return View("GetChat",chatView);
+
+        }
+
+
 
         public User GetUser(string Id) =>
          _context.Users

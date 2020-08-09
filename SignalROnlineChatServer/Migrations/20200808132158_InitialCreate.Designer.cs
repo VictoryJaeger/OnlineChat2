@@ -10,7 +10,7 @@ using SignalROnlineChatServer.DataBase;
 namespace SignalROnlineChatServer.Migrations
 {
     [DbContext(typeof(OnlineChatDBContext))]
-    [Migration("20200721111116_InitialCreate")]
+    [Migration("20200808132158_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
