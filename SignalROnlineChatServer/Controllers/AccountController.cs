@@ -60,14 +60,22 @@ namespace SignalROnlineChatServer.Controllers
 
         [Route("Account/RegisterAsync")]
         [HttpPost]
-        public async Task<IActionResult> RegisterAsync(RegisterViewModel registerModel) 
+        public async Task<IActionResult> RegisterAsync(RegisterViewModel registerModel, string connectionId) 
         {
             if (ModelState.IsValid)
             {
                 var user = new User
                 {
-                    UserName = registerModel.Login
+                    UserName = registerModel.Login,
+                    Connections = new List<Connection>()
                 };
+
+                user.Connections.Add(new Connection
+                {
+                    ConnectionID = connectionId.ToString(),
+                    //UserAgent = Context.Request.Headers["User-Agent"],
+                    Connected = true
+                });
 
                 var result = await _userManager.CreateAsync(user, registerModel.Password);
 

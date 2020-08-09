@@ -11,5 +11,8 @@ namespace SignalROnlineChatServer.Hubs
     {
         public string GetConnectionId() =>
           Context.ConnectionId;
+
+        //public string GetUserAgent() =>
+        //    Context.Request.Headers["User-Agent"];
     }
 }

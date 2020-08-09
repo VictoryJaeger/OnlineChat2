@@ -1,11 +1,11 @@
 ﻿
 @model SignalROnlineChatServer.Models.ModelViews.RegisterViewModel
 
-@{ 
+@{
     Layout = "~/Views/Account/_AccountLayout.cshtml";
 }
 
-<form asp-action="RegisterAsync" asp-controller="Account" class="needs-validation" novalidate>
+<form onsubmit="register(event)" class="needs-validation" novalidate>
     <div class="text-center mb-4">
         @*<img class="mb-4" src="/docs/4.5/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">*@
         <h2 class="h3 mb-3 font-weight-normal">SignalR Chat</h2>
@@ -35,15 +35,67 @@
 </form>
 
 
+@*asp-action="RegisterAsync" asp-controller="Account"*@
+
+<script src="~/js/signalr.min.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
 @section scripts{
 
     <partial name="_ValidationScriptsPartial" />
-    @*<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
-        <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>*@
+
+    <script>
+
+        var connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
+
+        var _connectionId = '';
+
+        connection.start()/*.then(function () { console.log("connected to hub") })*/
+            .then(function () {
+                console.log("connected to hub")
+                connection.invoke('GetConnectionId')
+                    .then(function (connectionId) {
+                        _connectionId = connectionId
+                        //joinGroup();
+                    })
+            })
+            .catch(function (err) {
+                console.log(err)
+            })
+
+        var register = function (event) {
+            event.preventDefault();
+
+            var data = new FormData(event.target);
+
+            //var connectionId = connection.invoke('GetConnectionId').then(function (_connectionId) { connectionId = _connectionId; });
+
+            data.append('connectionId', _connectionId);
+
+            //document.getElementById('message-input').value = '';
+
+
+            axios.post('Account/RegisterAsync', data)
+                .then(res => {
+                    console.log(" Success! ");
+                })
+                .catch(err => {
+                    console.log("Failed to register");
+                })
+
+        }
+
+    </script>
+
+
+
+
 }
 
 
 
+@*<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>*@
 
 
 
