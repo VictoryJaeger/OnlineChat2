@@ -83,7 +83,10 @@ namespace SignalROnlineChatServer.Controllers
                 {
                     await _signInManager.SignInAsync(user, false);
 
-                    return RedirectToAction("Index", "Home");
+                    //RedirectToAction("GoToHomePage");
+
+                    //return RedirectToAction("Index", "Home");
+                    return Ok();
                 }
             }
             return View("Register", registerModel);

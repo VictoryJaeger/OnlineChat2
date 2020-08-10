@@ -78,7 +78,7 @@
             axios.post('Account/RegisterAsync', data)
                 .then(res => {
                     console.log(" Success! ");
-                })
+                }).then(function () { window.location = 'Home/Index' })
                 .catch(err => {
                     console.log("Failed to register");
                 })

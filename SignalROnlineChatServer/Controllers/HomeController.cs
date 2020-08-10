@@ -33,7 +33,7 @@ namespace SignalROnlineChatServer.Controllers
             _chat = chat;
         }
 
-        [Route("Index")]
+        [Route("Home/Index")]
         [HttpGet]
         public IActionResult Index()
         {
