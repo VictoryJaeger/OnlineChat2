@@ -46,7 +46,7 @@ namespace SignalROnlineChatServer.Controllers
 
         [Route("Chat/SendMessageAsync")]
         [HttpPost]
-        public async Task<IActionResult> SendMessageAsync(int groupId, string message, string groupName, [FromServices] OnlineChatDBContext context)
+        public async Task<IActionResult> SendMessageAsync(int groupId, string message, string groupName, string connectionId,[FromServices] OnlineChatDBContext context)
         {
             var newMessage = new Message
             {
@@ -65,7 +65,7 @@ namespace SignalROnlineChatServer.Controllers
             messageView.Type = _homeService.CheckMessagesType(messageView);
 
             await _chat.Clients.Group(groupName)
-                .SendAsync("ReceiveMessage", messageView);
+                .SendAsync("ReceiveMessage", messageView, connectionId);
                 //.SendAsync("ReceiveMessage", new
                 //{
                 //    Text = newMessage.Text,

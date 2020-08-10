@@ -77,11 +77,11 @@
 
     var _connectionId = '';
 
-    connection.on("ReceiveMessage", function (data) {
+    connection.on("ReceiveMessage", function (data, connectionId) {
         console.log(data);
 
         ///debugger;
-        if (data.type == 1) {
+        if (connectionId == _connectionId) {
 
             var messageInfo = document.createElement("div");
             messageInfo.classList.add("outgoing_message_info");
@@ -101,6 +101,36 @@
             messageText.appendChild(message_date);
 
             document.querySelector('.chat_body').append(messageInfo);
+        }
+
+        else {
+            var messageInfo = document.createElement("div");
+            messageInfo.classList.add("incoming_message_info");
+
+            var userImg = document.createElement("div");
+            userImg.classList.add("incoming_user_img");
+
+            var message = document.createElement("div");
+            message.classList.add("incoming_message");
+
+            var messageText = document.createElement("div");
+            messageText.classList.add("incoming_message_text");
+
+            var p = document.createElement("p");
+            p.appendChild(document.createTextNode(data.text));
+
+            var message_date = document.createElement("span");
+            message_date.classList.add("message_date");
+            message_date.appendChild(document.createTextNode(data.timestamp));
+
+            messageInfo.appendChild(userImg);
+            messageInfo.appendChild(message);
+            message.appendChild(messageText);
+            messageText.appendChild(p);
+            messageText.appendChild(message_date);
+
+            document.querySelector('.chat_body').append(messageInfo);
+            console.log("incoming message: ", data.text);
         }
     })
 
@@ -139,7 +169,7 @@
         var data = new FormData(event.target);
 
         document.getElementById('message-input').value = '';
-
+        data.append("connectionId", _connectionId);
 
         axios.post('Chat/SendMessageAsync', data)
             .then(res => {
