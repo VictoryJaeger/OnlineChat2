@@ -96,7 +96,7 @@
                 connection.invoke('GetConnectionId')
                     .then(function (connectionId) {
                         _connectionId = connectionId
-                        console.log("connected to hub");
+                        console.log("reconnected to hub");
                         connectPrivateChat();
                     })
             })
