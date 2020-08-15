@@ -12,20 +12,23 @@
 
 
 
-@*<script src="~/js/signalr.min.js"></script>
+<script src="~/js/signalr.min.js"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
 <script>
 
-    var connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
+    var connection = new signalR.HubConnectionBuilder().withUrl("/chatHub")
+        .withAutomaticReconnect()
+        .build();
 
     var _connectionId = '';
 
-    connection.on("PrivateChatCreated", function (data) {
+    connection.on("PRCC", function(data) {
 
         //debugger;
         console.log(data);
 
+        debugger;
         var chatListItem = document.createElement("div");
         chatListItem.classList.add("chat_list_item");
 
@@ -63,22 +66,22 @@
 
     })
 
-    var createPrivateChat = function () {
-        const bodyForm = new FormData();
-        bodyForm.set('connectionId', _connectionId);
+    //var createPrivateChat = function () {
+    //    const bodyForm = new FormData();
+    //    bodyForm.set('connectionId', _connectionId);
 
-        axios.post('Home/CreatePrivateChatAsync', bodyForm)
-            //axios.post(url,null)
-            .then(res => {
-                console.log("Private Chat created!", res);
-            })
-            .catch(err => {
-                console.log("Failed to create private Chat", err);
-            })
-    }
+    //    axios.post('Home/CreatePrivateChatAsync', bodyForm)
+    //        //axios.post(url,null)
+    //        .then(res => {
+    //            console.log("Private Chat created!", res);
+    //        })
+    //        .catch(err => {
+    //            console.log("Failed to create private Chat", err);
+    //        })
+    //}    
 
 
-    connection.start()
+    connection.start().catch(err => console.log(err))
         .then(function () {
             connection.invoke('GetConnectionId')
                 .then(function (connectionId) {
@@ -90,6 +93,9 @@
         .catch(function (err) {
             console.log(err)
         })
+
+    connection.serverTimeoutInMilliseconds = 1000 * 60 * 10;
+
 
 
     var notifyAboutCreating = function (event) {
@@ -108,12 +114,13 @@
                 //debugger;
             })
             .catch(err => {
-                console.log("Failed to send notification");
+                console.log("Failed to send notification", err);
             })
 
     }
 
-</script>*@
+    
+</script>
 
 
 

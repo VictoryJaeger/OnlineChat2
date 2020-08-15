@@ -71,8 +71,15 @@
 
 <script>
 
-    var connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
+    var connection = new signalR.HubConnectionBuilder().withUrl("/chatHub")
+        .withAutomaticReconnect()
+        .build();
 
+    //connection.invoke('GetConnectionId')
+    //    .then(function (connectionId) {
+    //        _connectionId = connectionId
+    //        joinGroup();
+    //    });
 
 
     var _connectionId = '';
@@ -132,6 +139,7 @@
             document.querySelector('.chat_body').append(messageInfo);
             console.log("incoming message: ", data.text);
         }
+        document.getElementById("last_message_in_chat").innerHTML = data.name + " : " + data.text;
     })
 
     var joinGroup = function () {
@@ -150,17 +158,33 @@
             })
     }
 
-    connection.start()
+
+    //connection.onclose(function () {
+    //    console.log('connecition closed');
+    //});
+
+    //connection.onclose(async () => {
+    //    debugger;
+    //    console.log("need reconnect");
+    //});
+
+    //$.signalR.connectionState
+    //Object { connecting: 0, connected: 1, reconnecting: 2, disconnected: 4 }
+
+    connection.start().catch(err => console.log(err))
         .then(function () {
             connection.invoke('GetConnectionId')
                 .then(function (connectionId) {
                     _connectionId = connectionId
+                    console.log(_connectionId);
                     joinGroup();
                 })
         })
         .catch(function (err) {
             console.log(err)
         })
+
+    connection.serverTimeoutInMilliseconds = 1000 * 60 * 10;
 
 
     var sendMessage = function (event) {

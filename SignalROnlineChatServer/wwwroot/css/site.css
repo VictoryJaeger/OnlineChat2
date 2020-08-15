@@ -94,8 +94,8 @@ body {
 }
 
 .inbox_chat {
-    height: auto;
-/*    overflow-y: scroll;*/
+    height: 600px;
+    overflow-y: scroll;
 }
 
 .chat_list_item {

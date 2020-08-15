@@ -20,9 +20,9 @@ namespace SignalROnlineChatServer.BLL.Mapper
 
             CreateMap<Message, MessageViewModel>()
                 .ForMember(x => x.Timestamp, opt => opt.MapFrom(src => src.Timestamp.ToString("hh:mm | d MMM")));
-                //.ForMember(x => x.Type, opt => opt
-                //.MapFrom(src => (src.Name == _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.Name).Value) ? MessageType.Outgoing  : MessageType.Incoming)
-             
+            //.ForMember(x => x.Type, opt => opt
+            //.MapFrom(src => (src.Name == _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.Name).Value) ? MessageType.Outgoing  : MessageType.Incoming)
+
 
             CreateMap<Chat, ChatViewModel>()
                 .ForMember(x => x.LastMessage, opt => opt.MapFrom(src => src.Messages.Last().Text))

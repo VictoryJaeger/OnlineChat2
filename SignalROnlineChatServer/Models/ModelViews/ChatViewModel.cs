@@ -19,7 +19,8 @@ namespace SignalROnlineChatServer.Models.ModelViews
         public string LastMessageDate { get; set; }
         public string LastMessage { get; set; }
         public string LastMessageAuthor { get; set; }
-        
+        public List<string> UsersConnectionId { get; set; }
+
     }
     
 }

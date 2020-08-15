@@ -202,7 +202,7 @@ namespace SignalROnlineChatServer.BLL.Services
 
             await _context.SaveChangesAsync();
 
-            return chat;
+             return chat;
 
         }
 
@@ -211,6 +211,14 @@ namespace SignalROnlineChatServer.BLL.Services
             var chat = await CreatePrivateChatAsync(ParticipantId);
 
             var chatModel = _mapper.Map<ChatViewModel>(chat);
+
+            var connectionId = _context.Users
+                .Include(x => x.Connections)
+                .Where(x => x.Id == ParticipantId).FirstOrDefault().Connections.Last().ConnectionID;
+
+            chatModel.UsersConnectionId = new List<string>();
+
+            chatModel.UsersConnectionId.Add(connectionId);
 
             return chatModel;
         }

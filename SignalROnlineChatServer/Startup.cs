@@ -53,9 +53,10 @@ namespace SignalROnlineChatServer
             })
                 .AddEntityFrameworkStores<OnlineChatDBContext>()
                 .AddDefaultTokenProviders();
-                
 
-            services.AddSignalR();
+
+            services.AddSignalR(hubOptions =>
+                hubOptions.KeepAliveInterval = System.TimeSpan.FromMinutes(1));
 
             services.ConfigureApplicationCookie(options =>
             {
