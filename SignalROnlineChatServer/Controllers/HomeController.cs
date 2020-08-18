@@ -25,8 +25,8 @@ namespace SignalROnlineChatServer.Controllers
     {
         private readonly OnlineChatDBContext _context;
         private readonly IHomeService _homeService;
-        private readonly IHubContext<ChatHub> _chat;
-        public HomeController(OnlineChatDBContext context, IHomeService service, IHubContext<ChatHub> chat) //
+        private readonly IHubContext<HomeHub> _chat;
+        public HomeController(OnlineChatDBContext context, IHomeService service, IHubContext<HomeHub> chat) //
         {
             _context = context;
             _homeService = service;
@@ -183,7 +183,7 @@ namespace SignalROnlineChatServer.Controllers
 
 
         //[AllowAnonymous]
-        [Route("Home/Home/CreatePrivateChatAsync")] //, Name ="createPrivateChat"
+        [Route("Home/CreatePrivateChatAsync")] //, Name ="createPrivateChat"
         [HttpPost]
         public async Task<IActionResult> CreatePrivateChatAsync(string Id, string connectionId) //[FromBody] CreatePrivateChatViewModel chatOptions
         {          
@@ -193,10 +193,10 @@ namespace SignalROnlineChatServer.Controllers
             //////TODO////////
             //var participantConId = chatView.ChatParticipants.Where(x => x.UserId == Id).FirstOrDefault().User.Connections.Last().ConnectionID;
 
-            await _chat.Groups.AddToGroupAsync(connectionId, chatView.Name);
-            await _chat.Groups.AddToGroupAsync(chatView.UsersConnectionId.Last(), chatView.Name);
-            // await _chat.Clients.Group(chatView.Name).SendAsync("PrivateChatCreated", chatView);
-            await _chat.Clients.Group(chatView.Name).SendAsync("PRCC", chatView);
+            //await _chat.Groups.AddToGroupAsync(connectionId, chatView.Name);
+            //await _chat.Groups.AddToGroupAsync(chatView.UsersConnectionId.Last(), chatView.Name);
+            //// await _chat.Clients.Group(chatView.Name).SendAsync("PrivateChatCreated", chatView);
+            //await _chat.Clients.Group(chatView.Name).SendAsync("PRCC", chatView);
 
             //////TODO////////
 
@@ -206,17 +206,19 @@ namespace SignalROnlineChatServer.Controllers
 
             //return RedirectToAction("GetChat", new { id = chatView.Id });
 
-            return Ok();
+            //return Ok();
 
-            //return View("PrivateChatCreatingNotification", chatView);
+            return View("PrivateChatCreatingNotification", chatView);
 
         }
 
         [Route("Home/Home/ConnectToPrivateChat")]
         [HttpPost]
-        public async Task<IActionResult> ConnectToPrivateChat(string connectionId, string groupName)
+        public async Task<IActionResult> ConnectToPrivateChat(string connectionId, string groupName, string participantConId)
         {
             await _chat.Groups.AddToGroupAsync(connectionId, groupName);
+            await _chat.Groups.AddToGroupAsync(participantConId, groupName);
+            //await _chat.Clients.All.SendAsync("PrivateChatCreatedToAll", groupName);
             return Ok();
         }
 

@@ -119,6 +119,7 @@ namespace SignalROnlineChatServer
                     name: "default",
                     pattern: "{controller=Account}/{action=DisplayLogin}/{id?}");
                 endpoints.MapHub<ChatHub>("/chatHub");
+                endpoints.MapHub<HomeHub>("/homeHub");
             });
 
             app.UseCors("CorsPolicy");

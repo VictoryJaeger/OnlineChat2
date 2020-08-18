@@ -8,6 +8,7 @@
         <form class="create_pr_chat_notify_form" onsubmit="notifyAboutCreating(event)" asp-controller="Home" asp-action="CreatePrivateChatAsync">
             <input type="hidden" name="chatId" value="@Model.Id" />
             <input type="hidden" name="chatName" value="@Model.Name" />
+            @*<input type="hidden" name="chatParticipantConnectionId" value="@Model.UsersConnectionId.Last()" />*@
             <div class="default_message_text">
                 <p>
                     Chat "@Model.Name" has been created
@@ -23,14 +24,16 @@
 
 <script>
 
-        var connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
+    var connection = new signalR.HubConnectionBuilder().withUrl("/homeHub")
+        .withAutomaticReconnect()
+        .build();
 
         var _connectionId = '';
 
         connection.on("PrivateChatCreated", function (data) {
             console.log(data);
 
-            //debugger;
+            debugger;
             var chatListItem = document.createElement("div");
             chatListItem.classList.add("chat_list_item");
 
@@ -72,21 +75,30 @@
             //    messageText.appendChild(message_date); 
 
             document.querySelector('.inbox_chat_new').append(chatListItem);
+            debugger;
             console.log("data has been displayed");
         })
+
+    connection.on("PrivateChatCreatedToAll", function (data)
+    {
+        console.log(data + 'created');
+    })
 
         var connectPrivateChat = function () {
             const bodyForm = new FormData();
             bodyForm.set('connectionId', _connectionId);
             bodyForm.append('groupName', '@Model.Name');
+            bodyForm.append('participantConId', '@Model.UsersConnectionId.Last()')
 
+            console.log('@Model.UsersConnectionId.Last()');
+            //debugger;
             axios.post('Home/ConnectToPrivateChat', bodyForm)
                 //axios.post(url,null)
                 .then(res => {
-                    console.log("Private Chat created!", res);
+                    console.log("connect to Private Chat", res);
                 })
                 .catch(err => {
-                    console.log("Failed to create private Chat", err);
+                    console.log("Failed to connect private Chat", err);
                 })
         }
 
@@ -96,7 +108,7 @@
                 connection.invoke('GetConnectionId')
                     .then(function (connectionId) {
                         _connectionId = connectionId
-                        console.log("reconnected to hub");
+                        console.log("connected to homeHub");
                         connectPrivateChat();
                     })
             })

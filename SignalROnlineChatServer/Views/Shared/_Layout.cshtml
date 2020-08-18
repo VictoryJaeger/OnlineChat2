@@ -89,11 +89,13 @@
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
 <script>
-    var connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
+    var connection = new signalR.HubConnectionBuilder().withUrl("/homeHub")
+        .withAutomaticReconnect()
+        .build();
 
     connection.start()
         .then(function () {
-                    console.log("reconnected to hub");
+            console.log("reconnected to homeHub");
         })
         .catch(function (err) {
             console.log(err)

@@ -12,12 +12,12 @@
 
 
 
-<script src="~/js/signalr.min.js"></script>
+@*<script src="~/js/signalr.min.js"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
 <script>
 
-    var connection = new signalR.HubConnectionBuilder().withUrl("/chatHub")
+    var connection = new signalR.HubConnectionBuilder().withUrl("/homeHub")
         .withAutomaticReconnect()
         .build();
 
@@ -86,7 +86,7 @@
             connection.invoke('GetConnectionId')
                 .then(function (connectionId) {
                     _connectionId = connectionId
-                    console.log("connected to hub");
+                    console.log("connected to homeHub");
                     //createPrivateChat();
                 })
         })
@@ -120,7 +120,7 @@
     }
 
     
-</script>
+</script>*@
 
 
 

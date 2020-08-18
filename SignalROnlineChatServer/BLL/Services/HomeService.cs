@@ -83,7 +83,7 @@ namespace SignalROnlineChatServer.BLL.Services
         {
             var chat = _context.Chats
                 .Include(x => x.Messages)
-                // .Include(y => y.ChatParticipants).ThenInclude(y => y.User)
+                .Include(y => y.ChatParticipants).ThenInclude(y => y.User).ThenInclude(y => y.Connections)
                 .FirstOrDefault(x => x.Id == id);
 
             //NEED DELETED///////////
