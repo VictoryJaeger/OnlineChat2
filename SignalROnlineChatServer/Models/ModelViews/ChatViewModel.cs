@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AutoMapper;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,7 +15,8 @@ namespace SignalROnlineChatServer.Models.ModelViews
         
         public int Id { get; set; }
         public  List<MessageViewModel> Messages { get; set; }
-        public  List<ChatUser> ChatParticipants { get; set; }
+        [IgnoreMap]
+        public  List<UserViewModel> ChatParticipants { get; set; }
         public string Name { get; set; }
         public string LastMessageDate { get; set; }
         public string LastMessage { get; set; }

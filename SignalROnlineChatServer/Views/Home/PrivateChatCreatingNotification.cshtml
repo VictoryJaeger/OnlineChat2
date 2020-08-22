@@ -4,82 +4,84 @@
     Layout = "_Layout";
 }
 
-    <div class="inbox_chat_new">
-        <form class="create_pr_chat_notify_form" onsubmit="notifyAboutCreating(event)" asp-controller="Home" asp-action="CreatePrivateChatAsync">
-            <input type="hidden" name="chatId" value="@Model.Id" />
-            <input type="hidden" name="chatName" value="@Model.Name" />
-            @*<input type="hidden" name="chatParticipantConnectionId" value="@Model.UsersConnectionId.Last()" />*@
-            <div class="default_message_text">
-                <p>
-                    Chat "@Model.Name" has been created
-                </p>
-            </div>
-            <button type="submit" class="btn btn-light crt_p_chat">Go to chat</button>
-        </form>
-    </div>
+<div class="inbox_chat_new">
+    <form class="create_pr_chat_notify_form" onsubmit="notifyAboutCreating(event)" asp-controller="Home" asp-action="CreatePrivateChatAsync">
+        <input type="hidden" name="chatId" value="@Model.Id" />
+        <input type="hidden" name="chatName" value="@Model.Name" />
+        @*<input type="hidden" name="chatParticipantConnectionId" value="@Model.UsersConnectionId.Last()" />*@
+        <div class="default_message_text">
+            <p>
+                Chat "@Model.Name" has been created
+            </p>
+        </div>
+        <button type="submit" class="btn btn-light crt_p_chat">Go to chat</button>
+    </form>
+</div>
 
 
 <script src="~/js/signalr.min.js"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script type="module" src="~/js/site.js"></script>
 
 <script>
 
-    var connection = new signalR.HubConnectionBuilder().withUrl("/homeHub")
+    var homeConnection = new signalR.HubConnectionBuilder().withUrl("/homeHub")
         .withAutomaticReconnect()
         .build();
 
         var _connectionId = '';
 
-        connection.on("PrivateChatCreated", function (data) {
+    homeConnection.on("PrivateChatCreated", function (data) {
             console.log(data);
 
-            debugger;
+            //debugger;
+            console.log('start display data');
             var chatListItem = document.createElement("div");
             chatListItem.classList.add("chat_list_item");
 
+            console.log('1');
             var chatDetail = document.createElement("div");
             chatDetail.classList.add("chat_detail");
 
+            console.log('2');
             var chatImg = document.createElement("div");
             chatImg.classList.add("chat_img");
 
+            console.log('3');
             var chatDetailInfo = document.createElement("div");
             chatDetailInfo.classList.add("chat_detail_info");
 
+            console.log('4');
             var chatName = document.createElement("h5");
             chatName.appendChild(document.createTextNode(data.name));
 
+            console.log('5');
             var chatDate = document.createElement("span");
             chatDate.classList.add("chat_date");
-            chatDate.appendChild(document.createTextNode(data.lastmessagedate));
+            chatDate.appendChild(document.createTextNode(data.lastMessageDate));
 
+            console.log('6');
             var p = document.createElement("p");
-            p.appendChild(document.createTextNode(data.lastmessageauthor, ':', data.lastmessage));
+            p.appendChild(document.createTextNode(data.lastMessageAuthor + ' : ' + data.lastMessage));
+
+            console.log('create tree');
 
             chatListItem.appendChild(chatDetail);
+            console.log('add chatDetail');
+
             chatDetail.appendChild(chatImg);
             chatDetail.appendChild(chatDetailInfo);
-            chatDetailInfo.appendChild(h5);
+            chatDetailInfo.appendChild(chatName);
             chatDetailInfo.appendChild(p);
-            h5.appendChild(chatDate);
-            
-            //    var p = document.createElement("p");
-            //    p.appendChild(document.createTextNode(data.text));
+            chatName.appendChild(chatDate);
 
-            //    var message_date = document.createElement("span");
-            //    message_date.classList.add("message_date");
-            //    message_date.appendChild(document.createTextNode(data.timestamp));
-
-            //    messageInfo.appendChild(messageText);
-            //    messageText.appendChild(p);
-            //    messageText.appendChild(message_date); 
-
-            document.querySelector('.inbox_chat_new').append(chatListItem);
-            debugger;
+            console.log('add new chat');
+            document.querySelector('.inbox_chat').append(chatListItem);
+            //debugger;
             console.log("data has been displayed");
         })
 
-    connection.on("PrivateChatCreatedToAll", function (data)
+    homeConnection.on("PrivateChatCreatedToAll", function (data)
     {
         console.log(data + 'created');
     })
@@ -103,9 +105,9 @@
         }
 
 
-        connection.start()
+    homeConnection.start()
             .then(function () {
-                connection.invoke('GetConnectionId')
+                homeConnection.invoke('GetConnectionId')
                     .then(function (connectionId) {
                         _connectionId = connectionId
                         console.log("connected to homeHub");

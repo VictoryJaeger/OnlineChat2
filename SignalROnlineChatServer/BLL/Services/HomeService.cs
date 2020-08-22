@@ -39,6 +39,19 @@ namespace SignalROnlineChatServer.BLL.Services
                 if (chat.Messages.Count() != 0)
                 {
                     var chatModel = _mapper.Map<ChatViewModel>(chat);
+
+                    var participants = new List<UserViewModel>();
+                    foreach (var participant in chat.ChatParticipants)
+                    {
+                        participants.Add(new UserViewModel
+                        {
+                            Id = participant.UserId,
+                            UserName = participant.User.UserName
+                        });
+                    }
+
+                    chatModel.ChatParticipants = participants;
+
                     myChats.Add(chatModel);
                 }
             }
@@ -100,6 +113,21 @@ namespace SignalROnlineChatServer.BLL.Services
             //////////////////////////
 
             var chatView = _mapper.Map<ChatViewModel>(chat);
+
+
+            //todo in automapper
+            var participants = new List<UserViewModel>();
+            foreach(var participant in chat.ChatParticipants)
+            {
+                participants.Add(new UserViewModel
+                {
+                    Id = participant.UserId,
+                    UserName = participant.User.UserName
+                });
+            }
+
+            chatView.ChatParticipants = participants;
+            //todo in automapper//
 
             //chatView = CheckMessagesType(chatView);
             foreach(var message in chatView.Messages)
@@ -219,6 +247,18 @@ namespace SignalROnlineChatServer.BLL.Services
             chatModel.UsersConnectionId = new List<string>();
 
             chatModel.UsersConnectionId.Add(connectionId);
+
+            var participants = new List<UserViewModel>();
+            foreach (var participant in chat.ChatParticipants)
+            {
+                participants.Add(new UserViewModel
+                {
+                    Id = participant.UserId,
+                    UserName = participant.User.UserName
+                });
+            }
+
+            chatModel.ChatParticipants = participants;
 
             return chatModel;
         }

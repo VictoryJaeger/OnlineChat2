@@ -30,6 +30,7 @@ namespace SignalROnlineChatServer.BLL.Mapper
                 .ForMember(x => x.LastMessageDate, opt => opt.MapFrom(src => src.Messages.Last().Timestamp.ToString("d MMM")))
                 .ForMember(x => x.Messages, opt => opt.MapFrom(src =>
                            src.Messages/*.Select(link => link.Id))*/));
+                //.ForMember(x => x.ChatParticipants, opt => opt.MapFrom(src => src.ChatParticipants));
 
             CreateMap<User, UserViewModel>()
                 .ForMember(x => x.UserName, opt => opt.MapFrom(src => src.UserName))

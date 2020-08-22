@@ -12,59 +12,68 @@
 
 
 
-@*<script src="~/js/signalr.min.js"></script>
+<script src="~/js/signalr.min.js"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="~/js/site.js"></script>
 
 <script>
 
-    var connection = new signalR.HubConnectionBuilder().withUrl("/homeHub")
+    var homeConnection = new signalR.HubConnectionBuilder().withUrl("/homeHub")
         .withAutomaticReconnect()
         .build();
 
     var _connectionId = '';
 
-    connection.on("PRCC", function(data) {
+    //homeConnection.on("PRCC", function(data) {
 
-        //debugger;
-        console.log(data);
+    //    console.log(data);
 
-        debugger;
-        var chatListItem = document.createElement("div");
-        chatListItem.classList.add("chat_list_item");
+    //    //debugger;
+    //    console.log('start display data');
+    //    var chatListItem = document.createElement("div");
+    //    chatListItem.classList.add("chat_list_item");
 
-        var chatDetail = document.createElement("div");
-        chatDetail.classList.add("chat_detail");
+    //    console.log('1');
+    //    var chatDetail = document.createElement("div");
+    //    chatDetail.classList.add("chat_detail");
 
-        var chatImg = document.createElement("div");
-        chatImg.classList.add("chat_img");
+    //    console.log('2');
+    //    var chatImg = document.createElement("div");
+    //    chatImg.classList.add("chat_img");
 
-        var chatDetailInfo = document.createElement("div");
-        chatDetailInfo.classList.add("chat_detail_info");
+    //    console.log('3');
+    //    var chatDetailInfo = document.createElement("div");
+    //    chatDetailInfo.classList.add("chat_detail_info");
 
-        var chatName = document.createElement("h5");
-        chatName.appendChild(document.createTextNode(data.name));
+    //    console.log('4');
+    //    var chatName = document.createElement("h5");
+    //    chatName.appendChild(document.createTextNode(data.name));
 
-        var chatDate = document.createElement("span");
-        chatDate.classList.add("chat_date");
-        chatDate.appendChild(document.createTextNode(data.lastmessagedate));
+    //    console.log('5');
+    //    var chatDate = document.createElement("span");
+    //    chatDate.classList.add("chat_date");
+    //    chatDate.appendChild(document.createTextNode(data.lastMessageDate));
 
-        var p = document.createElement("p");
-        p.appendChild(document.createTextNode(data.lastmessageauthor, ':', data.lastmessage));
+    //    console.log('6');
+    //    var p = document.createElement("p");
+    //    p.appendChild(document.createTextNode(data.lastMessageAuthor + ' : ' + data.lastMessage));
 
-        //    var p = document.createElement("p");
-        //    p.appendChild(document.createTextNode(data.text));
+    //    console.log('create tree');
 
-        //    var message_date = document.createElement("span");
-        //    message_date.classList.add("message_date");
-        //    message_date.appendChild(document.createTextNode(data.timestamp));
+    //    chatListItem.appendChild(chatDetail);
+    //    console.log('add chatDetail');
 
-        //    messageInfo.appendChild(messageText);
-        //    messageText.appendChild(p);
-        //    messageText.appendChild(message_date);
+    //    chatDetail.appendChild(chatImg);
+    //    chatDetail.appendChild(chatDetailInfo);
+    //    chatDetailInfo.appendChild(chatName);
+    //    chatDetailInfo.appendChild(p);
+    //    chatName.appendChild(chatDate);
 
-        document.querySelector('.inbox_chat').append(chat_list_item);
-
-    })
+    //    console.log('add new chat');
+    //    document.querySelector('.inbox_chat').append(chatListItem);
+    //    //debugger;
+    //    console.log("data has been displayed");
+    //})
 
     //var createPrivateChat = function () {
     //    const bodyForm = new FormData();
@@ -81,9 +90,9 @@
     //}    
 
 
-    connection.start().catch(err => console.log(err))
+    homeConnection.start().catch(err => console.log(err))
         .then(function () {
-            connection.invoke('GetConnectionId')
+            homeConnection.invoke('GetConnectionId')
                 .then(function (connectionId) {
                     _connectionId = connectionId
                     console.log("connected to homeHub");
@@ -94,7 +103,7 @@
             console.log(err)
         })
 
-    connection.serverTimeoutInMilliseconds = 1000 * 60 * 10;
+    homeConnection.serverTimeoutInMilliseconds = 1000 * 60 * 10;
 
 
 
@@ -120,7 +129,7 @@
     }
 
     
-</script>*@
+</script>
 
 
 

@@ -43,7 +43,7 @@
                         <div class="inbox_chat">
                             @foreach (var chat in chats)
                             {
-                                <a asp-controller="Home" asp-action="GetChat" asp-route-id="@chat.Id">
+                                <a id="get_chat_button" asp-controller="Home" asp-action="GetChat" asp-route-id="@chat.Id">
                                     <div class="chat_list_item">
                                         <div class="chat_detail">
                                             <div class="chat_img"> @*<img src="https://ptetutorials.com/images/user-profile.png" alt="sunil">*@ </div>
@@ -84,24 +84,52 @@
 
 </html>
 
+<script>
+    $(function () {
+
+        $("#get_chat_button").click(function (e) {
+            // Stop the normal navigation
+            e.preventDefault();
+
+            //Build the new URL
+            var url = $(this).attr("href");
+            var id = @Model.;
+            url = url.replace("dummyDate", date);
+
+            //Navigate to the new URL
+            window.location.href = url;
+
+        });
+    });
+</script>
 
 @*<script src="~/js/signalr.min.js"></script>
-<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="~/js/site.js"></script>
 
-<script>
-    var connection = new signalR.HubConnectionBuilder().withUrl("/homeHub")
-        .withAutomaticReconnect()
-        .build();
+    <script>
+        var homeConnection = new signalR.HubConnectionBuilder().withUrl("/homeHub")
+            .withAutomaticReconnect()
+            .build();
 
-    connection.start()
-        .then(function () {
-            console.log("reconnected to homeHub");
-        })
-        .catch(function (err) {
-            console.log(err)
-        })
+        var _connectionId = '';
 
-</script>*@
+        homeConnection.serverTimeoutInMilliseconds = 1000 * 60 * 10;
+
+        homeConnection.start().catch(err => console.log(err))
+            .then(function () {
+                homeConnection.invoke('GetConnectionId')
+                    .then(function (connectionId) {
+                        _connectionId = connectionId
+                        console.log("connected to homeHub");
+                        //createPrivateChat();
+                    })
+            })
+            .catch(function (err) {
+                console.log(err)
+            })
+
+    </script>*@
 
 
 
