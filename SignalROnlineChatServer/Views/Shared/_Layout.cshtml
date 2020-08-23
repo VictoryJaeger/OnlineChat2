@@ -84,31 +84,14 @@
 
 </html>
 
-<script>
-    $(function () {
 
-        $("#get_chat_button").click(function (e) {
-            // Stop the normal navigation
-            e.preventDefault();
 
-            //Build the new URL
-            var url = $(this).attr("href");
-            var id = @Model.;
-            url = url.replace("dummyDate", date);
-
-            //Navigate to the new URL
-            window.location.href = url;
-
-        });
-    });
-</script>
-
-@*<script src="~/js/signalr.min.js"></script>
+<script src="~/js/signalr.min.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <script src="~/js/site.js"></script>
+    @*<script src="~/js/site.js"></script>*@
 
     <script>
-        var homeConnection = new signalR.HubConnectionBuilder().withUrl("/homeHub")
+        const homeConnection = new signalR.HubConnectionBuilder().withUrl("/homeHub")
             .withAutomaticReconnect()
             .build();
 
@@ -121,7 +104,7 @@
                 homeConnection.invoke('GetConnectionId')
                     .then(function (connectionId) {
                         _connectionId = connectionId
-                        console.log("connected to homeHub");
+                        console.log("connected to homeHub with id " + _connectionId);
                         //createPrivateChat();
                     })
             })
@@ -129,7 +112,77 @@
                 console.log(err)
             })
 
-    </script>*@
+
+        homeConnection.on("PrivateChatCreated", function (data) {
+            console.log(data);
+
+            chatId = data.id;
+
+            //debugger;
+            console.log('start display data');
+            var getChatButton = document.createElement("a");
+            getChatButton.href = "get_chat_button";
+
+            var chatListItem = document.createElement("div");
+            chatListItem.classList.add("chat_list_item");
+
+            console.log('1');
+            var chatDetail = document.createElement("div");
+            chatDetail.classList.add("chat_detail");
+
+            console.log('2');
+            var chatImg = document.createElement("div");
+            chatImg.classList.add("chat_img");
+
+            console.log('3');
+            var chatDetailInfo = document.createElement("div");
+            chatDetailInfo.classList.add("chat_detail_info");
+
+            console.log('4');
+            var chatName = document.createElement("h5");
+            chatName.appendChild(document.createTextNode(data.name));
+
+            console.log('5');
+            var chatDate = document.createElement("span");
+            chatDate.classList.add("chat_date");
+            chatDate.appendChild(document.createTextNode(data.lastMessageDate));
+
+            console.log('6');
+            var p = document.createElement("p");
+            p.appendChild(document.createTextNode(data.lastMessageAuthor + ' : ' + data.lastMessage));
+
+            console.log('create tree');
+
+            getChatButton.appendChild(chatListItem);
+
+            chatListItem.appendChild(chatDetail);
+            console.log('add chatDetail');
+
+            chatDetail.appendChild(chatImg);
+            chatDetail.appendChild(chatDetailInfo);
+            chatDetailInfo.appendChild(chatName);
+            chatDetailInfo.appendChild(p);
+            chatName.appendChild(chatDate);
+
+            //    var p = document.createElement("p");
+            //    p.appendChild(document.createTextNode(data.text));
+
+            //    var message_date = document.createElement("span");
+            //    message_date.classList.add("message_date");
+            //    message_date.appendChild(document.createTextNode(data.timestamp));
+
+            //    messageInfo.appendChild(messageText);
+            //    messageText.appendChild(p);
+            //    messageText.appendChild(message_date);
+
+            console.log('add new chat');
+            document.getElementById("get_chat_button").appendChild(chatListItem);
+            //document.querySelector('.inbox_chat').append(chatListItem);
+            //debugger;
+            console.log("data has been displayed");
+        })
+
+    </script>
 
 
 

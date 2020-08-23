@@ -74,9 +74,9 @@
     var connection = new signalR.HubConnectionBuilder().withUrl("/chatHub")
         .withAutomaticReconnect()
         .build();
-    var homeConnection = new signalR.HubConnectionBuilder().withUrl("/homeHub")
-        .withAutomaticReconnect()
-        .build();
+    //var homeConnection = new signalR.HubConnectionBuilder().withUrl("/homeHub")
+    //    .withAutomaticReconnect()
+    //    .build();
 
     //connection.invoke('GetConnectionId')
     //    .then(function (connectionId) {
@@ -86,7 +86,7 @@
 
 
     var _connectionId = '';
-    var _homeConnectionId = '';
+   // var _homeConnectionId = '';
 
     connection.on("ReceiveMessage", function (data, connectionId) {
         console.log(data);
@@ -189,20 +189,20 @@
             console.log(err)
         })
 
-    homeConnection.start().catch(err => console.log(err))
-        .then(function () {
-            homeConnection.invoke('GetConnectionId')
-                .then(function (homeConnectionId) {
-                    _homeConnectionId = homeConnectionId
-                    console.log('connect to homeHub');
-                    console.log(_homeConnectionId);
-                    //joinGroup();
-                })
-        })
+    //homeConnection.start().catch(err => console.log(err))
+    //    .then(function () {
+    //        homeConnection.invoke('GetConnectionId')
+    //            .then(function (homeConnectionId) {
+    //                _homeConnectionId = homeConnectionId
+    //                console.log('connect to homeHub');
+    //                console.log(_homeConnectionId);
+    //                //joinGroup();
+    //            })
+    //    })
 
     connection.serverTimeoutInMilliseconds = 1000 * 60 * 10;
 
-    homeConnection.serverTimeoutInMilliseconds = 1000 * 60 * 10;
+    //homeConnection.serverTimeoutInMilliseconds = 1000 * 60 * 10;
 
 
     var sendMessage = function (event) {

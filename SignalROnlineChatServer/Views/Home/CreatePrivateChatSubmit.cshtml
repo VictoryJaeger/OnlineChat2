@@ -14,15 +14,15 @@
 
 <script src="~/js/signalr.min.js"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-<script src="~/js/site.js"></script>
+@*<script src="~/js/site.js"></script>*@
 
 <script>
 
-    var homeConnection = new signalR.HubConnectionBuilder().withUrl("/homeHub")
-        .withAutomaticReconnect()
-        .build();
+    //var homeConnection = new signalR.HubConnectionBuilder().withUrl("/homeHub")
+    //    .withAutomaticReconnect()
+    //    .build();
 
-    var _connectionId = '';
+    //var _connectionId = '';
 
     //homeConnection.on("PRCC", function(data) {
 
@@ -90,22 +90,22 @@
     //}    
 
 
-    homeConnection.start().catch(err => console.log(err))
-        .then(function () {
-            homeConnection.invoke('GetConnectionId')
-                .then(function (connectionId) {
-                    _connectionId = connectionId
-                    console.log("connected to homeHub");
-                    //createPrivateChat();
-                })
-        })
-        .catch(function (err) {
-            console.log(err)
-        })
+    //homeConnection.start().catch(err => console.log(err))
+    //    .then(function () {
+    //        homeConnection.invoke('GetConnectionId')
+    //            .then(function (connectionId) {
+    //                _connectionId = connectionId
+    //                console.log("connected to homeHub");
+    //                //createPrivateChat();
+    //            })
+    //    })
+    //    .catch(function (err) {
+    //        console.log(err)
+    //    })
 
-    homeConnection.serverTimeoutInMilliseconds = 1000 * 60 * 10;
+    //homeConnection.serverTimeoutInMilliseconds = 1000 * 60 * 10;
 
-
+    //var homeConnection = homeConnection;
 
     var notifyAboutCreating = function (event) {
         //if(event)
