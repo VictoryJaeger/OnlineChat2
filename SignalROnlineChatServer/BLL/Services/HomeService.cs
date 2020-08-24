@@ -60,35 +60,7 @@ namespace SignalROnlineChatServer.BLL.Services
         }
 
 
-        public async void CreateGroupAsync(CreateGroupModelView groupModel, string CreatorId)
-        {
-            var chat = new Chat
-            {
-                Name = groupModel.Name,
-                Type = ChatType.Group
-            };
-
-            chat.ChatParticipants.Add(new ChatUser
-            {
-                UserId = _context.Users
-                            .Where(x => x.Id == CreatorId).FirstOrDefault().Id,
-                Role = UserRole.Admin
-            });
-
-            foreach (var userId in groupModel.ChatParticipantsId)
-            {
-                chat.ChatParticipants.Add(new ChatUser
-                {
-                    UserId = _context.Users
-                        .Where(x => x.Id == userId).FirstOrDefault().Id,
-                    Role = UserRole.Member
-                });
-            }
-
-            _context.Chats.Add(chat);
-
-            await _context.SaveChangesAsync();
-        }
+        
 
 
 
@@ -230,8 +202,48 @@ namespace SignalROnlineChatServer.BLL.Services
 
             await _context.SaveChangesAsync();
 
-             return chat;
+            return chat;
 
+        }
+
+        public async Task<Chat> CreateGroupAsync(CreateGroupModelView groupModel)
+        {
+            var chat = new Chat
+            {
+                Name = groupModel.Name,
+                //Name = _context.Users.Where(x => x.Id == _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value).FirstOrDefault().UserName,
+                Type = ChatType.Group
+            };
+
+
+            foreach (var Id in groupModel.ChatParticipantsId.ToList())
+            {
+                chat.ChatParticipants.Add(new ChatUser
+                {
+                    UserId = _context.Users
+                        .Where(x => x.Id == Id).FirstOrDefault().Id,
+                    Role = UserRole.Member
+                });
+            }
+
+            chat.ChatParticipants.Add(new ChatUser
+            {
+                UserId = _context.Users.Where(y => y.Id == _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value).FirstOrDefault().Id
+                //Role = UserRole.Admin
+            });
+
+            chat.Messages.Add(new Message
+            {
+                Text = $"Chat \"{chat.Name}\" is created",
+                Timestamp = DateTime.Now,
+                Name = "Default"
+            });
+
+            _context.Chats.Add(chat);
+
+            await _context.SaveChangesAsync();
+
+            return chat;
         }
 
         public async Task<ChatViewModel> ReturnCreatedPrivateChatAsync(string ParticipantId)
@@ -259,6 +271,47 @@ namespace SignalROnlineChatServer.BLL.Services
             }
 
             chatModel.ChatParticipants = participants;
+
+            return chatModel;
+        }
+
+
+        public async Task<ChatViewModel> ReturnCreatedGroupAsync(CreateGroupModelView groupModel)
+        {
+            var chat = await CreateGroupAsync(groupModel);
+            var chatModel = _mapper.Map<ChatViewModel>(chat);
+
+            //foreach(var participant in chat.ChatParticipants)
+            //{
+
+            //}
+            //var chatParticipants = chat.ChatParticipants.Select(u => u.UserId).ToList();
+                        
+
+            var participants = new List<UserViewModel>();
+            foreach (var participant in chat.ChatParticipants)
+            {
+                participants.Add(new UserViewModel
+                {
+                    Id = participant.UserId,
+                    UserName = participant.User.UserName
+                });
+            }
+
+            chatModel.ChatParticipants = participants;
+
+            var adminConnectionId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            var connectionIdList = _context.Users
+                .Include(x => x.Connections)
+                .Where(x => chat.ChatParticipants
+                        .Select(u => u.UserId).ToList()
+                        .Contains(x.Id) && x.Id != adminConnectionId)//chatParticipants.Contains(x.Id))//chat.ChatParticipants.ToArray().Contains()//.Any(y => x.Id == y.User.Id))
+                .AsNoTracking()
+                .AsEnumerable()
+                .Select(c => c.Connections.Last().ConnectionID).ToList();
+
+            chatModel.UsersConnectionId = connectionIdList;
 
             return chatModel;
         }

@@ -8,7 +8,7 @@ namespace SignalROnlineChatServer.BLL.Services
     public interface IHomeService
     {
         Chat CheckPrivateChat(string Id /*string ActiveUserId*/);
-        void CreateGroupAsync(CreateGroupModelView groupModel, string CreatorId);
+        Task<Chat> CreateGroupAsync(CreateGroupModelView groupModel);
         void CreateMessageAsync(int groupId, string message);
         Task<Chat> CreatePrivateChatAsync(string ParticipantId/*, string CreatorId*/);
         IEnumerable<ChatViewModel> GetAllChats(/*string user*/);
@@ -17,6 +17,7 @@ namespace SignalROnlineChatServer.BLL.Services
         List<UserViewModel> GetUsers(/*string ActiveUserId*/);
         MessageType CheckMessagesType(MessageViewModel model);
         Task<ChatViewModel> ReturnCreatedPrivateChatAsync(string ParticipantId);
+        Task<ChatViewModel>ReturnCreatedGroupAsync(CreateGroupModelView groupModel);
         ChatViewModel GetPrivateChat(string Id);
     }
 }

@@ -65,59 +65,9 @@ namespace SignalROnlineChatServer.Controllers
             return View("CreateGroup", new CreateGroupModelView());
         }
 
-        [Route("CreateGroupAsync")]
-        [HttpPost]
-        public async Task<IActionResult> CreateGroupAsync(CreateGroupModelView groupModel)
-        {
-            var chat = new Chat
-            {
-                Name = groupModel.Name,
-                Type = ChatType.Group
-            };
+        
 
-            chat.ChatParticipants.Add(new ChatUser
-            {
-                UserId = User.FindFirst(ClaimTypes.NameIdentifier).Value,
-                Role = UserRole.Admin
-            });
-
-            foreach (var userId in groupModel.ChatParticipantsId)
-            {
-                chat.ChatParticipants.Add(new ChatUser
-                {
-                    UserId = _context.Users
-                        .Where(x => x.Id == userId).FirstOrDefault().Id,
-                    Role = UserRole.Member
-                });
-            }
-
-            _context.Chats.Add(chat);
-
-            await _context.SaveChangesAsync();
-
-            return RedirectToAction("Index");
-        }
-
-
-        //TODO
-        [Route("Home/JoinGroup")]
-        [HttpPost] //("{id}")
-        public async Task<IActionResult> JoinGroupAsync(int id)
-        {
-            var chatMember = new ChatUser
-            {
-                ChatId = id,
-                UserId = User.FindFirst(ClaimTypes.NameIdentifier).Value,
-                Role = UserRole.Member
-            };
-
-            _context.ChatUsers.Add(chatMember);
-
-            await _context.SaveChangesAsync();
-
-            return RedirectToAction("GetChat", "Home"); // new {id = id}
-        }
-
+        
 
         [Route("GetChat")]
         [HttpGet("{id}")]
@@ -178,6 +128,26 @@ namespace SignalROnlineChatServer.Controllers
             }
 
             return RedirectToAction("GetChat", new { id = chat.Id });
+
+        }
+
+
+        [Route("Home/Home/CreateGroupAsync")]
+        [HttpPost]
+        public async Task<IActionResult> CreateGroupAsync(CreateGroupModelView groupModel, string connectionId)
+        {
+            var groupChat = await _homeService.ReturnCreatedGroupAsync(groupModel);
+            await _chat.Groups.AddToGroupAsync(connectionId, groupChat.Name);
+
+            foreach(var Id in groupChat.UsersConnectionId)
+            {
+                await _chat.Groups.AddToGroupAsync(Id, groupChat.Name);
+            }
+            
+            // await _chat.Clients.Group(chatView.Name).SendAsync("PrivateChatCreated", chatView);
+            await _chat.Clients.Group(groupChat.Name).SendAsync("PrivateChatCreated", groupChat);
+
+            return Ok();
 
         }
 
@@ -259,6 +229,28 @@ namespace SignalROnlineChatServer.Controllers
 
 
 
+//TODO
+//[Route("Home/JoinGroup")]
+//[HttpPost] //("{id}")
+//public async Task<IActionResult> JoinGroupAsync(int id)
+//{
+//    var chatMember = new ChatUser
+//    {
+//        ChatId = id,
+//        UserId = User.FindFirst(ClaimTypes.NameIdentifier).Value,
+//        Role = UserRole.Member
+//    };
+
+//    _context.ChatUsers.Add(chatMember);
+
+//    await _context.SaveChangesAsync();
+
+//    return RedirectToAction("GetChat", "Home"); // new {id = id}
+//}
+
+
+
+
 /*
  public IEnumerable<UserViewModel> GetUsers()
         {
@@ -329,6 +321,37 @@ GetChat(){
             //    .FirstOrDefault(x => x.Id == id);
 
             //var chatView = new ChatViewModel();
+}
+
+
+CreateGroupAsync{
+var chat = new Chat
+            {
+                Name = groupModel.Name,
+                Type = ChatType.Group
+            };
+
+            chat.ChatParticipants.Add(new ChatUser
+            {
+                UserId = User.FindFirst(ClaimTypes.NameIdentifier).Value,
+                Role = UserRole.Admin
+            });
+
+            foreach (var userId in groupModel.ChatParticipantsId)
+            {
+                chat.ChatParticipants.Add(new ChatUser
+                {
+                    UserId = _context.Users
+                        .Where(x => x.Id == userId).FirstOrDefault().Id,
+                    Role = UserRole.Member
+                });
+            }
+
+            _context.Chats.Add(chat);
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Index");
 }
  */
 
