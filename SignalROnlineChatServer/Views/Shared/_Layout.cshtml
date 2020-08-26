@@ -91,7 +91,7 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     @*<script src="~/js/site.js"></script>*@
 
-    <script>
+<script>
         const homeConnection = new signalR.HubConnectionBuilder().withUrl("/homeHub")
             .withAutomaticReconnect()
             .build();
@@ -117,12 +117,41 @@
         homeConnection.on("PrivateChatCreated", function (data) {
             console.log(data);
 
+            //<a id="stest" href="/MyWeb/MyPageIndex/123545" />
+            //$("#stest").attr("href", "/MyWeb/MyPageIndex/" + GetParentID());
+
             chatId = data.id;
+
+            @*$('.inbox_chat').append(
+                $('.get_chat_button', {
+                    html: $('<a/>', {
+                        href: '@Url.Action("someAction", "someController")',
+                        text: 'hello world',
+                        click: function () {
+                            $.get(this.href, function (result) {
+                                alert('ajax success');
+                            });
+                            return false;
+                        }
+                    })
+                })
+            );*@
 
             //debugger;
             console.log('start display data');
+
+            location.href = '@Url.Action("GetChat", "Home")?id=' + chatId;
+
             var getChatButton = document.createElement("a");
-            getChatButton.href = "get_chat_button";
+            getChatButton.class = "get_chat_button"
+            getChatButton.id = "get_chat_button";
+            getChatButton.click = location.href;
+
+            //getChatButton.href = "@Url.Action("GetChat", "Home")";
+            //getChatButton.click = $(".message_story")load('@Url.Action("GetChat", "Home")', { id: chatId });
+            //$('#get_chat_button').load('@Url.Action("GetChat", "Home")', { id: chatId })
+            //getChatButton.href = "/Home/GetChat";
+            //$('#get_chat_button').attr("getChatButton.href", "/Home/GetChat/" + chatId);
 
             var chatListItem = document.createElement("div");
             chatListItem.classList.add("chat_list_item");
@@ -177,13 +206,16 @@
             //    messageText.appendChild(message_date);
 
             console.log('add new chat');
-            document.getElementById("get_chat_button").appendChild(chatListItem);
+            //document.getElementById("get_chat_button").appendChild(chatListItem);
+            document.getElementById(".inbox_chat").appendChild(getChatButton);
             //document.querySelector('.inbox_chat').append(chatListItem);
             //debugger;
             console.log("data has been displayed");
         })
 
-    </script>
+
+
+</script>
 
 
 

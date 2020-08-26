@@ -37,37 +37,10 @@ namespace SignalROnlineChatServer.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            //var chats = _context.Chats
-            //    .Include(x => x.ChatParticipants).ThenInclude(x => x.User)
-            //    .Where(x => x.ChatParticipants.Any(y => y.UserId == User.FindFirst(ClaimTypes.NameIdentifier).Value))
-            //    .ToList();
-
-            //var myChats = new List<ChatViewModel>();
-
-            //foreach (Chat chat in chats)
-            //{
-            //    myChats.Add(new ChatViewModel(chat.Id, chat.Messages, chat.ChatParticipants, chat.Name));
-            //}
-            //var userId = _context.Users.Where(x => x.Id == User.FindFirst(ClaimTypes.NameIdentifier).Value).FirstOrDefault().Id;
-
-            var myChats = _homeService.GetAllChats(/*userId*/);
-
-            return View("Index", myChats);
-            //return Ok();
+            var myChats = _homeService.GetAllChats();
+            return View("Index", myChats);            
         }
-
-
-
-        [HttpGet]
-        public IActionResult DisplayCreateGroupForm()
-        {
-            ViewData["Users"] = new SelectList(_homeService.GetUsers(), "Id", "UserName");
-            return View("CreateGroup", new CreateGroupModelView());
-        }
-
-        
-
-        
+                
 
         [Route("GetChat")]
         [HttpGet("{id}")]
@@ -77,8 +50,6 @@ namespace SignalROnlineChatServer.Controllers
 
             return View(chatView);
         }
-
-
 
         [Route("Home/CreateMessageAsync")]
         [HttpPost]
@@ -99,21 +70,10 @@ namespace SignalROnlineChatServer.Controllers
             return RedirectToAction("GetChat", new { id = groupId });
         }
 
-        [Route("FindUsers")]
-        [HttpGet]
-        public IActionResult FindUsers() => View("FindUsers", _homeService.GetUsers());
-
         [Route("Home/CheckPrivateChat")]
         [HttpGet("{Id}")]
         public IActionResult CheckPrivateChat(string Id)
         {
-            //var chat = _context.Chats
-            //    .Include(x => x.ChatParticipants).ThenInclude(x => x.User)
-            //    .Where(x => x.Type == ChatType.Private &&
-            //     x.ChatParticipants.Any(y => y.UserId == User.FindFirst(ClaimTypes.NameIdentifier).Value
-            //     && x.ChatParticipants.Any(y => y.UserId == _context.Users.Where(x => x.Id == Id).FirstOrDefault().Id)))
-            //    .FirstOrDefault();
-
             var chat = _homeService.CheckPrivateChat(Id);
 
             if (chat == null)
@@ -121,7 +81,7 @@ namespace SignalROnlineChatServer.Controllers
                 var chatCreateInfo = new CreatePrivateChatViewModel()
                 {
                     UserId = Id,
-                    UserName = GetUser(Id).UserName
+                    UserName = _homeService.GetUser(Id).UserName//GetUser(Id).UserName
                 };
 
                 return View("CreatePrivateChatSubmit", chatCreateInfo);
@@ -152,75 +112,31 @@ namespace SignalROnlineChatServer.Controllers
         }
 
 
-        //[AllowAnonymous]
-        [Route("Home/Home/CreatePrivateChatAsync")] //, Name ="createPrivateChat"
+        [Route("Home/Home/CreatePrivateChatAsync")] 
         [HttpPost]
         public async Task<IActionResult> CreatePrivateChatAsync(string Id, string connectionId) //[FromBody] CreatePrivateChatViewModel chatOptions
         {          
 
             var chatView = await _homeService.ReturnCreatedPrivateChatAsync(Id);
 
-            //////TODO////////
-            //var participantConId = chatView.ChatParticipants.Where(x => x.UserId == Id).FirstOrDefault().User.Connections.Last().ConnectionID;
-
             await _chat.Groups.AddToGroupAsync(connectionId, chatView.Name);
             await _chat.Groups.AddToGroupAsync(chatView.UsersConnectionId.Last(), chatView.Name);
-            // await _chat.Clients.Group(chatView.Name).SendAsync("PrivateChatCreated", chatView);
             await _chat.Clients.Group(chatView.Name).SendAsync("PrivateChatCreated", chatView);
-
-            //////TODO////////
-
-
-            //return View("GetChat",chatView);
-
-
-            //return RedirectToAction("GetChat", new { id = chatView.Id });
-
-            //return Ok();
 
             return View("PrivateChatCreatingNotification", chatView);
 
         }
 
-        [Route("Home/Home/ConnectToPrivateChat")]
-        [HttpPost]
-        public async Task<IActionResult> ConnectToPrivateChat(string connectionId, string groupName, string participantConId)
+        [HttpGet]
+        public IActionResult DisplayCreateGroupForm()
         {
-            await _chat.Groups.AddToGroupAsync(connectionId, groupName);
-            await _chat.Groups.AddToGroupAsync(participantConId, groupName);
-            //await _chat.Clients.All.SendAsync("PrivateChatCreatedToAll", groupName);
-            return Ok();
+            ViewData["Users"] = new SelectList(_homeService.GetUsers(), "Id", "UserName");
+            return View("CreateGroup", new CreateGroupModelView());
         }
 
-        [Route("Home/Home/SendNotificationAboutCreatingChat")] //, Name ="createPrivateChat"
-        [HttpPost]
-        public async Task<IActionResult> SendNotificationAboutCreatingChat(int chatId, string chatName) //[FromBody] CreatePrivateChatViewModel chatOptions
-        {
-            var chatView = _homeService.GetChat(chatId);
-
-            //await _chat.Groups.AddToGroupAsync(, chatView.Name);
-
-            //var chatView = _homeService.GetPrivateChat(Id);
-
-            await _chat.Clients.Group(chatName).SendAsync("PrivateChatCreated", chatView);
-
-            //return View("GetChat",chatView);
-
-
-            //return RedirectToAction("GetChat", new { id = chatView.Id });
-
-            return Ok();
-            //return View("GetChat",chatView);
-
-        }
-
-
-
-        public User GetUser(string Id) =>
-         _context.Users
-                .Where(x => x.Id == Id)
-                .FirstOrDefault();
-
+        [Route("FindUsers")]
+        [HttpGet]
+        public IActionResult FindUsers() => View("FindUsers", _homeService.GetUsers());
         
     }
 }
@@ -378,4 +294,39 @@ var chat = new Chat
 
 //    return Ok();
 //    //return RedirectToAction("GetChat", new { id = groupId });
+//}
+
+
+
+//PRIVATECHATCREATINGNOTIFICATION functions
+
+//[Route("Home/Home/ConnectToPrivateChat")]
+//[HttpPost]
+//public async Task<IActionResult> ConnectToPrivateChat(string connectionId, string groupName, string participantConId)
+//{
+//    await _chat.Groups.AddToGroupAsync(connectionId, groupName);
+//    await _chat.Groups.AddToGroupAsync(participantConId, groupName);
+//    return Ok();
+//}
+
+//[Route("Home/Home/SendNotificationAboutCreatingChat")] //, Name ="createPrivateChat"
+//[HttpPost]
+//public async Task<IActionResult> SendNotificationAboutCreatingChat(int chatId, string chatName) //[FromBody] CreatePrivateChatViewModel chatOptions
+//{
+//    var chatView = _homeService.GetChat(chatId);
+
+//    //await _chat.Groups.AddToGroupAsync(, chatView.Name);
+
+//    //var chatView = _homeService.GetPrivateChat(Id);
+
+//    await _chat.Clients.Group(chatName).SendAsync("PrivateChatCreated", chatView);
+
+//    //return View("GetChat",chatView);
+
+
+//    //return RedirectToAction("GetChat", new { id = chatView.Id });
+
+//    return Ok();
+//    //return View("GetChat",chatView);
+
 //}
