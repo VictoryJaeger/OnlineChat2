@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoMapper.Configuration.Annotations;
 using Microsoft.AspNetCore.Http;
 using SignalROnlineChatServer.Models;
 using SignalROnlineChatServer.Models.ModelViews;
@@ -6,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 
 namespace SignalROnlineChatServer.BLL.Mapper
@@ -18,25 +20,35 @@ namespace SignalROnlineChatServer.BLL.Mapper
         {
             //_httpContextAccessor = httpContextAccessor;
 
+            CreateMap<ICollection<ChatUser>, List<UserViewModel>>();
+
+
             CreateMap<Message, MessageViewModel>()
                 .ForMember(x => x.Timestamp, opt => opt.MapFrom(src => src.Timestamp.ToString("hh:mm | d MMM")));
             //.ForMember(x => x.Type, opt => opt
             //.MapFrom(src => (src.Name == _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.Name).Value) ? MessageType.Outgoing  : MessageType.Incoming)
 
+            CreateMap<ChatUser, UserViewModel>()               
+               .ForMember(x => x.Id, opt => opt.MapFrom(src => src.UserId))
+               .ForMember(x => x.UserName, opt => opt.MapFrom(src => src.User.UserName));
+            CreateMap<ICollection<ChatUser>, List<UserViewModel>>();
 
             CreateMap<Chat, ChatViewModel>()
                 .ForMember(x => x.LastMessage, opt => opt.MapFrom(src => src.Messages.Last().Text))
                 .ForMember(x => x.LastMessageAuthor, opt => opt.MapFrom(src => src.Messages.Last().Name))
                 .ForMember(x => x.LastMessageDate, opt => opt.MapFrom(src => src.Messages.Last().Timestamp.ToString("d MMM")))
-                .ForMember(x => x.Messages, opt => opt.MapFrom(src =>
-                           src.Messages/*.Select(link => link.Id))*/));
-                //.ForMember(x => x.ChatParticipants, opt => opt.MapFrom(src => src.ChatParticipants));
-
-            CreateMap<User, UserViewModel>()
-                .ForMember(x => x.UserName, opt => opt.MapFrom(src => src.UserName))
-                .ForMember(x => x.Id, opt => opt.MapFrom(src => src.Id));
+                .ForMember(x => x.Messages, opt => opt.MapFrom(src => src.Messages))
+                .ForMember(x => x.ChatParticipants, opt => opt.MapFrom(src => src.ChatParticipants.Select(x => x.User).ToList()));
 
             CreateMap<IQueryable<User>, List<UserViewModel>>();
+
+            CreateMap<User, UserViewModel>();
+
+            //CreateMap<User, UserViewModel>()
+            //    .ForMember(x => x.UserName, opt => opt.MapFrom(src => src.UserName))
+            //    .ForMember(x => x.Id, opt => opt.MapFrom(src => src.Id));
+
+            
         }
     }
 

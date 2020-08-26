@@ -40,27 +40,26 @@ namespace SignalROnlineChatServer.BLL.Services
                 {
                     var chatModel = _mapper.Map<ChatViewModel>(chat);
 
-                    var participants = new List<UserViewModel>();
-                    foreach (var participant in chat.ChatParticipants)
-                    {
-                        participants.Add(new UserViewModel
-                        {
-                            Id = participant.UserId,
-                            UserName = participant.User.UserName
-                        });
-                    }
+                    //var participants = new List<UserViewModel>();
+                    //foreach (var participant in chat.ChatParticipants)
+                    //{
+                    //    //participants.Add(new UserViewModel
+                    //    //{
+                    //    //    Id = participant.UserId,
+                    //    //    UserName = participant.User.UserName
+                    //    //});
+                    //    var userView = _mapper.Map<UserViewModel>(participant);
+                    //    participants.Add(userView);
+                    //}
 
-                    chatModel.ChatParticipants = participants;
+                    //chatModel.ChatParticipants = participants;
 
                     myChats.Add(chatModel);
                 }
             }
 
             return myChats;
-        }
-
-
-        
+        }      
 
 
 
@@ -71,34 +70,21 @@ namespace SignalROnlineChatServer.BLL.Services
                 .Include(y => y.ChatParticipants).ThenInclude(y => y.User).ThenInclude(y => y.Connections)
                 .FirstOrDefault(x => x.Id == id);
 
-            //NEED DELETED///////////
-            //if(chat.Messages.Count == 0)
-            //{
-            //    chat.Messages.Add(new Message()
-            //    {
-            //        ChatId = chat.Id,
-            //        Timestamp = DateTime.Now,
-            //        Text = chat.Name + " created",
-            //        Name = "Default"
-            //    }) ;
-            //}
-            //////////////////////////
-
             var chatView = _mapper.Map<ChatViewModel>(chat);
 
 
             //todo in automapper
-            var participants = new List<UserViewModel>();
-            foreach(var participant in chat.ChatParticipants)
-            {
-                participants.Add(new UserViewModel
-                {
-                    Id = participant.UserId,
-                    UserName = participant.User.UserName
-                });
-            }
+            //var participants = new List<UserViewModel>();
+            //foreach(var participant in chat.ChatParticipants)
+            //{
+            //    participants.Add(new UserViewModel
+            //    {
+            //        Id = participant.UserId,
+            //        UserName = participant.User.UserName
+            //    });
+            //}
 
-            chatView.ChatParticipants = participants;
+            //chatView.ChatParticipants = participants;
             //todo in automapper//
 
             //chatView = CheckMessagesType(chatView);
@@ -260,17 +246,17 @@ namespace SignalROnlineChatServer.BLL.Services
 
             chatModel.UsersConnectionId.Add(connectionId);
 
-            var participants = new List<UserViewModel>();
-            foreach (var participant in chat.ChatParticipants)
-            {
-                participants.Add(new UserViewModel
-                {
-                    Id = participant.UserId,
-                    UserName = participant.User.UserName
-                });
-            }
+            //var participants = new List<UserViewModel>();
+            //foreach (var participant in chat.ChatParticipants)
+            //{
+            //    participants.Add(new UserViewModel
+            //    {
+            //        Id = participant.UserId,
+            //        UserName = participant.User.UserName
+            //    });
+            //}
 
-            chatModel.ChatParticipants = participants;
+            //chatModel.ChatParticipants = participants;
 
             return chatModel;
         }
@@ -288,17 +274,17 @@ namespace SignalROnlineChatServer.BLL.Services
             //var chatParticipants = chat.ChatParticipants.Select(u => u.UserId).ToList();
                         
 
-            var participants = new List<UserViewModel>();
-            foreach (var participant in chat.ChatParticipants)
-            {
-                participants.Add(new UserViewModel
-                {
-                    Id = participant.UserId,
-                    UserName = participant.User.UserName
-                });
-            }
+            //var participants = new List<UserViewModel>();
+            //foreach (var participant in chat.ChatParticipants)
+            //{
+            //    participants.Add(new UserViewModel
+            //    {
+            //        Id = participant.UserId,
+            //        UserName = participant.User.UserName
+            //    });
+            //}
 
-            chatModel.ChatParticipants = participants;
+            //chatModel.ChatParticipants = participants;
 
             var adminConnectionId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
@@ -324,16 +310,15 @@ namespace SignalROnlineChatServer.BLL.Services
         public List<UserViewModel> GetUsers()
         {
             var users = _context.Users
-                  .Where(x => x.Id != _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
-            var userList = new List<UserViewModel>();
+                  .Where(x => x.Id != _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value).ToList();
 
-            //userList = _mapper.Map<List<UserViewModel>>(users);
+            var userList = _mapper.Map<List<UserViewModel>>(users);
 
-            foreach (User user in users)
-            {
-                var userModel = _mapper.Map<UserViewModel>(user);
-                userList.Add(userModel);
-            }
+            //foreach (User user in users)
+            //{
+            //    var userModel = _mapper.Map<UserViewModel>(user);
+            //    userList.Add(userModel);
+            //}
 
             userList.Sort((a, b) => string.Compare(a.UserName, b.UserName));
             return userList;
@@ -342,8 +327,7 @@ namespace SignalROnlineChatServer.BLL.Services
         public ChatViewModel GetPrivateChat(string Id)
         {
             var chat = CheckPrivateChat(Id);
-            return _mapper.Map<ChatViewModel>(chat);
-                
+            return _mapper.Map<ChatViewModel>(chat);                
         }
     }
 }
