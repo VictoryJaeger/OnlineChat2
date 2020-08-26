@@ -15,7 +15,6 @@ namespace SignalROnlineChatServer.Models.ModelViews
         
         public int Id { get; set; }
         public  List<MessageViewModel> Messages { get; set; }
-        //[IgnoreMap]
         public  List<UserViewModel> ChatParticipants { get; set; }
         public string Name { get; set; }
         public string LastMessageDate { get; set; }

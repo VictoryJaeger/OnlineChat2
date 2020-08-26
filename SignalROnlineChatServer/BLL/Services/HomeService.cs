@@ -39,21 +39,6 @@ namespace SignalROnlineChatServer.BLL.Services
                 if (chat.Messages.Count() != 0)
                 {
                     var chatModel = _mapper.Map<ChatViewModel>(chat);
-
-                    //var participants = new List<UserViewModel>();
-                    //foreach (var participant in chat.ChatParticipants)
-                    //{
-                    //    //participants.Add(new UserViewModel
-                    //    //{
-                    //    //    Id = participant.UserId,
-                    //    //    UserName = participant.User.UserName
-                    //    //});
-                    //    var userView = _mapper.Map<UserViewModel>(participant);
-                    //    participants.Add(userView);
-                    //}
-
-                    //chatModel.ChatParticipants = participants;
-
                     myChats.Add(chatModel);
                 }
             }
@@ -72,22 +57,6 @@ namespace SignalROnlineChatServer.BLL.Services
 
             var chatView = _mapper.Map<ChatViewModel>(chat);
 
-
-            //todo in automapper
-            //var participants = new List<UserViewModel>();
-            //foreach(var participant in chat.ChatParticipants)
-            //{
-            //    participants.Add(new UserViewModel
-            //    {
-            //        Id = participant.UserId,
-            //        UserName = participant.User.UserName
-            //    });
-            //}
-
-            //chatView.ChatParticipants = participants;
-            //todo in automapper//
-
-            //chatView = CheckMessagesType(chatView);
             foreach(var message in chatView.Messages)
             {
                 message.Type = CheckMessagesType(message);
@@ -137,11 +106,8 @@ namespace SignalROnlineChatServer.BLL.Services
             //GetChat(groupId);
         }
 
-        //[Route("FindUsers")]
-        //[HttpGet]
-        //public IActionResult FindUsers() => View("FindUsers", GetUsers());
 
-        public Chat CheckPrivateChat(string Id/*, string ActiveUserId*/)
+        public Chat CheckPrivateChat(string Id)
         {
             var chat = _context.Chats
                 .Include(x => x.ChatParticipants).ThenInclude(x => x.User)
@@ -157,7 +123,7 @@ namespace SignalROnlineChatServer.BLL.Services
 
         }
 
-        public async Task<Chat> CreatePrivateChatAsync(string ParticipantId/*, string CreatorId*/) //[FromBody] CreatePrivateChatViewModel chatOptions
+        public async Task<Chat> CreatePrivateChatAsync(string ParticipantId)
         {
 
             var chat = new Chat
@@ -196,8 +162,7 @@ namespace SignalROnlineChatServer.BLL.Services
         {
             var chat = new Chat
             {
-                Name = groupModel.Name,
-                //Name = _context.Users.Where(x => x.Id == _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value).FirstOrDefault().UserName,
+                Name = groupModel.Name,                
                 Type = ChatType.Group
             };
 
@@ -215,7 +180,6 @@ namespace SignalROnlineChatServer.BLL.Services
             chat.ChatParticipants.Add(new ChatUser
             {
                 UserId = _context.Users.Where(y => y.Id == _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value).FirstOrDefault().Id
-                //Role = UserRole.Admin
             });
 
             chat.Messages.Add(new Message
@@ -246,18 +210,6 @@ namespace SignalROnlineChatServer.BLL.Services
 
             chatModel.UsersConnectionId.Add(connectionId);
 
-            //var participants = new List<UserViewModel>();
-            //foreach (var participant in chat.ChatParticipants)
-            //{
-            //    participants.Add(new UserViewModel
-            //    {
-            //        Id = participant.UserId,
-            //        UserName = participant.User.UserName
-            //    });
-            //}
-
-            //chatModel.ChatParticipants = participants;
-
             return chatModel;
         }
 
@@ -267,32 +219,13 @@ namespace SignalROnlineChatServer.BLL.Services
             var chat = await CreateGroupAsync(groupModel);
             var chatModel = _mapper.Map<ChatViewModel>(chat);
 
-            //foreach(var participant in chat.ChatParticipants)
-            //{
-
-            //}
-            //var chatParticipants = chat.ChatParticipants.Select(u => u.UserId).ToList();
-                        
-
-            //var participants = new List<UserViewModel>();
-            //foreach (var participant in chat.ChatParticipants)
-            //{
-            //    participants.Add(new UserViewModel
-            //    {
-            //        Id = participant.UserId,
-            //        UserName = participant.User.UserName
-            //    });
-            //}
-
-            //chatModel.ChatParticipants = participants;
-
             var adminConnectionId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
             var connectionIdList = _context.Users
                 .Include(x => x.Connections)
                 .Where(x => chat.ChatParticipants
                         .Select(u => u.UserId).ToList()
-                        .Contains(x.Id) && x.Id != adminConnectionId)//chatParticipants.Contains(x.Id))//chat.ChatParticipants.ToArray().Contains()//.Any(y => x.Id == y.User.Id))
+                        .Contains(x.Id) && x.Id != adminConnectionId)
                 .AsNoTracking()
                 .AsEnumerable()
                 .Select(c => c.Connections.Last().ConnectionID).ToList();
@@ -313,12 +246,6 @@ namespace SignalROnlineChatServer.BLL.Services
                   .Where(x => x.Id != _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value).ToList();
 
             var userList = _mapper.Map<List<UserViewModel>>(users);
-
-            //foreach (User user in users)
-            //{
-            //    var userModel = _mapper.Map<UserViewModel>(user);
-            //    userList.Add(userModel);
-            //}
 
             userList.Sort((a, b) => string.Compare(a.UserName, b.UserName));
             return userList;

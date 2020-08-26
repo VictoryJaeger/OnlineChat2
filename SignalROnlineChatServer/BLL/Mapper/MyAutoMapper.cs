@@ -14,20 +14,14 @@ namespace SignalROnlineChatServer.BLL.Mapper
 {
     public class MyAutoMapper: Profile
     {
-        //private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public MyAutoMapper(/*IHttpContextAccessor httpContextAccessor*/)
+        public MyAutoMapper()
         {
-            //_httpContextAccessor = httpContextAccessor;
-
             CreateMap<ICollection<ChatUser>, List<UserViewModel>>();
-
 
             CreateMap<Message, MessageViewModel>()
                 .ForMember(x => x.Timestamp, opt => opt.MapFrom(src => src.Timestamp.ToString("hh:mm | d MMM")));
-            //.ForMember(x => x.Type, opt => opt
-            //.MapFrom(src => (src.Name == _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.Name).Value) ? MessageType.Outgoing  : MessageType.Incoming)
-
+           
             CreateMap<ChatUser, UserViewModel>()               
                .ForMember(x => x.Id, opt => opt.MapFrom(src => src.UserId))
                .ForMember(x => x.UserName, opt => opt.MapFrom(src => src.User.UserName));
@@ -43,12 +37,7 @@ namespace SignalROnlineChatServer.BLL.Mapper
             CreateMap<IQueryable<User>, List<UserViewModel>>();
 
             CreateMap<User, UserViewModel>();
-
-            //CreateMap<User, UserViewModel>()
-            //    .ForMember(x => x.UserName, opt => opt.MapFrom(src => src.UserName))
-            //    .ForMember(x => x.Id, opt => opt.MapFrom(src => src.Id));
-
-            
+                        
         }
     }
 
