@@ -1,45 +1,70 @@
 ﻿@model CreateGroupModelView
 
-@{ 
+
+@{
     Layout = "_Layout";
 }
-    
 
-    <form onsubmit="notifyAboutCreatingGroup(event)" asp-controller="Home" asp-action="CreateGroupAsync">
-        Name:  <input asp-for="Name" /> <br />
+@* asp-controller="Home" asp-action="CreateGroupAsync" *@
+
+    <form onsubmit="notifyAboutCreatingGroup(event)" style="text-align:center">
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="inputGroup-sizing-default">Name</span>
+            </div>
+            <input required asp-for="Name" type="text" class="form-control" aria-label="Name of group" aria-describedby="inputGroup-sizing-default">
+        </div>
         <p>
             <div class="form-group">
-                <h3>Select chat participants (press Shift for multiple choise)</h3>
-                <select asp-for="ChatParticipantsId" asp-items="ViewBag.Users"></select>
+                <h3>Select chat participants (press Shift/Ctrl for multiple choise)</h3>
+                @*<select asp-for="ChatParticipantsId" asp-items="ViewBag.Users"></select>*@
+                @Html.ListBoxFor(m => m.ChatParticipantsId, (MultiSelectList)ViewBag.Users, new { @class = "form-control" })
             </div>
+
         </p>
-        <input type="submit" />
+        <button type="submit" class="btn btn-light center-block">Create group</button>
+        @*<input type="submit" />*@
     </form>
 
-    <script src="~/js/signalr.min.js"></script>
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="~/js/signalr.min.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+@*<script src="~/lib/jquery/dist/jquery.min.js"></script>*@
 
-    <script>
-        var notifyAboutCreatingGroup = function (event) {
-            //if(event)
-            event.preventDefault();
 
-            //debugger;
-            var data = new FormData(event.target);
-            data.append('connectionId', _connectionId);
 
-            //document.getElementById('message-input').value = '';
+<script>
+    var notifyAboutCreatingGroup = function (event) {
+        //if(event)
+        event.preventDefault();
 
-            axios.post('Home/CreateGroupAsync', data)
-                .then(res => {
-                    console.log("Notification delivered", res);
-                    //debugger;
-                })
-                .catch(err => {
-                    console.log("Failed to send notification", err);
-                })
+        //debugger;
+        var data = new FormData(event.target);
+        data.append('connectionId', _connectionId);
 
-        }
+        //document.getElementById('message-input').value = '';
 
-    </script>
+        axios.post('Home/CreateGroupAsync', data)
+            .then(res => {
+                console.log("Notification delivered", res);
+                //debugger;
+            })
+            .catch(err => {
+                console.log("Failed to send notification", err);
+            })
 
+    }
+
+</script>
+
+
+
+
+@*
+        <link rel="stylesheet" href="//cdn.syncfusion.com/17.1.0.38/js/web/flat-azure/ej.web.all.min.css" />
+    <!-- Essential Studio for JavaScript  script references -->
+    <script src="//cdn.syncfusion.com/js/assets/external/jsrender.min.js"></script>
+    <script src="//cdn.syncfusion.com/17.1.0.38/js/web/ej.web.all.min.js"></script>
+
+        <ej-list-box id="listboxsample" datasource="ViewBag.Users" show-checkbox="true">
+            <e-list-box-fields id="empid" text="text" />
+        </ej-list-box> *@
