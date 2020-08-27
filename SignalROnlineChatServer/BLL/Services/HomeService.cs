@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Security.Claims;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 
 namespace SignalROnlineChatServer.BLL.Services
@@ -202,13 +203,28 @@ namespace SignalROnlineChatServer.BLL.Services
 
             var chatModel = _mapper.Map<ChatViewModel>(chat);
 
-            var connectionId = _context.Users
+            //var adminConnectionId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            //var adminConnectionId = _context.Users
+            //    .Include(x => x.Connections)
+            //    .Where(x => x.Id == _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value)
+            //    .Select(x => x.Connections.Last().ConnectionID).FirstOrDefault();
+
+            var adminConnectionId = _context.Users
                 .Include(x => x.Connections)
-                .Where(x => x.Id == ParticipantId).FirstOrDefault().Connections.Last().ConnectionID;
+                .Where(x => x.Id == _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value)
+                .FirstOrDefault().Connections.Last().ConnectionID;
 
-            chatModel.UsersConnectionId = new List<string>();
+            //var connectionIdList = GetUserConnectionIdList(chat.Id, adminConnectionId);
 
-            chatModel.UsersConnectionId.Add(connectionId);
+            chatModel.UsersConnectionId = GetUserConnectionIdList(chat.Id, adminConnectionId);
+
+            //var connectionId = _context.Users
+            //    .Include(x => x.Connections)
+            //    .Where(x => x.Id == ParticipantId).FirstOrDefault().Connections.Last().ConnectionID;
+
+            //chatModel.UsersConnectionId = new List<string>();
+
+            //chatModel.UsersConnectionId.Add(connectionId);
 
             return chatModel;
         }
@@ -219,20 +235,62 @@ namespace SignalROnlineChatServer.BLL.Services
             var chat = await CreateGroupAsync(groupModel);
             var chatModel = _mapper.Map<ChatViewModel>(chat);
 
-            var adminConnectionId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-
-            var connectionIdList = _context.Users
+            //var adminConnectionId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var adminConnectionId = _context.Users
                 .Include(x => x.Connections)
-                .Where(x => chat.ChatParticipants
-                        .Select(u => u.UserId).ToList()
-                        .Contains(x.Id) && x.Id != adminConnectionId)
-                .AsNoTracking()
-                .AsEnumerable()
-                .Select(c => c.Connections.Last().ConnectionID).ToList();
+                .Where(x => x.Id == _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value)
+                .FirstOrDefault().Connections.Last().ConnectionID;
+                //.Select(x => x.Connections.Last().ConnectionID).FirstOrDefault();
 
-            chatModel.UsersConnectionId = connectionIdList;
+
+            //var connectionIdList = GetUserConnectionIdList(chat.Id, adminConnectionId);
+
+            chatModel.UsersConnectionId = GetUserConnectionIdList(chat.Id, adminConnectionId); //connectionIdList;
+
+            //var connectionIdList = _context.Users
+            //    .Include(x => x.Connections)
+            //    .Where(x => chat.ChatParticipants
+            //            .Select(u => u.UserId).ToList()
+            //            .Contains(x.Id) && x.Id != adminConnectionId)
+            //    .AsNoTracking()
+            //    .AsEnumerable()
+            //    .Select(c => c.Connections.Last().ConnectionID).ToList();
+
+
 
             return chatModel;
+        }
+
+        public List<string> GetUserConnectionIdList(int chatId, string connectionId)
+        {
+            var chat = _context.Chats
+                .Include(x => x.ChatParticipants).ThenInclude(x => x.User).ThenInclude(x => x.Connections)
+                .Where(x => x.Id == chatId)
+                .FirstOrDefault();
+
+            var connectionIdList = _context.Users
+               .Include(x => x.Connections)
+               .Where(x => chat.ChatParticipants
+                       .Select(u => u.UserId).ToList()
+                       .Contains(x.Id) /*&& x.Id != connectionId*/)
+                .AsNoTracking()
+                .AsEnumerable()
+                .Select(c => c.Connections.Last().ConnectionID).Where(c => c != connectionId).ToList();
+
+            //var connectionIdList = _context.Chats
+            //    //.Users
+            //   .Where(x => x.Id == chatId).Include(x => x.ChatParticipants)
+            //   .ThenInclude(x => x.User)
+            //   //.ThenInclude(x => x.Connections)
+            //   .Where(u => u.ChatParticipants
+            //           .Select(u => u.UserId).ToList()
+            //           .Contains(x.Id) && x.Id != adminConnectionId)
+            //   .AsNoTracking()
+            //   .AsEnumerable()
+            //   .Select(c => c.Connections.Last().ConnectionID).ToList();
+
+            //return connectionIdList;
+            return connectionIdList;
         }
 
         public User GetUser(string Id) =>

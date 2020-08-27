@@ -44,12 +44,12 @@
                             @foreach (var chat in chats)
                             {
                                 <a id="get_chat_button" asp-controller="Home" asp-action="GetChat" asp-route-id="@chat.Id">
-                                    <div class="chat_list_item">
+                                    <div id="@chat.Id" class="chat_list_item">
                                         <div class="chat_detail">
                                             <div class="chat_img"> @*<img src="https://ptetutorials.com/images/user-profile.png" alt="sunil">*@ </div>
                                             <div class="chat_detail_info">
                                                 <h5>@chat.Name<span class="chat_date">@chat.LastMessageDate</span></h5>
-                                                <p id="last_message_in_chat">
+                                                <p class="lastMessage" id="last_message_in_chat">
                                                     @*@chat.Messages.Last().Name : @chat.LastMessage*@
                                                     @chat.LastMessageAuthor : @chat.LastMessage
                                                 </p>
@@ -140,12 +140,12 @@
             //debugger;
             console.log('start display data');
 
-            location.href = '@Url.Action("GetChat", "Home")?id=' + chatId;
+            //location.href = '@Url.Action("GetChat", "Home")?id=' + chatId;
 
             var getChatButton = document.createElement("a");
-            getChatButton.class = "get_chat_button"
+            //getChatButton.class = "get_chat_button"
             getChatButton.id = "get_chat_button";
-            getChatButton.click = location.href;
+            //getChatButton.click = location.href;
 
             //getChatButton.href = "@Url.Action("GetChat", "Home")";
             //getChatButton.click = $(".message_story")load('@Url.Action("GetChat", "Home")', { id: chatId });
@@ -206,12 +206,21 @@
             //    messageText.appendChild(message_date);
 
             console.log('add new chat');
-            //document.getElementById("get_chat_button").appendChild(chatListItem);
-            document.getElementById(".inbox_chat").appendChild(getChatButton);
+            document.getElementById("get_chat_button").appendChild(chatListItem);
+            //document.getElementById(".inbox_chat").appendChild(getChatButton);
             //document.querySelector('.inbox_chat').append(chatListItem);
             //debugger;
             console.log("data has been displayed");
         })
+
+    homeConnection.on("UpdateLastMessage", function (data, groupId) {
+            //alert(data.text);
+            var currentChat = document.getElementById(groupId);
+            var lastMessage = currentChat.querySelector(".lastMessage");
+            lastMessage.innerHTML = data.name + " : " + data.text;
+            //currentChat.getElementById("last_message_in_chat").innerHTML = data.name + " : " + data.text;
+            //$(".last_message_in_chat").html(data.name + " : " + data.text);
+        });
 
 
 

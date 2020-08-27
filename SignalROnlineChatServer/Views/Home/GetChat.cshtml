@@ -88,7 +88,7 @@
     var _connectionId = '';
    // var _homeConnectionId = '';
 
-    connection.on("ReceiveMessage", function (data, connectionId) {
+    connection.on("ReceiveMessage", function (data, connectionId, groupId) {
         console.log(data);
 
         ///debugger;
@@ -143,8 +143,14 @@
             document.querySelector('.chat_body').append(messageInfo);
             console.log("incoming message: ", data.text);
         }
-        document.getElementById("last_message_in_chat").innerHTML = data.name + " : " + data.text;
+
+        //var currentChat = document.getElementById(groupId);
+        //var lastMessage = currentChat.querySelector(".lastMessage");
+        //lastMessage.innerHTML = data.name + " : " + data.text;
+        //document.getElementById("last_message_in_chat").innerHTML = data.name + " : " + data.text;
     })
+
+    
 
     var joinGroup = function () {
         // var url = 'Chat/JoinChatAsync/' + _connectionId + '/@Model.Name'
@@ -161,6 +167,7 @@
                 console.log("Failed to join this group", err);
             })
     }
+
 
 
     //connection.onclose(function () {

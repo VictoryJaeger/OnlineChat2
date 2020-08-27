@@ -19,5 +19,6 @@ namespace SignalROnlineChatServer.BLL.Services
         Task<ChatViewModel> ReturnCreatedPrivateChatAsync(string ParticipantId);
         Task<ChatViewModel>ReturnCreatedGroupAsync(CreateGroupModelView groupModel);
         ChatViewModel GetPrivateChat(string Id);
+        List<string> GetUserConnectionIdList(int chatId, string connectionId);
     }
 }

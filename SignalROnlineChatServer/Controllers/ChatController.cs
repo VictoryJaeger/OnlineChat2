@@ -19,13 +19,15 @@ namespace SignalROnlineChatServer.Controllers
     public class ChatController : Controller
     {
         private readonly IHubContext<ChatHub> _chat;
+        private readonly IHubContext<HomeHub> _homePage;
         private readonly IHomeService _homeService;
         private readonly IMapper _mapper;
-        public ChatController(IHubContext<ChatHub> chat, IHomeService homeService, IMapper mapper)
+        public ChatController(IHubContext<ChatHub> chat, IHubContext<HomeHub> homePage, IHomeService homeService, IMapper mapper)
         {
             _chat = chat;
             _homeService = homeService;
             _mapper = mapper;
+            _homePage = homePage;
         }
 
         [Route("Chat/JoinChatAsync")]
@@ -59,19 +61,31 @@ namespace SignalROnlineChatServer.Controllers
             context.Messages.Add(newMessage);
             await context.SaveChangesAsync();
 
-            //await _chat.Clients.Group(groupName)
-            //    .SendAsync("ReceiveMessage", newMessage);
             var messageView = _mapper.Map<MessageViewModel>(newMessage);
             messageView.Type = _homeService.CheckMessagesType(messageView);
 
             await _chat.Clients.Group(groupName)
-                .SendAsync("ReceiveMessage", messageView, connectionId);
-                //.SendAsync("ReceiveMessage", new
-                //{
-                //    Text = newMessage.Text,
-                //    Name = newMessage.Name,
-                //    Timestamp = newMessage.Timestamp.ToString("hh:mm | d MMM")
-                //});
+                .SendAsync("ReceiveMessage", messageView, connectionId, groupId);
+
+            var connectionIdList = _homeService.GetUserConnectionIdList(groupId, connectionId);
+
+            await _homePage.Clients.Clients(connectionIdList).SendAsync("PushNotification", messageView, groupId);
+
+            connectionIdList.Add(connectionId);
+
+            await _homePage.Clients.Clients(connectionIdList).SendAsync("UpdateLastMessage", messageView, groupId);
+
+
+
+            //await _homePage.Clients.All/*.GroupExcept(groupName, connectionId)*/
+            //   .SendAsync("PushNotification", messageView);
+
+            //.SendAsync("ReceiveMessage", new
+            //{
+            //    Text = newMessage.Text,
+            //    Name = newMessage.Name,
+            //    Timestamp = newMessage.Timestamp.ToString("hh:mm | d MMM")
+            //});
 
             return Ok();
         }
