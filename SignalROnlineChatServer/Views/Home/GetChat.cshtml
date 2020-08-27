@@ -52,9 +52,10 @@
     <form class="chat_input" onsubmit="sendMessage(event)" asp-controller="Home" asp-action="CreateMessageAsync">
         <input type="hidden" name="groupId" value="@Model.Id" />
         <input type="hidden" name="groupName" value="@Model.Name" />
-        <input class="text" type="text" name="message" id="message-input" placeholder="Type a message here..." required />
+        @*<input class="text" type="text" name="message" id="message-input" placeholder="Type a message here..." required />*@
+        <textarea class="form-control message_input" type="text" name="message" id="message-input" placeholder="Type a message here..." required style="resize:none; height:auto"></textarea>
         @*<button type="submit">Send</button>*@
-        <button type="submit" class="btn btn-light submit">Send</button>
+        <button type ="submit" class="btn btn-light submit">Send</button>
     </form>
 </div>
 

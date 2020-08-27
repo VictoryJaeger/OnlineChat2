@@ -162,6 +162,7 @@ body {
 .message_story {
     height: 516px;
     overflow-y: auto;
+    position:relative;
 }
 
 /*.incoming_message_info{
@@ -227,7 +228,19 @@ body {
 
 .input_message_area {
     border-top: 1px solid #c4c4c4;
-    position: relative;
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+}
+
+.message_input {
+    background: transparent;
+    border: 0;
+}
+
+.message_input:focus {
+    background: transparent;
+    outline: none;
 }
 
 .chat_input input {
@@ -238,13 +251,23 @@ body {
     min-height: 48px;
     width: 100%;
     outline: none;
+    /*position: fixed;
+    left: 432px;*/
+}
+
+.chat_input {
+    display: flex;
+    align-items: center;
 }
 
 
 .submit {
-    position: absolute;
+    /*position: absolute;
     right: 0;
-    top: 5px;
+    top: 5px;*/
+    height: 60px;
+    display: block;
+    position: unset;
 }
 
 .logout-button {

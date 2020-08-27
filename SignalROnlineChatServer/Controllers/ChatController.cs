@@ -76,7 +76,6 @@ namespace SignalROnlineChatServer.Controllers
             await _homePage.Clients.Clients(connectionIdList).SendAsync("UpdateLastMessage", messageView, groupId);
 
 
-
             //await _homePage.Clients.All/*.GroupExcept(groupName, connectionId)*/
             //   .SendAsync("PushNotification", messageView);
 

@@ -33,6 +33,9 @@ namespace SignalROnlineChatServer.BLL.Services
                 .Where(x => x.ChatParticipants.Any(y => y.UserId == _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value))
                 .ToList();
 
+            //chats.Sort((a, b) => string.Compare(a.Messages.Last().Timestamp, b.Messages.Last().Timestamp));
+            chats = chats.OrderByDescending(x => x?.Messages?.LastOrDefault()?.Timestamp?? DateTime.MinValue).ToList();
+
             var myChats = new List<ChatViewModel>();
 
             foreach (Chat chat in chats)
@@ -43,6 +46,9 @@ namespace SignalROnlineChatServer.BLL.Services
                     myChats.Add(chatModel);
                 }
             }
+            
+            //myChats.Sort((a, b) => string.Compare(a.LastMessageDate, b.LastMessageDate));
+            
 
             return myChats;
         }      

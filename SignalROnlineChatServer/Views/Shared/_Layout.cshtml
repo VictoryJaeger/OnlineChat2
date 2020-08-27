@@ -194,16 +194,6 @@
             chatDetailInfo.appendChild(p);
             chatName.appendChild(chatDate);
 
-            //    var p = document.createElement("p");
-            //    p.appendChild(document.createTextNode(data.text));
-
-            //    var message_date = document.createElement("span");
-            //    message_date.classList.add("message_date");
-            //    message_date.appendChild(document.createTextNode(data.timestamp));
-
-            //    messageInfo.appendChild(messageText);
-            //    messageText.appendChild(p);
-            //    messageText.appendChild(message_date);
 
             console.log('add new chat');
             document.getElementById("get_chat_button").appendChild(chatListItem);
@@ -214,14 +204,16 @@
         })
 
     homeConnection.on("UpdateLastMessage", function (data, groupId) {
-            //alert(data.text);
             var currentChat = document.getElementById(groupId);
             var lastMessage = currentChat.querySelector(".lastMessage");
             lastMessage.innerHTML = data.name + " : " + data.text;
-            //currentChat.getElementById("last_message_in_chat").innerHTML = data.name + " : " + data.text;
-            //$(".last_message_in_chat").html(data.name + " : " + data.text);
         });
 
+    homeConnection.on("PushNotification", function (data, groupId) {
+        var currentChat = document.getElementById(groupId);
+        var lastMessage = currentChat.querySelector(".lastMessage");
+        lastMessage.innerHTML = data.name + " : " + data.text;
+    });
 
 
 </script>
