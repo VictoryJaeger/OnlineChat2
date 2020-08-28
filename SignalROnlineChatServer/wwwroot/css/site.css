@@ -1,4 +1,4 @@
-﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
+﻿* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 for details on configuring this project to bundle and minify static web assets. */
 
 a.navbar-brand {
@@ -210,6 +210,7 @@ body {
     margin: 0;
     padding: 5px 10px 5px 12px;
     width: 100%;
+    line-break: anywhere;
 }
 
 .outgoing_message_text p {
@@ -220,6 +221,7 @@ body {
     color: #fff;
     padding: 5px 10px 5px 12px;
     width: 100%;
+    line-break: anywhere;
 }
 
 .messaging {
@@ -228,7 +230,7 @@ body {
 
 .input_message_area {
     border-top: 1px solid #c4c4c4;
-    position: absolute;
+    position: inherit;
     width: 100%;
     bottom: 0;
 }
@@ -371,4 +373,21 @@ svg {
 
 .create_pr_chat_form{
 
+}
+
+
+.badge-light {
+    color: #212529;
+    /*    position: relative;*/
+    background-color: #b9acfe;
+    float: right;
+    /*left: 280px;
+    bottom: 22px;*/
+}
+
+.lastMessage {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow-y: hidden;
+    overflow: hidden;
 }
