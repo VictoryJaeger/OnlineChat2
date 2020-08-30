@@ -27,6 +27,8 @@ namespace SignalROnlineChatServer.BLL.Services
         }
         public IEnumerable<ChatViewModel> GetAllChats()
         {
+            var activeUserId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
             var chats = _context.Chats
                 .Include(x => x.ChatParticipants).ThenInclude(x => x.User)
                 .Include(x => x.Messages)
@@ -53,7 +55,12 @@ namespace SignalROnlineChatServer.BLL.Services
 
 
             return myChats;
-        }      
+        }   
+        
+        public void SetUnreadMessageCount()
+        {
+
+        }
 
 
 
@@ -66,22 +73,22 @@ namespace SignalROnlineChatServer.BLL.Services
 
             var chatView = _mapper.Map<ChatViewModel>(chat);
 
-            foreach(var message in chatView.Messages)
-            {
-                message.Type = CheckMessagesType(message);
-            }
+            //foreach(var message in chatView.Messages)
+            //{
+            //    message.Type = CheckMessagesType(message);
+            //}
             return chatView;
         }
 
-        public MessageType CheckMessagesType(MessageViewModel model)
-        {
-            var activeAccount = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.Name).Value;
+        //public MessageType CheckMessagesType(MessageViewModel model)
+        //{
+        //    var activeAccount = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.Name).Value;
           
-            if (model.Name == activeAccount) return MessageType.Outgoing;
-            else if (model.Name == "Default") return MessageType.Default;
-            else return MessageType.Incoming;
+        //    if (model.Name == activeAccount) return MessageType.Outgoing;
+        //    else if (model.Name == "Default") return MessageType.Default;
+        //    else return MessageType.Incoming;
             
-        }
+        //}
 
 
         //public ChatViewModel PrepareChatModelForView(ChatViewModel model)
@@ -322,6 +329,7 @@ namespace SignalROnlineChatServer.BLL.Services
             var chat = CheckPrivateChat(Id);
             return _mapper.Map<ChatViewModel>(chat);                
         }
+
     }
 }
 

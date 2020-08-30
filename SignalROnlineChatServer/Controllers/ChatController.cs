@@ -106,7 +106,7 @@ namespace SignalROnlineChatServer.Controllers
         public void AddUnreadMessage(int groupId, [FromServices] OnlineChatDBContext context)
         {
             var chat = _homeService.GetChat(groupId);
-            chat.UnreadMessages++;
+            //chat.UnreadMessages++;
             //context.
         }
 

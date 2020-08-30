@@ -19,7 +19,7 @@ namespace SignalROnlineChatServer.Models
         public virtual ICollection<ChatUser> ChatParticipants { get; set; }
         public ChatType Type { get; set; } 
         public string Name { get; set; }
-        public int UnreadMessages { get; set; }
+        //public int UnreadMessages { get; set; }
     }
 
     public enum ChatType
