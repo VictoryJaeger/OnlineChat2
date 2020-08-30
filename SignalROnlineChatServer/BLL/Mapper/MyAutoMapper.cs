@@ -19,6 +19,8 @@ namespace SignalROnlineChatServer.BLL.Mapper
         {
             CreateMap<ICollection<ChatUser>, List<UserViewModel>>();
 
+            CreateMap<IQueryable<Chat>, List<ChatViewModel>>();
+
             CreateMap<Message, MessageViewModel>()
                 .ForMember(x => x.Timestamp, opt => opt.MapFrom(src => src.Timestamp.ToString("hh:mm | d MMM")));
            
@@ -32,7 +34,10 @@ namespace SignalROnlineChatServer.BLL.Mapper
                 .ForMember(x => x.LastMessageAuthor, opt => opt.MapFrom(src => src.Messages.Last().Name))
                 .ForMember(x => x.LastMessageDate, opt => opt.MapFrom(src => src.Messages.Last().Timestamp.ToString("d MMM")))
                 .ForMember(x => x.Messages, opt => opt.MapFrom(src => src.Messages))
-                .ForMember(x => x.ChatParticipants, opt => opt.MapFrom(src => src.ChatParticipants.Select(x => x.User).ToList()));
+                .ForMember(x => x.ChatParticipants, opt => opt.MapFrom(src => src.ChatParticipants.Select(x => x.User).ToList()))
+                .ForMember(x => x.UnreadMessages, opt => opt.MapFrom(src => src.UnreadMessages));
+                //.ForMember(x => x.UnreadMessages, opt => opt//.MapFrom(src => src.UnreadMessages?? 0))
+                //.MapFrom(src => (src.UnreadMessages == 0) ? 0 : src.UnreadMessages));
 
             CreateMap<IQueryable<User>, List<UserViewModel>>();
 

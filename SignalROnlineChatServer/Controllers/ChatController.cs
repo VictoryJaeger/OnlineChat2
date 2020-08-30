@@ -67,13 +67,15 @@ namespace SignalROnlineChatServer.Controllers
             await _chat.Clients.Group(groupName)
                 .SendAsync("ReceiveMessage", messageView, connectionId, groupId);
 
-            var connectionIdList = _homeService.GetUserConnectionIdList(groupId, connectionId);
+            await NotificateUsers(groupId, connectionId, messageView);
 
-            await _homePage.Clients.Clients(connectionIdList).SendAsync("PushNotification", messageView, groupId);
+            //var connectionIdList = _homeService.GetUserConnectionIdList(groupId, connectionId);
 
-            connectionIdList.Add(connectionId);
+            //await _homePage.Clients.Clients(connectionIdList).SendAsync("PushNotification", messageView, groupId);
 
-            await _homePage.Clients.Clients(connectionIdList).SendAsync("UpdateLastMessage", messageView, groupId);
+            //connectionIdList.Add(connectionId);
+
+            //await _homePage.Clients.Clients(connectionIdList).SendAsync("UpdateLastMessage", messageView, groupId);
 
 
             //await _homePage.Clients.All/*.GroupExcept(groupName, connectionId)*/
@@ -87,6 +89,25 @@ namespace SignalROnlineChatServer.Controllers
             //});
 
             return Ok();
+        }
+
+        public async Task<IActionResult> NotificateUsers(int groupId, string connectionId, MessageViewModel messageView)
+        {
+            var connectionIdList = _homeService.GetUserConnectionIdList(groupId, connectionId);
+
+            //await _homePage.Clients.Clients(connectionIdList).SendAsync("PushNotification", messageView, groupId);
+
+            connectionIdList.Add(connectionId);
+
+            await _homePage.Clients.Clients(connectionIdList).SendAsync("UpdateLastMessage", messageView, groupId);
+            return Ok();
+        }
+
+        public void AddUnreadMessage(int groupId, [FromServices] OnlineChatDBContext context)
+        {
+            var chat = _homeService.GetChat(groupId);
+            chat.UnreadMessages++;
+            //context.
         }
 
     }

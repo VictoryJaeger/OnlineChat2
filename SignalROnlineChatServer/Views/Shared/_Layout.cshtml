@@ -54,7 +54,7 @@
                                                     @chat.LastMessageAuthor : @chat.LastMessage
                                                 </p>
                                             </div>
-                                            <span class="badge badge-light">9</span>
+                                            <span class="badge badge-light notification">@chat.UnreadMessages</span>
                                         </div>
                                     </div>
                                 </a>
@@ -211,9 +211,12 @@
         });
 
     homeConnection.on("PushNotification", function (data, groupId) {
+        //var currentChat = document.getElementById(groupId);
+        //var lastMessage = currentChat.querySelector(".lastMessage");
+        //lastMessage.innerHTML = data.name + " : " + data.text;
         var currentChat = document.getElementById(groupId);
-        var lastMessage = currentChat.querySelector(".lastMessage");
-        lastMessage.innerHTML = data.name + " : " + data.text;
+        var notification = currentChat.querySelector(".badge badge-light notification");
+        //notification.innerHTML = ;
     });
 
 

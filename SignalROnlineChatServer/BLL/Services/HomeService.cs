@@ -36,19 +36,21 @@ namespace SignalROnlineChatServer.BLL.Services
             //chats.Sort((a, b) => string.Compare(a.Messages.Last().Timestamp, b.Messages.Last().Timestamp));
             chats = chats.OrderByDescending(x => x?.Messages?.LastOrDefault()?.Timestamp?? DateTime.MinValue).ToList();
 
-            var myChats = new List<ChatViewModel>();
+            var myChats = _mapper.Map<List<ChatViewModel>>(chats);
 
-            foreach (Chat chat in chats)
-            {
-                if (chat.Messages.Count() != 0)
-                {
-                    var chatModel = _mapper.Map<ChatViewModel>(chat);
-                    myChats.Add(chatModel);
-                }
-            }
-            
+            //var myChats = new List<ChatViewModel>();
+
+            //foreach (Chat chat in chats)
+            //{
+            //    if (chat.Messages.Count() != 0)
+            //    {
+            //        var chatModel = _mapper.Map<ChatViewModel>(chat);
+            //        myChats.Add(chatModel);
+            //    }
+            //}
+
             //myChats.Sort((a, b) => string.Compare(a.LastMessageDate, b.LastMessageDate));
-            
+
 
             return myChats;
         }      
