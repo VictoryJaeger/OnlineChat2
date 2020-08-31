@@ -62,7 +62,7 @@ namespace SignalROnlineChatServer.Controllers
             await context.SaveChangesAsync();
 
             var messageView = _mapper.Map<MessageViewModel>(newMessage);
-            messageView.Type = _homeService.CheckMessagesType(messageView);
+            //messageView.Type = _homeService.CheckMessagesType(messageView);
 
             await _chat.Clients.Group(groupName)
                 .SendAsync("ReceiveMessage", messageView, connectionId, groupId);

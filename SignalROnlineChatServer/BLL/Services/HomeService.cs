@@ -330,6 +330,8 @@ namespace SignalROnlineChatServer.BLL.Services
             return _mapper.Map<ChatViewModel>(chat);                
         }
 
+
+        
     }
 }
 
