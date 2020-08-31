@@ -98,7 +98,8 @@ namespace SignalROnlineChatServer.Controllers
             var connectionIdList = _chatService.GetUserConnectionIdList(groupId, connectionId);
 
             //await _homePage.Clients.Clients(connectionIdList).SendAsync("PushNotification", messageView, groupId);
-            await _chatService.IncreaseUnreadMessageCount(groupId);
+            await _chatService.IncreaseUsersUnreadMessageCount(groupId);
+            await _chatService.ReduceUserUnreadMessageCount(groupId);
 
             connectionIdList.Add(connectionId);
 

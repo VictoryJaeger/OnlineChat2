@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 
 namespace SignalROnlineChatServer.BLL.Services
@@ -63,22 +64,33 @@ namespace SignalROnlineChatServer.BLL.Services
             return connectionIdList;
         }
 
-        public async Task IncreaseUnreadMessageCount(int chatId)
+        public async Task IncreaseUsersUnreadMessageCount(int chatId)
         {
             var chat = _homeService.GetChat(chatId);
             var actionUserId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-            var chatUsers = chat.ChatParticipants.Where(x => x.UserId != actionUserId);
+            var chatUsers = chat.ChatParticipants.Where(x => x.UserId != actionUserId).ToList();
 
             foreach(var user in chatUsers)
             {
                 user.UnreadMessageCount++;
             }
 
-            await _context.SaveChangesAsync();          
-
+            await _context.SaveChangesAsync();
         }
 
-        
+        public async Task ReduceUserUnreadMessageCount(int chatId)
+        {
+            var chat = _homeService.GetChat(chatId);
+            var actionUserId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            var user = chat.ChatParticipants.Where(x => x.UserId == actionUserId).FirstOrDefault();
+            user.UnreadMessageCount = 0;
+
+            await _context.SaveChangesAsync();
+        }
+
+
+
     }
 }

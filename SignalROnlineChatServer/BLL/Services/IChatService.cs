@@ -8,6 +8,7 @@ namespace SignalROnlineChatServer.BLL.Services
     {
         Task<MessageViewModel> ReturnSendedMessageAsync(int groupId, string message);
         List<string> GetUserConnectionIdList(int chatId, string connectionId);
-        Task IncreaseUnreadMessageCount(int chatId);
+        Task IncreaseUsersUnreadMessageCount(int chatId);
+        Task ReduceUserUnreadMessageCount(int chatId);
     }
 }
