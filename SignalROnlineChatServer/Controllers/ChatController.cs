@@ -20,12 +20,13 @@ namespace SignalROnlineChatServer.Controllers
     {
         private readonly IHubContext<ChatHub> _chat;
         private readonly IHubContext<HomeHub> _homePage;
-        private readonly IHomeService _homeService;
+        //private readonly IHomeService _homeService;
+        private readonly IChatService _chatService;
         private readonly IMapper _mapper;
-        public ChatController(IHubContext<ChatHub> chat, IHubContext<HomeHub> homePage, IHomeService homeService, IMapper mapper)
+        public ChatController(IHubContext<ChatHub> chat, IHubContext<HomeHub> homePage, IChatService chatService, IMapper mapper)
         {
             _chat = chat;
-            _homeService = homeService;
+            _chatService = chatService;
             _mapper = mapper;
             _homePage = homePage;
         }
@@ -39,29 +40,30 @@ namespace SignalROnlineChatServer.Controllers
         }
 
 
-        [HttpPost("[action]/{connectionId}/{groupName}")]
-        public async Task<IActionResult> LeaveChatAsync(string connectionId, string groupName)
-        {
-            await _chat.Groups.RemoveFromGroupAsync(connectionId, groupName);
-            return Ok();
-        }
+        //[HttpPost("[action]/{connectionId}/{groupName}")]
+        //public async Task<IActionResult> LeaveChatAsync(string connectionId, string groupName)
+        //{
+        //    await _chat.Groups.RemoveFromGroupAsync(connectionId, groupName);
+        //    return Ok();
+        //}
 
         [Route("Chat/SendMessageAsync")]
         [HttpPost]
         public async Task<IActionResult> SendMessageAsync(int groupId, string message, string groupName, string connectionId,[FromServices] OnlineChatDBContext context)
         {
-            var newMessage = new Message
-            {
-                ChatId = groupId,
-                Timestamp = DateTime.Now,
-                Text = message,
-                Name = User.Identity.Name
-            };
+            //var newMessage = new Message
+            //{
+            //    ChatId = groupId,
+            //    Timestamp = DateTime.Now,
+            //    Text = message,
+            //    Name = User.Identity.Name
+            //};
 
-            context.Messages.Add(newMessage);
-            await context.SaveChangesAsync();
+            //context.Messages.Add(newMessage);
+            //await context.SaveChangesAsync();
 
-            var messageView = _mapper.Map<MessageViewModel>(newMessage);
+            //var messageView = _mapper.Map<MessageViewModel>(newMessage);
+            var messageView = await _chatService.SendMessageAsync(groupId, message);
             //messageView.Type = _homeService.CheckMessagesType(messageView);
 
             await _chat.Clients.Group(groupName)
@@ -93,7 +95,7 @@ namespace SignalROnlineChatServer.Controllers
 
         public async Task<IActionResult> NotificateUsers(int groupId, string connectionId, MessageViewModel messageView)
         {
-            var connectionIdList = _homeService.GetUserConnectionIdList(groupId, connectionId);
+            var connectionIdList = _chatService.GetUserConnectionIdList(groupId, connectionId);
 
             //await _homePage.Clients.Clients(connectionIdList).SendAsync("PushNotification", messageView, groupId);
 
@@ -105,7 +107,7 @@ namespace SignalROnlineChatServer.Controllers
 
         public void AddUnreadMessage(int groupId, [FromServices] OnlineChatDBContext context)
         {
-            var chat = _homeService.GetChat(groupId);
+            //var chat = _homeService.GetChat(groupId);
             //chat.UnreadMessages++;
             //context.
         }

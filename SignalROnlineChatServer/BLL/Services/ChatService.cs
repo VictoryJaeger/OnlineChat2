@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using SignalROnlineChatServer.DataBase;
 using SignalROnlineChatServer.Models;
 using SignalROnlineChatServer.Models.ModelViews;
@@ -38,6 +39,25 @@ namespace SignalROnlineChatServer.BLL.Services
             var messageView = _mapper.Map<MessageViewModel>(newMessage);
 
             return messageView;
+        }
+
+        public List<string> GetUserConnectionIdList(int chatId, string connectionId)
+        {
+            var chat = _context.Chats
+                .Include(x => x.ChatParticipants).ThenInclude(x => x.User).ThenInclude(x => x.Connections)
+                .Where(x => x.Id == chatId)
+                .FirstOrDefault();
+
+            var connectionIdList = _context.Users
+               .Include(x => x.Connections)
+               .Where(x => chat.ChatParticipants
+                       .Select(u => u.UserId).ToList()
+                       .Contains(x.Id) /*&& x.Id != connectionId*/)
+                .AsNoTracking()
+                .AsEnumerable()
+                .Select(c => c.Connections.Last().ConnectionID).Where(c => c != connectionId).ToList();
+
+            return connectionIdList;
         }
     }
 }

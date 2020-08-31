@@ -81,6 +81,8 @@ namespace SignalROnlineChatServer
             services.AddHttpContextAccessor();
             services.AddScoped<IHomeService, HomeService>();
             services.AddTransient<HomeService>();
+            services.AddScoped<IChatService, ChatService>();
+            services.AddTransient<ChatService>();
 
             //IServiceProvider provider = services.BuildServiceProvider();
 
