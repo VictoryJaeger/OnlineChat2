@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using SignalROnlineChatServer.BLL.Services;
+using SignalROnlineChatServer.BLL.Services.Interfaces;
 using SignalROnlineChatServer.DataBase;
 using SignalROnlineChatServer.Hubs;
 using SignalROnlineChatServer.Models;
@@ -97,9 +98,11 @@ namespace SignalROnlineChatServer.Controllers
         {
             var connectionIdList = _chatService.GetUserConnectionIdList(groupId, connectionId);
 
-            //await _homePage.Clients.Clients(connectionIdList).SendAsync("PushNotification", messageView, groupId);
             await _chatService.IncreaseUsersUnreadMessageCount(groupId);
             await _chatService.ReduceUserUnreadMessageCount(groupId);
+
+            await _homePage.Clients.Clients(connectionIdList).SendAsync("PushNotification", groupId);
+            await _homePage.Clients.Client(connectionId).SendAsync("ClearNotification", groupId);
 
             connectionIdList.Add(connectionId);
 

@@ -1,4 +1,4 @@
-﻿@inject SignalROnlineChatServer.BLL.Services.IHomeService homeService
+﻿@inject SignalROnlineChatServer.BLL.Services.Interfaces.IHomeService homeService
 @{
     var chats = homeService.GetAllChats();
 }
@@ -54,7 +54,7 @@
                                                     @chat.LastMessageAuthor : @chat.LastMessage
                                                 </p>
                                             </div>
-                                            <span class="badge badge-light notification">@chat.UnreadMessages</span>
+                                            <span id="notification_badge" class="badge badge-light notification">@chat.UnreadMessages</span>
                                         </div>
                                     </div>
                                 </a>
@@ -210,13 +210,20 @@
             lastMessage.innerHTML = data.name + " : " + data.text;
         });
 
-    homeConnection.on("PushNotification", function (data, groupId) {
-        //var currentChat = document.getElementById(groupId);
-        //var lastMessage = currentChat.querySelector(".lastMessage");
-        //lastMessage.innerHTML = data.name + " : " + data.text;
+    homeConnection.on("PushNotification", function (groupId)
+    {
         var currentChat = document.getElementById(groupId);
-        var notification = currentChat.querySelector(".badge badge-light notification");
-        //notification.innerHTML = ;
+        var notification = currentChat.querySelector(".badge");
+        var count = parseInt(notification.innerHTML);
+        notification.innerHTML = count + 1;
+    });
+
+    homeConnection.on("ClearNotification", function (groupId)
+    {
+        var currentChat = document.getElementById(groupId);
+        var notification = currentChat.querySelector(".badge");
+        //var count = parseInt(notification.innerHTML);
+        notification.innerHTML = 0;
     });
 
 

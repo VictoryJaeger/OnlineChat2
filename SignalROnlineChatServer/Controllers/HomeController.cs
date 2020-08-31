@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using SignalROnlineChatServer.BLL.Services;
+using SignalROnlineChatServer.BLL.Services.Interfaces;
 using SignalROnlineChatServer.DataBase;
 using SignalROnlineChatServer.Hubs;
 using SignalROnlineChatServer.Models;

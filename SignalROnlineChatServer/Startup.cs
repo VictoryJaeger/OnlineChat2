@@ -22,6 +22,7 @@ using SignalROnlineChatServer.Controllers;
 using SignalROnlineChatServer.BLL.Services;
 using AutoMapper;
 using SignalROnlineChatServer.BLL.Mapper;
+using SignalROnlineChatServer.BLL.Services.Interfaces;
 
 namespace SignalROnlineChatServer
 {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace SignalROnlineChatServer.BLL.Services
+namespace SignalROnlineChatServer.BLL.Services.Interfaces
 {
     public interface IChatService
     {

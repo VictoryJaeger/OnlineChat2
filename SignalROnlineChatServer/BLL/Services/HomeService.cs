@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using SignalROnlineChatServer.BLL.Services.Interfaces;
 using SignalROnlineChatServer.DataBase;
 using SignalROnlineChatServer.Models;
 using SignalROnlineChatServer.Models.ModelViews;
