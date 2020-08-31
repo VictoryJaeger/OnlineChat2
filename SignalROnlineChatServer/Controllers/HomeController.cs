@@ -46,7 +46,9 @@ namespace SignalROnlineChatServer.Controllers
         [HttpGet("{id}")]
         public IActionResult GetChat(int id)
         {
-            var chatView = _homeService.GetChat(id);
+            var chat = _homeService.GetChat(id);
+
+            var chatView = _homeService.GetChatView(chat);
 
             return View(chatView);
         }

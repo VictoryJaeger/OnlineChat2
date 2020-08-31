@@ -6,7 +6,8 @@ namespace SignalROnlineChatServer.BLL.Services
 {
     public interface IChatService
     {
-        Task<MessageViewModel> SendMessageAsync(int groupId, string message);
+        Task<MessageViewModel> ReturnSendedMessageAsync(int groupId, string message);
         List<string> GetUserConnectionIdList(int chatId, string connectionId);
+        Task IncreaseUnreadMessageCount(int chatId);
     }
 }

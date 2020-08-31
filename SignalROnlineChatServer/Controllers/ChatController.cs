@@ -63,7 +63,7 @@ namespace SignalROnlineChatServer.Controllers
             //await context.SaveChangesAsync();
 
             //var messageView = _mapper.Map<MessageViewModel>(newMessage);
-            var messageView = await _chatService.SendMessageAsync(groupId, message);
+            var messageView = await _chatService.ReturnSendedMessageAsync(groupId, message);
             //messageView.Type = _homeService.CheckMessagesType(messageView);
 
             await _chat.Clients.Group(groupName)
@@ -98,6 +98,7 @@ namespace SignalROnlineChatServer.Controllers
             var connectionIdList = _chatService.GetUserConnectionIdList(groupId, connectionId);
 
             //await _homePage.Clients.Clients(connectionIdList).SendAsync("PushNotification", messageView, groupId);
+            await _chatService.IncreaseUnreadMessageCount(groupId);
 
             connectionIdList.Add(connectionId);
 

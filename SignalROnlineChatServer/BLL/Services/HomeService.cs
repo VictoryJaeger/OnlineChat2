@@ -64,30 +64,35 @@ namespace SignalROnlineChatServer.BLL.Services
 
 
 
-        public ChatViewModel GetChat(int id)
+        public Chat GetChat(int id)
         {
             var chat = _context.Chats
                 .Include(x => x.Messages)
                 .Include(y => y.ChatParticipants).ThenInclude(y => y.User).ThenInclude(y => y.Connections)
                 .FirstOrDefault(x => x.Id == id);
 
-            var chatView = _mapper.Map<ChatViewModel>(chat);
+            //var chatView = _mapper.Map<ChatViewModel>(chat);
 
-            //foreach(var message in chatView.Messages)
-            //{
-            //    message.Type = CheckMessagesType(message);
-            //}
-            return chatView;
+            ////foreach(var message in chatView.Messages)
+            ////{
+            ////    message.Type = CheckMessagesType(message);
+            ////}
+            return chat;
+        }
+
+        public ChatViewModel GetChatView(Chat chat)
+        {
+            return _mapper.Map<ChatViewModel>(chat);
         }
 
         //public MessageType CheckMessagesType(MessageViewModel model)
         //{
         //    var activeAccount = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.Name).Value;
-          
+
         //    if (model.Name == activeAccount) return MessageType.Outgoing;
         //    else if (model.Name == "Default") return MessageType.Default;
         //    else return MessageType.Incoming;
-            
+
         //}
 
 

@@ -7,6 +7,7 @@ using SignalROnlineChatServer.Models.ModelViews;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace SignalROnlineChatServer.BLL.Services
@@ -16,14 +17,16 @@ namespace SignalROnlineChatServer.BLL.Services
         private readonly OnlineChatDBContext _context;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IMapper _mapper;
-        public ChatService(OnlineChatDBContext context, IHttpContextAccessor httpContextAccessor, IMapper mapper)
+        private readonly IHomeService _homeService;
+        public ChatService(OnlineChatDBContext context, IHttpContextAccessor httpContextAccessor, IMapper mapper, IHomeService homeService)
         {
             _context = context;
             _httpContextAccessor = httpContextAccessor;
             _mapper = mapper;
+            _homeService = homeService;
         }
 
-        public async Task<MessageViewModel> SendMessageAsync(int groupId, string message)
+        public async Task<MessageViewModel> ReturnSendedMessageAsync(int groupId, string message)
         {
             var newMessage = new Message
             {
@@ -59,5 +62,23 @@ namespace SignalROnlineChatServer.BLL.Services
 
             return connectionIdList;
         }
+
+        public async Task IncreaseUnreadMessageCount(int chatId)
+        {
+            var chat = _homeService.GetChat(chatId);
+            var actionUserId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            var chatUsers = chat.ChatParticipants.Where(x => x.UserId != actionUserId);
+
+            foreach(var user in chatUsers)
+            {
+                user.UnreadMessageCount++;
+            }
+
+            await _context.SaveChangesAsync();          
+
+        }
+
+        
     }
 }

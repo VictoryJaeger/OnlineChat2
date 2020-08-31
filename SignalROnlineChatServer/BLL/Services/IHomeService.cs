@@ -12,7 +12,8 @@ namespace SignalROnlineChatServer.BLL.Services
         void CreateMessageAsync(int groupId, string message);
         Task<Chat> CreatePrivateChatAsync(string ParticipantId/*, string CreatorId*/);
         IEnumerable<ChatViewModel> GetAllChats(/*string user*/);
-        ChatViewModel GetChat(int id);
+        ChatViewModel GetChatView(Chat chat);
+        Chat GetChat(int id);
         User GetUser(string Id);
         List<UserViewModel> GetUsers(/*string ActiveUserId*/);
         //MessageType CheckMessagesType(MessageViewModel model);
