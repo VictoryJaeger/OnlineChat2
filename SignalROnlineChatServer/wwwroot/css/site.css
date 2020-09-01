@@ -157,12 +157,14 @@ body {
     float: left;
     padding: 30px 15px 0 25px;
     width: 60%;
+    height: 580px;
 }
 
 .message_story {
-    height: 516px;
+/*    height: 516px;*/
     overflow-y: auto;
-    position:relative;
+    position: relative;
+    height: -webkit-fill-available;
 }
 
 /*.incoming_message_info{
@@ -390,4 +392,12 @@ svg {
     white-space: nowrap;
     overflow-y: hidden;
     overflow: hidden;
+}
+
+textarea:focus, input:focus {
+    outline: none;
+}
+
+.active {
+    background: #e2d1fffa;
 }
