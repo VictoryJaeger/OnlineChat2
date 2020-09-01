@@ -60,7 +60,7 @@ namespace SignalROnlineChatServer.Controllers
 
         [Route("Account/RegisterAsync")]
         [HttpPost]
-        public async Task<IActionResult> RegisterAsync(RegisterViewModel registerModel, string connectionId) 
+        public async Task<IActionResult> RegisterAsync(RegisterViewModel registerModel/*, string connectionId*/) 
         {
             if (ModelState.IsValid)
             {
@@ -70,12 +70,12 @@ namespace SignalROnlineChatServer.Controllers
                     Connections = new List<Connection>()
                 };
 
-                user.Connections.Add(new Connection
-                {
-                    ConnectionID = connectionId.ToString(),
-                    //UserAgent = Context.Request.Headers["User-Agent"],
-                    Connected = true
-                });
+                //user.Connections.Add(new Connection
+                //{
+                //    ConnectionID = connectionId.ToString(),
+                //    //UserAgent = Context.Request.Headers["User-Agent"],
+                //    Connected = true
+                //});
 
                 var result = await _userManager.CreateAsync(user, registerModel.Password);
 
@@ -85,10 +85,11 @@ namespace SignalROnlineChatServer.Controllers
 
                     //RedirectToAction("GoToHomePage");
 
-                    //return RedirectToAction("Index", "Home");
-                    return Ok();
+                    return RedirectToAction("Index", "Home");
+                    //return Ok();
                 }
             }
+            ModelState.AddModelError("", "Error! Please, try another name");
             return View("Register", registerModel);
 
             //return RedirectToAction("DisplayRegister", "Account");

@@ -34,7 +34,7 @@ namespace SignalROnlineChatServer.Controllers
             _chat = chat;
         }
 
-        [Route("Home/Index")]
+        [Route("Home/Home/Index")]
         [HttpGet]
         public IActionResult Index()
         {
@@ -107,8 +107,8 @@ namespace SignalROnlineChatServer.Controllers
                 await _chat.Groups.AddToGroupAsync(Id, groupChat.Name);
             }
             
-            // await _chat.Clients.Group(chatView.Name).SendAsync("PrivateChatCreated", chatView);
-            await _chat.Clients.Group(groupChat.Name).SendAsync("PrivateChatCreated", groupChat);
+            // await _chat.Clients.Group(chatView.Name).SendAsync("ChatCreated", chatView);
+            await _chat.Clients.Group(groupChat.Name).SendAsync("ChatCreated", groupChat);
 
             return Ok();
 
@@ -124,9 +124,12 @@ namespace SignalROnlineChatServer.Controllers
 
             await _chat.Groups.AddToGroupAsync(connectionId, chatView.Name);
             await _chat.Groups.AddToGroupAsync(chatView.UsersConnectionId.Last(), chatView.Name);
-            await _chat.Clients.Group(chatView.Name).SendAsync("PrivateChatCreated", chatView);
 
-            return View("PrivateChatCreatingNotification", chatView);
+            await _chat.Clients.Client(connectionId).SendAsync("GetCreatedChat", chatView.Id);
+            await _chat.Clients.Group(chatView.Name).SendAsync("ChatCreated", chatView);
+
+            //return View("PrivateChatCreatingNotification", chatView);
+            return Ok();
 
         }
 
@@ -322,7 +325,7 @@ var chat = new Chat
 
 //    //var chatView = _homeService.GetPrivateChat(Id);
 
-//    await _chat.Clients.Group(chatName).SendAsync("PrivateChatCreated", chatView);
+//    await _chat.Clients.Group(chatName).SendAsync("ChatCreated", chatView);
 
 //    //return View("GetChat",chatView);
 

@@ -14,7 +14,7 @@
 
 var chatId = 0;
 
-homeConnection.on("PrivateChatCreated", function (data) {
+homeConnection.on("ChatCreated", function (data) {
     console.log(data);
 
     chatId = data.id;
@@ -115,7 +115,7 @@ homeConnection.on("PrivateChatCreated", function (data) {
 
 
 
-//connection.on("PrivateChatCreatedToAll", function (data) {
+//connection.on("ChatCreatedToAll", function (data) {
 //    console.log(data + 'created');
 //})
 

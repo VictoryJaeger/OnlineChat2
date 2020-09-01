@@ -162,13 +162,20 @@ body {
 
 .message_story {
     /*    height: 516px;*/
+    /*display: flex;
+    flex-direction: column;
+    height: 100%;
+    height: -webkit-fill-available;*/
+    overflow-y: auto;
+    position: relative;
+    height: -webkit-fill-available;
+}
+
+.selected_chat {
     display: flex;
     flex-direction: column;
     height: 100%;
     height: -webkit-fill-available;
-    /*overflow-y: auto;
-    position: relative;
-    height: -webkit-fill-available;*/
 }
 
 .chat_body {
@@ -388,7 +395,7 @@ svg {
 }
 
 
-.badge-light {
+.notification {
     color: #212529;
     /*    position: relative;*/
     background-color: #b9acfe;

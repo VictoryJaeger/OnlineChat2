@@ -5,7 +5,7 @@
     Layout = "~/Views/Account/_AccountLayout.cshtml";
 }
 
-<form onsubmit="register(event)" class="needs-validation" novalidate>
+<form asp-action="RegisterAsync" asp-controller="Account" class="needs-validation" novalidate>
     <div class="text-center mb-4">
         @*<img class="mb-4" src="/docs/4.5/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">*@
         <h2 class="h3 mb-3 font-weight-normal">SignalR Chat</h2>
@@ -36,6 +36,7 @@
 
 
 @*asp-action="RegisterAsync" asp-controller="Account"*@
+@*onsubmit="register(event)"*@
 
 <script src="~/js/signalr.min.js"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>

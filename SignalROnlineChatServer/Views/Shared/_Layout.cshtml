@@ -115,7 +115,7 @@
             })
 
 
-        homeConnection.on("PrivateChatCreated", function (data) {
+        homeConnection.on("ChatCreated", function (data) {
             console.log(data);
 
             //<a id="stest" href="/MyWeb/MyPageIndex/123545" />
@@ -225,6 +225,18 @@
         //var count = parseInt(notification.innerHTML);
         notification.innerHTML = 0;
     });
+
+    //homeConnection.on("GetCreatedChat", function (data) {
+    //    debugger;
+    //    axios.get('Home/GetChat', data)
+    //        .then(res => {
+    //            console.log("Chat displayed", res);
+    //            //debugger;
+    //        })
+    //        .catch(err => {
+    //            console.log("Failed to get chat", err);
+    //        })
+    //})
 
 
 </script>

@@ -48,6 +48,7 @@
                 console.log("Notification delivered", res);
                 //debugger;
             })
+            .then(function () { window.location = "Home/Index" })
             .catch(err => {
                 console.log("Failed to send notification", err);
             })

@@ -31,7 +31,7 @@
 
         var _connectionId = '';
 
-    homeConnection.on("PrivateChatCreated", function (data) {
+    homeConnection.on("ChatCreated", function (data) {
             console.log(data);
 
             //debugger;
@@ -81,7 +81,7 @@
             console.log("data has been displayed");
         })
 
-    homeConnection.on("PrivateChatCreatedToAll", function (data)
+    homeConnection.on("ChatCreatedToAll", function (data)
     {
         console.log(data + 'created');
     })
