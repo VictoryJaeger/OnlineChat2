@@ -27,11 +27,13 @@ namespace SignalROnlineChatServer.Controllers
         private readonly OnlineChatDBContext _context;
         private readonly IHomeService _homeService;
         private readonly IHubContext<HomeHub> _chat;
-        public HomeController(OnlineChatDBContext context, IHomeService service, IHubContext<HomeHub> chat) //
+        private readonly IChatService _chatService;
+        public HomeController(OnlineChatDBContext context, IHomeService service, IHubContext<HomeHub> chat, IChatService chatService) //
         {
             _context = context;
             _homeService = service;
             _chat = chat;
+            _chatService = chatService;
         }
 
         [Route("Home/Home/Index")]
@@ -106,7 +108,8 @@ namespace SignalROnlineChatServer.Controllers
             {
                 await _chat.Groups.AddToGroupAsync(Id, groupChat.Name);
             }
-            
+
+            await _chatService.IncreaseUsersUnreadMessageCount(groupChat.Id);
             // await _chat.Clients.Group(chatView.Name).SendAsync("ChatCreated", chatView);
             await _chat.Clients.Group(groupChat.Name).SendAsync("ChatCreated", groupChat);
 
@@ -124,6 +127,8 @@ namespace SignalROnlineChatServer.Controllers
 
             await _chat.Groups.AddToGroupAsync(connectionId, chatView.Name);
             await _chat.Groups.AddToGroupAsync(chatView.UsersConnectionId.Last(), chatView.Name);
+
+            await _chatService.IncreaseUsersUnreadMessageCount(chatView.Id);
 
             await _chat.Clients.Client(connectionId).SendAsync("GetCreatedChat", chatView.Id);
             await _chat.Clients.Group(chatView.Name).SendAsync("ChatCreated", chatView);
