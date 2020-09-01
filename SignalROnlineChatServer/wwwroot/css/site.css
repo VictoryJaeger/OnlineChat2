@@ -161,10 +161,20 @@ body {
 }
 
 .message_story {
-/*    height: 516px;*/
+    /*    height: 516px;*/
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    height: -webkit-fill-available;
+    /*overflow-y: auto;
+    position: relative;
+    height: -webkit-fill-available;*/
+}
+
+.chat_body {
     overflow-y: auto;
     position: relative;
-    height: -webkit-fill-available;
+    height: 100%;
 }
 
 /*.incoming_message_info{
