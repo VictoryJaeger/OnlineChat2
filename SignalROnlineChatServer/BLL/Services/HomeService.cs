@@ -58,13 +58,6 @@ namespace SignalROnlineChatServer.BLL.Services
             return myChats;
         }   
         
-        public void SetUnreadMessageCount()
-        {
-
-        }
-
-
-
         public Chat GetChat(int id)
         {
             var chat = _context.Chats
@@ -79,6 +72,14 @@ namespace SignalROnlineChatServer.BLL.Services
             ////    message.Type = CheckMessagesType(message);
             ////}
             return chat;
+        }
+
+        public async Task DeleteChat(int id)
+        {
+            var chat = _context.Chats.Where(x => x.Id == id).FirstOrDefault();
+            _context.Chats.Remove(chat);
+
+            await _context.SaveChangesAsync();
         }
 
         public ChatViewModel GetChatView(Chat chat)
@@ -336,8 +337,6 @@ namespace SignalROnlineChatServer.BLL.Services
             return _mapper.Map<ChatViewModel>(chat);                
         }
 
-
-        
     }
 }
 

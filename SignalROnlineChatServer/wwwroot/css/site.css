@@ -418,3 +418,10 @@ textarea:focus, input:focus {
 .active {
     background: #e2d1fffa;
 }
+
+.chat_menu {
+    text-align: right;
+    border-bottom: 1px solid #c4c4c4;
+    position: relative;
+    height: 55px;
+}

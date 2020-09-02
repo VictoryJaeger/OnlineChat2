@@ -56,6 +56,15 @@ namespace SignalROnlineChatServer.Controllers
             return View(chatView);
         }
 
+        [HttpDelete("{id}")]
+        [Route("Home/DeleteChatAsync")]        
+        public async Task<IActionResult> DeleteChatAsync(int id)
+        {
+            await _homeService.DeleteChat(id);
+            return RedirectToAction("Index");
+            //return Ok();
+        }
+
         [Route("Home/CreateMessageAsync")]
         [HttpPost]
         public async Task<IActionResult> CreateMessageAsync(int groupId, string message)

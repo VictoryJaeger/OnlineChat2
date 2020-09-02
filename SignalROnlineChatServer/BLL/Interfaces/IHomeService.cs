@@ -21,5 +21,6 @@ namespace SignalROnlineChatServer.BLL.Services.Interfaces
         Task<ChatViewModel>ReturnCreatedGroupAsync(CreateGroupModelView groupModel);
         ChatViewModel GetPrivateChat(string Id);
         List<string> GetUserConnectionIdList(int chatId, string connectionId);
+        Task DeleteChat(int id);
     }
 }
