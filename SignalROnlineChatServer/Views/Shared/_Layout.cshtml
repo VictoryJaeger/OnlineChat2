@@ -1,6 +1,7 @@
 ﻿@inject SignalROnlineChatServer.BLL.Services.Interfaces.IHomeService homeService
 @{
     var chats = homeService.GetAllChats();
+    var activeUserName = homeService.GetActiveUserName();
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -21,8 +22,10 @@
                 <div class="navbar menu">
                     <div class="navbar-brand" @*asp-area="" asp-controller="Home" asp-action="Index"*@>
                         <div class="dropdown button">
-                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                @*Options*@
+                            <button class="btn btn-secondary" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <svg class="menu_lines_icon" width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-justify lg" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" d="M2 12.5a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z" />
+                                </svg>
                             </button>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                 <a class="dropdown-item" asp-controller="Home" asp-action="FindUsers">Find Users</a>
@@ -34,11 +37,21 @@
                             SignalROnlineChat
                         </div>
                     </div>
-                    <div class="logout-button">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="LogoutAsync">Logout</a>
+                    <div class="active_user_name">
+                        <p>@activeUserName</p>
                     </div>
+                    <div class="logout-button">
+                        @*<div></div>*@
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="LogoutAsync">
+                            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-door-open-fill logout_icon" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M1.5 15a.5.5 0 0 0 0 1h13a.5.5 0 0 0 0-1H13V2.5A1.5 1.5 0 0 0 11.5 1H11V.5a.5.5 0 0 0-.57-.495l-7 1A.5.5 0 0 0 3 1.5V15H1.5zM11 2v13h1V2.5a.5.5 0 0 0-.5-.5H11zm-2.5 8c-.276 0-.5-.448-.5-1s.224-1 .5-1 .5.448.5 1-.224 1-.5 1z" />
+                            </svg>
+                            @*Logout*@
+                        </a>
+                    </div>
+                    
                 </div>
-                <div class="inbox_msg">
+                <div class="inbox_msg"> 
                     <div id="inbox_chat" class="inbox_people">
                         <div id="inbox_chat" class="inbox_chat">
                             @foreach (var chat in chats)

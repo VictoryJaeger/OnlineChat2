@@ -9,7 +9,7 @@ namespace SignalROnlineChatServer.BLL.Services.Interfaces
     {
         Chat CheckPrivateChat(string Id /*string ActiveUserId*/);
         Task<Chat> CreateGroupAsync(CreateGroupModelView groupModel);
-        void CreateMessageAsync(int groupId, string message);
+        //void CreateMessageAsync(int groupId, string message);
         Task<Chat> CreatePrivateChatAsync(string ParticipantId/*, string CreatorId*/);
         IEnumerable<ChatViewModel> GetAllChats(/*string user*/);
         ChatViewModel GetChatView(Chat chat);
@@ -22,5 +22,6 @@ namespace SignalROnlineChatServer.BLL.Services.Interfaces
         ChatViewModel GetPrivateChat(string Id);
         List<string> GetUserConnectionIdList(int chatId, string connectionId);
         Task DeleteChat(int id);
+        string GetActiveUserName();
     }
 }

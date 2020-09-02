@@ -65,12 +65,6 @@ namespace SignalROnlineChatServer.BLL.Services
                 .Include(y => y.ChatParticipants).ThenInclude(y => y.User).ThenInclude(y => y.Connections)
                 .FirstOrDefault(x => x.Id == id);
 
-            //var chatView = _mapper.Map<ChatViewModel>(chat);
-
-            ////foreach(var message in chatView.Messages)
-            ////{
-            ////    message.Type = CheckMessagesType(message);
-            ////}
             return chat;
         }
 
@@ -87,47 +81,20 @@ namespace SignalROnlineChatServer.BLL.Services
             return _mapper.Map<ChatViewModel>(chat);
         }
 
-        //public MessageType CheckMessagesType(MessageViewModel model)
+
+        //public async void CreateMessageAsync(int groupId, string message)
         //{
-        //    var activeAccount = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.Name).Value;
 
-        //    if (model.Name == activeAccount) return MessageType.Outgoing;
-        //    else if (model.Name == "Default") return MessageType.Default;
-        //    else return MessageType.Incoming;
-
-        //}
-
-
-        //public ChatViewModel PrepareChatModelForView(ChatViewModel model)
-        //{
-        //    model.LastMessage = model.Messages.Last().Text;
-        //    model.LastMessageDate = model.Messages.Last().Timestamp.Date.ToString();
-
-        //    var userName = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.Name).Value;
-        //    foreach (var message in model.Messages)
+        //    var newMessage = new Message
         //    {
-        //        if (message.Name == userName)
-        //        {
-        //            model.MessageType
-        //        }
-        //    }
+        //        ChatId = groupId,
+        //        Timestamp = DateTime.Now,
+        //        Text = message,
+        //    };
+
+        //    _context.Messages.Add(newMessage);
+        //    await _context.SaveChangesAsync();
         //}
-
-        public async void CreateMessageAsync(int groupId, string message)
-        {
-
-            var newMessage = new Message
-            {
-                ChatId = groupId,
-                Timestamp = DateTime.Now,
-                Text = message,
-                //Name = User.Identity.Name
-            };
-
-            _context.Messages.Add(newMessage);
-            await _context.SaveChangesAsync();
-            //GetChat(groupId);
-        }
 
 
         public Chat CheckPrivateChat(string Id)
@@ -225,28 +192,12 @@ namespace SignalROnlineChatServer.BLL.Services
 
             var chatModel = _mapper.Map<ChatViewModel>(chat);
 
-            //var adminConnectionId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            //var adminConnectionId = _context.Users
-            //    .Include(x => x.Connections)
-            //    .Where(x => x.Id == _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value)
-            //    .Select(x => x.Connections.Last().ConnectionID).FirstOrDefault();
-
             var adminConnectionId = _context.Users
                 .Include(x => x.Connections)
                 .Where(x => x.Id == _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value)
                 .FirstOrDefault().Connections.Last().ConnectionID;
 
-            //var connectionIdList = GetUserConnectionIdList(chat.Id, adminConnectionId);
-
             chatModel.UsersConnectionId = GetUserConnectionIdList(chat.Id, adminConnectionId);
-
-            //var connectionId = _context.Users
-            //    .Include(x => x.Connections)
-            //    .Where(x => x.Id == ParticipantId).FirstOrDefault().Connections.Last().ConnectionID;
-
-            //chatModel.UsersConnectionId = new List<string>();
-
-            //chatModel.UsersConnectionId.Add(connectionId);
 
             return chatModel;
         }
@@ -257,28 +208,12 @@ namespace SignalROnlineChatServer.BLL.Services
             var chat = await CreateGroupAsync(groupModel);
             var chatModel = _mapper.Map<ChatViewModel>(chat);
 
-            //var adminConnectionId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             var adminConnectionId = _context.Users
                 .Include(x => x.Connections)
                 .Where(x => x.Id == _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value)
                 .FirstOrDefault().Connections.Last().ConnectionID;
-                //.Select(x => x.Connections.Last().ConnectionID).FirstOrDefault();
 
-
-            //var connectionIdList = GetUserConnectionIdList(chat.Id, adminConnectionId);
-
-            chatModel.UsersConnectionId = GetUserConnectionIdList(chat.Id, adminConnectionId); //connectionIdList;
-
-            //var connectionIdList = _context.Users
-            //    .Include(x => x.Connections)
-            //    .Where(x => chat.ChatParticipants
-            //            .Select(u => u.UserId).ToList()
-            //            .Contains(x.Id) && x.Id != adminConnectionId)
-            //    .AsNoTracking()
-            //    .AsEnumerable()
-            //    .Select(c => c.Connections.Last().ConnectionID).ToList();
-
-
+            chatModel.UsersConnectionId = GetUserConnectionIdList(chat.Id, adminConnectionId); 
 
             return chatModel;
         }
@@ -294,24 +229,11 @@ namespace SignalROnlineChatServer.BLL.Services
                .Include(x => x.Connections)
                .Where(x => chat.ChatParticipants
                        .Select(u => u.UserId).ToList()
-                       .Contains(x.Id) /*&& x.Id != connectionId*/)
+                       .Contains(x.Id))
                 .AsNoTracking()
                 .AsEnumerable()
                 .Select(c => c.Connections.Last().ConnectionID).Where(c => c != connectionId).ToList();
 
-            //var connectionIdList = _context.Chats
-            //    //.Users
-            //   .Where(x => x.Id == chatId).Include(x => x.ChatParticipants)
-            //   .ThenInclude(x => x.User)
-            //   //.ThenInclude(x => x.Connections)
-            //   .Where(u => u.ChatParticipants
-            //           .Select(u => u.UserId).ToList()
-            //           .Contains(x.Id) && x.Id != adminConnectionId)
-            //   .AsNoTracking()
-            //   .AsEnumerable()
-            //   .Select(c => c.Connections.Last().ConnectionID).ToList();
-
-            //return connectionIdList;
             return connectionIdList;
         }
 
@@ -335,6 +257,12 @@ namespace SignalROnlineChatServer.BLL.Services
         {
             var chat = CheckPrivateChat(Id);
             return _mapper.Map<ChatViewModel>(chat);                
+        }
+
+        public string GetActiveUserName()
+        {
+            var name = _httpContextAccessor.HttpContext.User.Identity.Name;
+            return name;
         }
 
     }

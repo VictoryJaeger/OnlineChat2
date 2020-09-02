@@ -233,7 +233,8 @@ body {
 }
 
 .outgoing_message_text p {
-    background: #05728f none repeat scroll 0 0;
+    background: #1e48849c none repeat scroll 0 0;
+    /*    background: #05728f none repeat scroll 0 0;*/
     border-radius: 3px;
     font-size: 14px;
     margin: 0;
@@ -255,12 +256,12 @@ body {
 }
 
 .message_input {
-    background: transparent;
+    background: #f8f8f8;
     border: 0;
 }
 
 .message_input:focus {
-    background: transparent;
+/*    background: transparent;*/
     outline: none;
 }
 
@@ -301,6 +302,7 @@ body {
     background: #f8f8f8;
     border-color: #c78df3;
     border-bottom-style: double;
+    position:relative;
 }
 
 
@@ -324,9 +326,11 @@ body {
 }
 
 .btn-secondary {
-    color: #fff;
-    background-color: #b34fcc59;
-    border-color: #7c289e85;
+    color: #610c58;
+    /*background-color: #b34fcc59;
+    border-color: #7c289e85;*/
+    background-color: transparent;
+    border-color: transparent;
 }
 
 .btn-secondary:not(:disabled):not(.disabled).active, .btn-secondary:not(:disabled):not(.disabled):active, .show > .btn-secondary.dropdown-toggle {
@@ -421,7 +425,90 @@ textarea:focus, input:focus {
 
 .chat_menu {
     text-align: right;
-    border-bottom: 1px solid #c4c4c4;
+    /*    border-bottom: 1px solid #c4c4c4;*/
+    border-bottom: 2px solid #977df291;
     position: relative;
     height: 55px;
+}
+
+.message_author {
+    margin-bottom: 2px;
+    font-size: 13px;
+    color: #464646;
+}
+
+.logout_icon {
+    font-size: 25px;
+    position: inherit;
+    vertical-align: -webkit-baseline-middle;
+}
+
+.active_user_name {
+    position: inherit;
+    right: 35px;
+    top: 8px;
+    color: #5f1785;
+}
+
+.delete_chat {
+    width: 100%;
+    height: 100%;
+    position: inherit;
+    right: 7px;
+}
+
+.chat_menu_options {
+    position: relative;
+}
+
+.trash_icon {
+    position: inherit;
+    top: 4px;
+    right: 10px;
+}
+
+:active, :hover, :focus {
+    outline: 0;
+    outline-offset: 0;
+}
+
+.chat_dropdown_menu {
+    background: transparent;
+    border: transparent;
+}
+
+.show {
+    outline: 0;
+    outline-offset: 0;
+}
+
+.show > .btn-light.dropdown-toggle:focus {
+    box-shadow: none;
+}
+
+.show > .btn-secondary.dropdown-toggle:focus {
+    box-shadow: none;
+}
+
+.btn-light:focus {
+    box-shadow: none;
+}
+.btn-secondary:focus {
+    box-shadow: none;
+}
+
+.show > .btn-light.dropdown-toggle {
+    color: #212529;
+    background-color: transparent; 
+    border-color: transparent;
+}
+
+.btn-secondary:hover {
+    color: #610c58;
+    background-color: transparent;
+    border-color: transparent;
+}
+
+.menu_lines_icon {
+    font-size: 1.5em;
 }

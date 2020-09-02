@@ -5,12 +5,19 @@
     <div class="selected_chat">
         <div class="chat_menu">
             <div class="dropdown button">
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <button class="btn btn-light chat_dropdown_menu" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-justify" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M2 12.5a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z" />
+                    </svg>
                 </button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <form method="post" class="dropdown-item" onsubmit="deleteChat" asp-controller="Home" asp-action="DeleteChatAsync">
+                    <form method="post" class="dropdown-item chat_menu_options" onsubmit="deleteChat" asp-controller="Home" asp-action="DeleteChatAsync">
+                        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-trash trash_icon" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
+                            <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
+                        </svg>
                         <input type="hidden" name="chatId" value="@Model.Id" />
-                        <button class="btn btn-light btn-sm submit">Delete Chat</button>
+                        <button class="btn btn-light btn-sm submit delete_chat" style="background: transparent; border: transparent;">Delete Chat</button>
                     </form>
                 </div>
             </div>
@@ -22,8 +29,13 @@
                 @if (message.Type == MessageType.Incoming)
                 {
                     <div class="incoming_message_info">
-                        <div class="incoming_user_img">  </div>
+                        <div class="incoming_user_img">
+                            @*<span id="user_badge" class="badge badge-light user_badge">@message.Name</span>*@
+                        </div>
                         <div class="incoming_message">
+                            <p class="message_author">
+                                <strong>@message.Name</strong>
+                            </p>
                             <div class="incoming_message_text">
                                 <p>
                                     @message.Text
