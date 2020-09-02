@@ -96,7 +96,8 @@ namespace SignalROnlineChatServer.Controllers
 
         public async Task<IActionResult> NotificateUsers(int groupId, string connectionId, MessageViewModel messageView)
         {
-            var connectionIdList = _chatService.GetUserConnectionIdList(groupId, connectionId);
+            var connectionIdList = _chatService.GetUserConnectionIdList(groupId/*, connectionId*/);
+            connectionIdList.Remove(connectionId);
 
             await _chatService.IncreaseUsersUnreadMessageCount(groupId);
             await _chatService.ReduceUserUnreadMessageCount(groupId);

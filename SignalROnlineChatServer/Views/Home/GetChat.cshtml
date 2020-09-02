@@ -8,8 +8,8 @@
                 <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 </button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <form method="post" class="dropdown-item" asp-controller="Home" asp-action="DeleteChatAsync">
-                        <input type="hidden" name="id" value="@Model.Id" />
+                    <form method="post" class="dropdown-item" onsubmit="deleteChat" asp-controller="Home" asp-action="DeleteChatAsync">
+                        <input type="hidden" name="chatId" value="@Model.Id" />
                         <button class="btn btn-light btn-sm submit">Delete Chat</button>
                     </form>
                 </div>
@@ -249,6 +249,24 @@
             })
             .catch(err => {
                 console.log("Failed to send message");
+            })
+
+    }
+
+    var deleteChat = function (event) {
+        event.preventDefault();
+
+        var data = new FormData(event.target);
+
+        //data.append("connectionId", _connectionId);
+
+        axios.delete('Home/DeleteChatAsync', data)
+            .then(res => {
+                console.log("Chat has been deleted");
+            })
+            .then(function () { window.location = "Home/Index" })
+            .catch(err => {
+                console.log("Failed to delete chat");
             })
 
     }

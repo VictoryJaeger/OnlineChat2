@@ -58,9 +58,12 @@ namespace SignalROnlineChatServer.Controllers
 
         [HttpDelete("{id}")]
         [Route("Home/DeleteChatAsync")]        
-        public async Task<IActionResult> DeleteChatAsync(int id)
+        public async Task<IActionResult> DeleteChatAsync(int chatId)
         {
-            await _homeService.DeleteChat(id);
+            var connectionIdList = _chatService.GetUserConnectionIdList(chatId);
+            await _chat.Clients.Clients(connectionIdList).SendAsync("DeleteChat", chatId);
+
+            await _homeService.DeleteChat(chatId);
             return RedirectToAction("Index");
             //return Ok();
         }

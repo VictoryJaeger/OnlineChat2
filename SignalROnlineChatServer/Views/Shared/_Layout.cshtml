@@ -240,6 +240,16 @@
         notification.innerHTML = 0;
     });
 
+    homeConnection.on("DeleteChat", function (chatId)
+    {        
+        var currentChat = document.getElementById(chatId);
+        var chatPointer = currentChat.parentNode;
+        var inboxChat = chatPointer.parentNode;
+        inboxChat.removeChild(chatPointer);
+        //alert("Chat deleted");
+        //inboxChat.insertBefore(getChatButton, inboxChat.firstChild);
+    });
+
     //homeConnection.on("GetCreatedChat", function (data) {
     //    debugger;
     //    axios.get('Home/GetChat', data)
