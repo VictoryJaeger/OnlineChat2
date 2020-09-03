@@ -51,7 +51,7 @@
                     
                 </div>
                 <div class="inbox_msg"> 
-                    <div id="inbox_chat" class="inbox_people">
+                    <div @*id="inbox_chat"*@ class="inbox_people">
                         <div id="inbox_chat" class="inbox_chat">
                             @foreach (var chat in chats)
                             {
@@ -66,7 +66,7 @@
                                                     @chat.LastMessageAuthor : @chat.LastMessage
                                                 </p>
                                             </div>
-                                            <span id="notification_badge" class="badge badge-light notification">@chat.UnreadMessages</span>
+                                            <span id="notification_badge" class="badge badge-light notification">@chat.UnreadMessages.ToString()</span>
                                         </div>
                                     </div>
                                 </a>
@@ -105,6 +105,37 @@
     @*<script src="~/js/site.js"></script>*@
 
 <script>
+    /////try to style notification//////////
+    var inboxChat = document.getElementById('inbox_chat');
+        //debugger;
+    const mutationConfig = {
+        childList: true,
+        attributes: true,
+        subtree: true,
+        characterData: true,
+        attributeOldValue: true,
+        characterDataOldValue: true,
+        attributeFilter: true
+            //attributes: true,
+            //characterData: true,
+            //childList: true,
+            //characterDataOldValue: true
+        };
+
+        var onMutate = function (mutationsList) {
+            mutationsList.forEach(mutation => {
+                console.log(mutation.type);
+                debugger;
+                //previous.textContent = mutation.oldValue;
+            });
+        };
+
+    var observer = new MutationObserver(onMutate);
+    observer.observe(inboxChat, mutationConfig);
+    ///try to style notification//////////
+</script>
+
+<script>
         const homeConnection = new signalR.HubConnectionBuilder().withUrl("/homeHub")
             .withAutomaticReconnect()
             .build();
@@ -126,32 +157,19 @@
                 console.log(err)
             })
 
+    
 
         homeConnection.on("ChatCreated", function (data) {
             console.log(data);
 
-
-            //chatId = data.id;
-
-            //debugger;
             console.log('start display data');
 
-            //location.href = '@Url.Action("GetChat", "Home")?id=' + chatId;
 
             var getChatButton = document.createElement("a");
             getChatButton.class = "get_chat_button"
             getChatButton.id = "get_chat_button";
-            //getChatButton.href = "GetChat?" + data.id;
-
-            //getChatButton.click = location.href;
-
-            //var chatId = data.id;
 
             getChatButton.href = '@Url.Action("GetChat", "Home")?id=' + data.id;
-            //getChatButton.click = $(".message_story")load('@Url.Action("GetChat", "Home")', { id: chatId });
-            //$('#get_chat_button').load('@Url.Action("GetChat", "Home")', { id: chatId })
-            //getChatButton.href = "/Home/GetChat";
-            //$('#get_chat_button').attr("getChatButton.href", "/Home/GetChat/" + chatId);
 
             var chatListItem = document.createElement("div");
             chatListItem.classList.add("chat_list_item");
@@ -209,27 +227,8 @@
             getChatButton.appendChild(chatListItem);
             var inboxChat = document.querySelector(".inbox_chat");
             inboxChat.insertBefore(getChatButton, inboxChat.firstChild);
-            //inboxChat.appendChild(getChatButton);
-            //document.getElementById("get_chat_button").appendChild(chatListItem);
-            //document.getElementById(".inbox_chat").appendChild(getChatButton);
-            //document.querySelector('.inbox_chat').append(chatListItem);
-            //debugger;
-            //debugger;
             console.log("data has been displayed");
         })
-
-    //$('get_chat_button').click(function (e) {
-    //    e.preventDefault();
-    //    axios.get('Home/GetChat', bodyForm)
-    //        //axios.post(url,null)
-    //        .then(res => {
-    //            console.log("Group joined!", res);
-    //        })
-    //        .catch(err => {
-    //            console.log("Failed to join this group", err);
-    //        })
-    //    return false;
-    //});
 
     homeConnection.on("UpdateLastMessage", function (data, groupId) {
         //debugger;
@@ -244,6 +243,8 @@
         var notification = currentChat.querySelector(".badge");
         var count = parseInt(notification.innerHTML);
         notification.innerHTML = count + 1;
+
+        debugger;
 
         var chatPointer = currentChat.parentNode;
         var inboxChat = chatPointer.parentNode;
@@ -264,35 +265,32 @@
         var chatPointer = currentChat.parentNode;
         var inboxChat = chatPointer.parentNode;
         inboxChat.removeChild(chatPointer);
-        //alert("Chat deleted");
-        //inboxChat.insertBefore(getChatButton, inboxChat.firstChild);
     });
 
-    // Выбираем целевой элемент
-    var target = document.getElementById('notification_badge');
+    
     //debugger;
-    // Конфигурация observer (за какими изменениями наблюдать)
-    const config = {
-        attributes: true
-    };
+    //// Конфигурация observer (за какими изменениями наблюдать)
+    //const config = {
+    //    attributes: true
+    //};
 
-    // Функция обратного вызова при срабатывании мутации
-    const callback = function (mutationsList, observer) {
-        for (let mutation of mutationsList) {
-            //if (mutation.type === 'childList') {
-            //    console.log('A child node has been added or removed.');
-            //} else 
-            if (mutation.type === 'attributes') {
-                console.log('The ' + mutation.attributeName + ' attribute was modified.');
-            }
-        }
-    };
+    //// Функция обратного вызова при срабатывании мутации
+    //const callback = function (mutationsList, observer) {
+    //    for (let mutation of mutationsList) {
+    //        //if (mutation.type === 'childList') {
+    //        //    console.log('A child node has been added or removed.');
+    //        //} else 
+    //        if (mutation.type === 'attributes') {
+    //            console.log('The ' + mutation.attributeName + ' attribute was modified.');
+    //        }
+    //    }
+    //};
 
-    // Создаем экземпляр наблюдателя с указанной функцией обратного вызова
-    const observer = new MutationObserver(callback);
+    //// Создаем экземпляр наблюдателя с указанной функцией обратного вызова
+    //const observer = new MutationObserver(callback);
 
-    // Начинаем наблюдение за настроенными изменениями целевого элемента
-    observer.observe(target, config);
+    //// Начинаем наблюдение за настроенными изменениями целевого элемента
+    //observer.observe(target, config);
 
 </script>
 
