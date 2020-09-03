@@ -140,6 +140,7 @@ namespace SignalROnlineChatServer.BLL.Services
                 UserId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value
             });
 
+            //_context.Messages.Add(chat.Messages.Last());
             _context.Chats.Add(chat);
 
             await _context.SaveChangesAsync();
@@ -179,6 +180,7 @@ namespace SignalROnlineChatServer.BLL.Services
                 Name = "Default"
             });
 
+            //_context.Messages.Add(chat.Messages.Last());
             _context.Chats.Add(chat);
 
             await _context.SaveChangesAsync();

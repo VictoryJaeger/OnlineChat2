@@ -10,8 +10,8 @@ using SignalROnlineChatServer.DataBase;
 namespace SignalROnlineChatServer.Migrations
 {
     [DbContext(typeof(OnlineChatDBContext))]
-    [Migration("20200828212548_AddUnreadMessagePropertyToChat")]
-    partial class AddUnreadMessagePropertyToChat
+    [Migration("20200902224350_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -165,9 +165,6 @@ namespace SignalROnlineChatServer.Migrations
                     b.Property<int>("Type")
                         .HasColumnType("int");
 
-                    b.Property<int>("UnreadMessages")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.ToTable("Chats");
@@ -182,6 +179,9 @@ namespace SignalROnlineChatServer.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("Role")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UnreadMessageCount")
                         .HasColumnType("int");
 
                     b.HasKey("ChatId", "UserId");

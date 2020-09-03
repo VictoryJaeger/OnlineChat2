@@ -167,12 +167,34 @@ namespace SignalROnlineChatServer.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Connections",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ConnectionID = table.Column<string>(nullable: true),
+                    Connected = table.Column<bool>(nullable: false),
+                    UserId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Connections", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Connections_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ChatUsers",
                 columns: table => new
                 {
                     UserId = table.Column<string>(nullable: false),
                     ChatId = table.Column<int>(nullable: false),
-                    Role = table.Column<int>(nullable: false)
+                    Role = table.Column<int>(nullable: false),
+                    UnreadMessageCount = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -258,6 +280,11 @@ namespace SignalROnlineChatServer.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Connections_UserId",
+                table: "Connections",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Messages_ChatId",
                 table: "Messages",
                 column: "ChatId");
@@ -282,6 +309,9 @@ namespace SignalROnlineChatServer.Migrations
 
             migrationBuilder.DropTable(
                 name: "ChatUsers");
+
+            migrationBuilder.DropTable(
+                name: "Connections");
 
             migrationBuilder.DropTable(
                 name: "Messages");

@@ -45,7 +45,7 @@ namespace SignalROnlineChatServer.Controllers
         }
                 
 
-        [Route("GetChat")]
+        [Route("Home/Home/GetChat")]
         [HttpGet("{id}")]
         public IActionResult GetChat(int id)
         {

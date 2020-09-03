@@ -55,7 +55,7 @@
                         <div id="inbox_chat" class="inbox_chat">
                             @foreach (var chat in chats)
                             {
-                                <a id="get_chat_button" asp-controller="Home" asp-action="GetChat" asp-route-id="@chat.Id">
+                                <a id="get_chat_button" class="get_chat_button" asp-controller="Home" asp-action="GetChat" asp-route-id="@chat.Id">
                                     <div id="@chat.Id" class="chat_list_item">
                                         <div class="chat_detail">
                                             <div class="chat_img"> @*<img src="https://ptetutorials.com/images/user-profile.png" alt="sunil">*@ </div>
@@ -133,7 +133,7 @@
             //<a id="stest" href="/MyWeb/MyPageIndex/123545" />
             //$("#stest").attr("href", "/MyWeb/MyPageIndex/" + GetParentID());
 
-            chatId = data.id;
+            //chatId = data.id;
 
             @*$('.inbox_chat').append(
                 $('.get_chat_button', {
@@ -156,9 +156,10 @@
             //location.href = '@Url.Action("GetChat", "Home")?id=' + chatId;
 
             var getChatButton = document.createElement("a");
-            //getChatButton.class = "get_chat_button"
+            getChatButton.class = "get_chat_button"
             getChatButton.id = "get_chat_button";
-            getChatButton.href = "GetChat?" + chatId;
+            getChatButton.href = "GetChat?" + data.id;
+
             //getChatButton.click = location.href;
 
             //getChatButton.href = "@Url.Action("GetChat", "Home")";
@@ -169,6 +170,7 @@
 
             var chatListItem = document.createElement("div");
             chatListItem.classList.add("chat_list_item");
+            chatListItem.id = data.id;
 
             console.log('1');
             var chatDetail = document.createElement("div");
@@ -193,6 +195,7 @@
 
             console.log('6');
             var p = document.createElement("p");
+            p.classList.add("lastMessage");
             p.appendChild(document.createTextNode(data.lastMessageAuthor + ' : ' + data.lastMessage));
 
             var notification = document.createElement("span");
@@ -230,7 +233,21 @@
             console.log("data has been displayed");
         })
 
+    //$('get_chat_button').click(function (e) {
+    //    e.preventDefault();
+    //    axios.get('Home/GetChat', bodyForm)
+    //        //axios.post(url,null)
+    //        .then(res => {
+    //            console.log("Group joined!", res);
+    //        })
+    //        .catch(err => {
+    //            console.log("Failed to join this group", err);
+    //        })
+    //    return false;
+    //});
+
     homeConnection.on("UpdateLastMessage", function (data, groupId) {
+        //debugger;
             var currentChat = document.getElementById(groupId);
             var lastMessage = currentChat.querySelector(".lastMessage");
             lastMessage.innerHTML = data.name + " : " + data.text;
@@ -268,7 +285,7 @@
 
     // Выбираем целевой элемент
     var target = document.getElementById('notification_badge');
-    debugger;
+    //debugger;
     // Конфигурация observer (за какими изменениями наблюдать)
     const config = {
         attributes: true

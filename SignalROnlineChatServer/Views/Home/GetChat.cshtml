@@ -71,7 +71,6 @@
         </div>
 
 
-
         <div class="input_message_area">
             <form class="chat_input" onsubmit="sendMessage(event)" asp-controller="Home" asp-action="CreateMessageAsync">
                 <input type="hidden" name="groupId" value="@Model.Id" />
@@ -126,7 +125,7 @@
     connection.on("ReceiveMessage", function (data, connectionId, groupId) {
         console.log(data);
 
-        ///debugger;
+        //debugger;
         if (connectionId == _connectionId) {
 
             var messageInfo = document.createElement("div");
@@ -159,6 +158,13 @@
             var message = document.createElement("div");
             message.classList.add("incoming_message");
 
+            var messageAuthor = document.createElement("p");
+            var strong = document.createElement("strong");
+            messageAuthor.classList.add("message_author");
+            messageAuthor.appendChild(strong);
+            strong.appendChild(document.createTextNode(data.name));
+            
+
             var messageText = document.createElement("div");
             messageText.classList.add("incoming_message_text");
 
@@ -171,6 +177,7 @@
 
             messageInfo.appendChild(userImg);
             messageInfo.appendChild(message);
+            message.appendChild(messageAuthor);
             message.appendChild(messageText);
             messageText.appendChild(p);
             messageText.appendChild(message_date);

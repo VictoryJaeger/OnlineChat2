@@ -30,7 +30,7 @@ namespace SignalROnlineChatServer.Controllers
             _homePage = homePage;
         }
 
-        [Route("Chat/JoinChatAsync")]
+        [Route("Home/Home/Chat/JoinChatAsync")]
         [HttpPost]
         public async Task<IActionResult> JoinChatAsync(string connectionId, string groupName)
         {
@@ -46,7 +46,7 @@ namespace SignalROnlineChatServer.Controllers
         //    return Ok();
         //}
 
-        [Route("Chat/SendMessageAsync")]
+        [Route("Home/Home/Chat/SendMessageAsync")]
         [HttpPost]
         public async Task<IActionResult> SendMessageAsync(int groupId, string message, string groupName, string connectionId,[FromServices] OnlineChatDBContext context)
         {
