@@ -130,25 +130,8 @@
         homeConnection.on("ChatCreated", function (data) {
             console.log(data);
 
-            //<a id="stest" href="/MyWeb/MyPageIndex/123545" />
-            //$("#stest").attr("href", "/MyWeb/MyPageIndex/" + GetParentID());
 
             //chatId = data.id;
-
-            @*$('.inbox_chat').append(
-                $('.get_chat_button', {
-                    html: $('<a/>', {
-                        href: '@Url.Action("someAction", "someController")',
-                        text: 'hello world',
-                        click: function () {
-                            $.get(this.href, function (result) {
-                                alert('ajax success');
-                            });
-                            return false;
-                        }
-                    })
-                })
-            );*@
 
             //debugger;
             console.log('start display data');
@@ -158,11 +141,13 @@
             var getChatButton = document.createElement("a");
             getChatButton.class = "get_chat_button"
             getChatButton.id = "get_chat_button";
-            getChatButton.href = "GetChat?" + data.id;
+            //getChatButton.href = "GetChat?" + data.id;
 
             //getChatButton.click = location.href;
 
-            //getChatButton.href = "@Url.Action("GetChat", "Home")";
+            //var chatId = data.id;
+
+            getChatButton.href = '@Url.Action("GetChat", "Home")?id=' + data.id;
             //getChatButton.click = $(".message_story")load('@Url.Action("GetChat", "Home")', { id: chatId });
             //$('#get_chat_button').load('@Url.Action("GetChat", "Home")', { id: chatId })
             //getChatButton.href = "/Home/GetChat";
