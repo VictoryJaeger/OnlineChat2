@@ -3,19 +3,3 @@
 @{ 
     Layout = "_Layout";
 }
-    @*<div class="chat-body">
-        <a class="group-button" asp-controller="Home" asp-action="DisplayCreateGroupForm">
-            <p><h3>Create new group</h3></p>
-        </a>
-        <a class="group-button" asp-controller="Home" asp-action="FindUsers">
-            <p><h4>Find users</h4></p>
-        </a>
-        <div class="side-menu">
-            @foreach (var chat in Model)
-            {
-            <a class="group-button" asp-controller="Home" asp-action="GetChat" asp-route-id="@chat.Id">
-                <p>@chat.Name</p>
-            </a>
-            }
-        </div>
-    </div>*@

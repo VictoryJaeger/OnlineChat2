@@ -14,201 +14,23 @@
 
 <script src="~/js/signalr.min.js"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-@*<script src="~/js/site.js"></script>*@
 
 <script>
 
-    //var homeConnection = new signalR.HubConnectionBuilder().withUrl("/homeHub")
-    //    .withAutomaticReconnect()
-    //    .build();
-
-    //var _connectionId = '';
-
-    //homeConnection.on("PRCC", function(data) {
-
-    //    console.log(data);
-
-    //    //debugger;
-    //    console.log('start display data');
-    //    var chatListItem = document.createElement("div");
-    //    chatListItem.classList.add("chat_list_item");
-
-    //    console.log('1');
-    //    var chatDetail = document.createElement("div");
-    //    chatDetail.classList.add("chat_detail");
-
-    //    console.log('2');
-    //    var chatImg = document.createElement("div");
-    //    chatImg.classList.add("chat_img");
-
-    //    console.log('3');
-    //    var chatDetailInfo = document.createElement("div");
-    //    chatDetailInfo.classList.add("chat_detail_info");
-
-    //    console.log('4');
-    //    var chatName = document.createElement("h5");
-    //    chatName.appendChild(document.createTextNode(data.name));
-
-    //    console.log('5');
-    //    var chatDate = document.createElement("span");
-    //    chatDate.classList.add("chat_date");
-    //    chatDate.appendChild(document.createTextNode(data.lastMessageDate));
-
-    //    console.log('6');
-    //    var p = document.createElement("p");
-    //    p.appendChild(document.createTextNode(data.lastMessageAuthor + ' : ' + data.lastMessage));
-
-    //    console.log('create tree');
-
-    //    chatListItem.appendChild(chatDetail);
-    //    console.log('add chatDetail');
-
-    //    chatDetail.appendChild(chatImg);
-    //    chatDetail.appendChild(chatDetailInfo);
-    //    chatDetailInfo.appendChild(chatName);
-    //    chatDetailInfo.appendChild(p);
-    //    chatName.appendChild(chatDate);
-
-    //    console.log('add new chat');
-    //    document.querySelector('.inbox_chats').append(chatListItem);
-    //    //debugger;
-    //    console.log("data has been displayed");
-    //})
-
-    //var createPrivateChat = function () {
-    //    const bodyForm = new FormData();
-    //    bodyForm.set('connectionId', _connectionId);
-
-    //    axios.post('Home/CreatePrivateChatAsync', bodyForm)
-    //        //axios.post(url,null)
-    //        .then(res => {
-    //            console.log("Private Chat created!", res);
-    //        })
-    //        .catch(err => {
-    //            console.log("Failed to create private Chat", err);
-    //        })
-    //}    
-
-
-    //homeConnection.start().catch(err => console.log(err))
-    //    .then(function () {
-    //        homeConnection.invoke('GetConnectionId')
-    //            .then(function (connectionId) {
-    //                _connectionId = connectionId
-    //                console.log("connected to homeHub");
-    //                //createPrivateChat();
-    //            })
-    //    })
-    //    .catch(function (err) {
-    //        console.log(err)
-    //    })
-
-    //homeConnection.serverTimeoutInMilliseconds = 1000 * 60 * 10;
-
-    //var homeConnection = homeConnection;
-
     var notifyAboutCreating = function (event) {
-        //if(event)
         event.preventDefault();
 
-        //debugger;
         var data = new FormData(event.target);
         data.append('connectionId', _connectionId);
-
-        //document.getElementById('message-input').value = '';
 
         axios.post('Home/CreatePrivateChatAsync', data)
             .then(res => {
                 console.log("Notification delivered", res);
-                //debugger;
             })
             .then(function () { window.location = "Home/Index" })
             .catch(err => {
                 console.log("Failed to send notification", err);
             })
-
     }
-
     
 </script>
-
-
-
-
-
-@*<button style="background: none !important; border: none; padding: 0 !important; /*optional*/ font-family: arial, sans-serif; /*input has OS specific font-family*/ color: #069; text-decoration: underline; cursor: pointer;">
-        <p>Create chat with @Model.UserName?</p>
-    </button>*@
-
-@*asp-controller="Home" asp-action="CreatePrivateChatAsync" asp-route-id="@Model.UserId"*@
-
-@*asp-route-id="@Model.UserId"*@
-
-
-
-
-
-@*  <div class="modal" tabindex="-1" role="dialog">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Modal title</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <p>Modal body text goes here.</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Save changes</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-    <div class="modal" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">@Model.UserName</h5>
-                    <input type="hidden" name="Id" value="@Model.UserId" />
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form asp-controller="Home" asp-action="CreatePrivateChatAsync">
-                        <p>Create chat with this user?</p>
-                        <input type="hidden" name="Id" value="@Model.UserId" />
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary">Create</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
-*@
-
-
-
-
-
-
-@*var joinGroup = function () {
-
-        const bodyForm = new FormData();
-        bodyForm.set('connectionId', _connectionId);
-        bodyForm.append('groupName', '@Model.Name');
-
-        axios.post('Chat/JoinChatAsync', bodyForm)
-            .then(res => {
-                console.log("Group joined!", res);
-            })
-            .catch(err => {
-                console.log("Failed to join this group", err);
-            })
-    }*@

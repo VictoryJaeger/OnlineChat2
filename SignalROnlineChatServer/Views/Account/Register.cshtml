@@ -7,7 +7,6 @@
 
 <form asp-action="RegisterAsync" asp-controller="Account" class="needs-validation" novalidate>
     <div class="text-center mb-4">
-        @*<img class="mb-4" src="/docs/4.5/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">*@
         <h2 class="chatname">SignalR Chat</h2>
     </div>
     <div class="validation" asp-validation-summary="ModelOnly"></div>
@@ -34,102 +33,8 @@
     <p class="mt-5 mb-3 text-muted text-center">© 2017-2020</p>
 </form>
 
-
-@*asp-action="RegisterAsync" asp-controller="Account"*@
-@*onsubmit="register(event)"*@
-
-<script src="~/js/signalr.min.js"></script>
-<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-
 @section scripts{
 
     <partial name="_ValidationScriptsPartial" />
 
-    <script>
-
-        var connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
-
-        var _connectionId = '';
-
-        connection.start()/*.then(function () { console.log("connected to hub") })*/
-            .then(function () {
-                console.log("connected to hub")
-                connection.invoke('GetConnectionId')
-                    .then(function (connectionId) {
-                        _connectionId = connectionId
-                        //joinGroup();
-                    })
-            })
-            .catch(function (err) {
-                console.log(err)
-            })
-
-        var register = function (event) {
-            event.preventDefault();
-
-            var data = new FormData(event.target);
-
-            //var connectionId = connection.invoke('GetConnectionId').then(function (_connectionId) { connectionId = _connectionId; });
-
-            data.append('connectionId', _connectionId);
-
-            //document.getElementById('message-input').value = '';
-
-
-            axios.post('Account/RegisterAsync', data)
-                .then(res => {
-                    console.log(" Success! ");
-                }).then(function () { window.location = 'Home/Index' })
-                .catch(err => {
-                    console.log("Failed to register");
-                })
-
-        }
-
-    </script>
-
-
-
-
 }
-
-
-
-@*<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
-    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>*@
-
-
-
-@*<form asp-controller="Account" asp-action="RegisterAsync">
-        Login:  <input asp-for="Login" /> <br />
-        Password: <input asp-for="Password" /><br />
-        PasswordConfirm: <input asp-for="PasswordConfirm" />
-
-        <button type="submit">Register</button>
-    </form>*@
-
-@*<form asp-antiforgery="true" asp-action="RegisterAsync" asp-controller="Account">
-        <div>
-            <div class="validation" asp-validation-summary="ModelOnly"></div>
-            <div>
-                <label asp-for="Login"></label><br />
-                <input type="text" asp-for="Login" />
-                <span asp-validation-for="Login"></span>
-            </div>
-            <div>
-                <label asp-for="Password"></label><br />
-                <input asp-for="Password" />
-                <span asp-validation-for="Password"></span>
-            </div>
-            <div>
-                <label asp-for="PasswordConfirm"></label><br />
-                <input asp-for="PasswordConfirm" />
-                <span asp-validation-for="PasswordConfirm"></span>
-            </div>
-            <div>
-                <p><input type="submit" value="Register" /></p>
-            </div>
-        </div>
-    </form>*@
-
-

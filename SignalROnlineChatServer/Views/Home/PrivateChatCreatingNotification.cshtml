@@ -8,7 +8,6 @@
     <form class="create_pr_chat_notify_form" onsubmit="notifyAboutCreating(event)" asp-controller="Home" asp-action="CreatePrivateChatAsync">
         <input type="hidden" name="chatId" value="@Model.Id" />
         <input type="hidden" name="chatName" value="@Model.Name" />
-        @*<input type="hidden" name="chatParticipantConnectionId" value="@Model.UsersConnectionId.Last()" />*@
         <div class="default_message_text">
             <p>
                 Chat "@Model.Name" has been created
@@ -34,7 +33,6 @@
     homeConnection.on("ChatCreated", function (data) {
             console.log(data);
 
-            //debugger;
             console.log('start display data');
             var chatListItem = document.createElement("div");
             chatListItem.classList.add("chat_list_item");
