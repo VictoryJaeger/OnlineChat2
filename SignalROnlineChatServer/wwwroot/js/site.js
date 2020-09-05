@@ -78,7 +78,7 @@ homeConnection.on("ChatCreated", function (data) {
 
     console.log('add new chat');
     document.getElementById("get_chat_button").appendChild(chatListItem);
-    //document.querySelector('.inbox_chat').append(chatListItem);
+    //document.querySelector('.inbox_chats').append(chatListItem);
     //debugger;
     console.log("data has been displayed");
 })

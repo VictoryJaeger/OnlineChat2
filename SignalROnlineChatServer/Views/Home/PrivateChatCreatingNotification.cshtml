@@ -4,7 +4,7 @@
     Layout = "_Layout";
 }
 
-<div class="inbox_chat_new">
+<div class="inbox_chats_new">
     <form class="create_pr_chat_notify_form" onsubmit="notifyAboutCreating(event)" asp-controller="Home" asp-action="CreatePrivateChatAsync">
         <input type="hidden" name="chatId" value="@Model.Id" />
         <input type="hidden" name="chatName" value="@Model.Name" />
@@ -76,7 +76,7 @@
             chatName.appendChild(chatDate);
 
             console.log('add new chat');
-            document.querySelector('.inbox_chat').append(chatListItem);
+            document.querySelector('.inbox_chats').append(chatListItem);
             //debugger;
             console.log("data has been displayed");
         })

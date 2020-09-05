@@ -48,14 +48,14 @@
                             @*Logout*@
                         </a>
                     </div>
-                    
+
                 </div>
-                <div class="inbox_msg"> 
-                    <div @*id="inbox_chat"*@ class="inbox_people">
-                        <div id="inbox_chat" class="inbox_chat">
+                <div class="inbox_msg">
+                    <div class="inbox_people">
+                        <div class="inbox_chats">
                             @foreach (var chat in chats)
                             {
-                                <a id="get_chat_button" class="get_chat_button" asp-controller="Home" asp-action="GetChat" asp-route-id="@chat.Id">
+                                <a class="get_chat_button" asp-controller="Home" asp-action="GetChat" asp-route-id="@chat.Id">
                                     <div id="@chat.Id" class="chat_list_item">
                                         <div class="chat_detail">
                                             <div class="chat_img"> @*<img src="https://ptetutorials.com/images/user-profile.png" alt="sunil">*@ </div>
@@ -66,7 +66,14 @@
                                                     @chat.LastMessageAuthor : @chat.LastMessage
                                                 </p>
                                             </div>
-                                            <span id="notification_badge" class="badge badge-light notification">@chat.UnreadMessages.ToString()</span>
+                                            @if (chat.UnreadMessages > 0)
+                                            {
+                                                <span class="badge badge-light notification">@chat.UnreadMessages.ToString()</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge badge-light notification" style="visibility: hidden">@chat.UnreadMessages.ToString()</span>
+                                            }
                                         </div>
                                     </div>
                                 </a>
@@ -101,38 +108,93 @@
 
 
 <script src="~/js/signalr.min.js"></script>
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    @*<script src="~/js/site.js"></script>*@
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+@*<script src="~/js/site.js"></script>*@
 
-<script>
+<script type="text/javascript">
     /////try to style notification//////////
-    var inboxChat = document.getElementById('inbox_chat');
+    //var inboxChat = document.getElementById('inbox_chats');
+    //$(document).ready(function () {
+    //$(function () {
+    //    $(".badge .badge-light .notification").live("DOMSubtreeModified", startObserve)//{
+    //        //$(document).bind("DOMSubtreeModified", function () {
+            
+    //        //});
+
+    //    function startObserve() {
+    //        alert("ok");
+
+    //        var elem = $(".notification");
+
+    //        //elem.forEach(element => console.log(element));
+    //        elem.each(function () {
+    //            //console.log($(this));
+    //            var innerText = $(this).contents().filter(function () {
+    //                return this.nodeType == Node.TEXT_NODE;
+    //            }).text();
+
+    //            var count = parseInt(innerText);
+
+    //            if (count > 0) {
+    //                $(".notification").css("visibility", "visible");
+    //                //console.log(">0");
+    //                alert(">0");
+    //            }
+    //            else {
+    //                $(".notification").css("visibility", "hidden ");
+    //                //console.log("0");
+    //                alert("0");
+    //            }
+    //        });
+    //        //var innerText = $(".notification").contents().filter(function () {
+    //        //    return this.nodeType == Node.TEXT_NODE;
+    //        //}).text();
+
+    //        //var count = parseInt(innerText);
+    //        ////var element = document.getElementById("notification_badge");
+    //        ////var count = parseInt(element.innerHTML);
+    //        ////debugger;
+    //        //if (count > 0) {
+    //        //    $(".notification").css("visibility", "visible");
+    //        //    alert(">0");
+    //        //}
+    //        //else {
+    //        //    $(".notification").css("visibility", "hidden ");
+    //        //    alert("0");
+    //        //}
+    //    }
+    //});
+
+    
+
+    $(".notification").bind("DOMSubtreeModified", function () {
+        var elem = $(".notification");
         //debugger;
-    const mutationConfig = {
-        childList: true,
-        attributes: true,
-        subtree: true,
-        characterData: true,
-        attributeOldValue: true,
-        characterDataOldValue: true,
-        attributeFilter: true
-            //attributes: true,
-            //characterData: true,
-            //childList: true,
-            //characterDataOldValue: true
-        };
+        //elem.forEach(element => console.log(element));
+        elem.each(function () {
+            //console.log($(this));
+            var innerText = $(this).contents().filter(function () {
+                return this.nodeType == Node.TEXT_NODE;
+            }).text();
 
-        var onMutate = function (mutationsList) {
-            mutationsList.forEach(mutation => {
-                console.log(mutation.type);
-                debugger;
-                //previous.textContent = mutation.oldValue;
-            });
-        };
+            var count = parseInt(innerText);
 
-    var observer = new MutationObserver(onMutate);
-    observer.observe(inboxChat, mutationConfig);
-    ///try to style notification//////////
+            if (count > 0) {
+                $(this).css("visibility", "visible");
+                //$(".notification").css("visibility", "visible");
+                //console.log(">0");
+                console.log(">0");
+            }
+            else {
+                $(this).css("visibility", "hidden");
+
+                //$(".notification").css("visibility", "hidden ");
+                //console.log("0");
+                console.log("0");
+            }
+        });
+    })
+
 </script>
 
 <script>
@@ -157,7 +219,7 @@
                 console.log(err)
             })
 
-    
+
 
         homeConnection.on("ChatCreated", function (data) {
             console.log(data);
@@ -167,7 +229,7 @@
 
             var getChatButton = document.createElement("a");
             getChatButton.class = "get_chat_button"
-            getChatButton.id = "get_chat_button";
+            //getChatButton.id = "get_chat_button";
 
             getChatButton.href = '@Url.Action("GetChat", "Home")?id=' + data.id;
 
@@ -205,7 +267,6 @@
             notification.classList.add("badge");
             notification.classList.add("badge-light");
             notification.classList.add("notification");
-            notification.id = "notification_badge";
             notification.appendChild(document.createTextNode("1"));
 
             console.log('create tree');
@@ -225,7 +286,7 @@
 
             console.log('add new chat');
             getChatButton.appendChild(chatListItem);
-            var inboxChat = document.querySelector(".inbox_chat");
+            var inboxChat = document.querySelector(".inbox_chats");
             inboxChat.insertBefore(getChatButton, inboxChat.firstChild);
             console.log("data has been displayed");
         })
@@ -244,7 +305,6 @@
         var count = parseInt(notification.innerHTML);
         notification.innerHTML = count + 1;
 
-        debugger;
 
         var chatPointer = currentChat.parentNode;
         var inboxChat = chatPointer.parentNode;
@@ -260,14 +320,14 @@
     });
 
     homeConnection.on("DeleteChat", function (chatId)
-    {        
+    {
         var currentChat = document.getElementById(chatId);
         var chatPointer = currentChat.parentNode;
         var inboxChat = chatPointer.parentNode;
         inboxChat.removeChild(chatPointer);
     });
 
-    
+
     //debugger;
     //// Конфигурация observer (за какими изменениями наблюдать)
     //const config = {
@@ -279,7 +339,7 @@
     //    for (let mutation of mutationsList) {
     //        //if (mutation.type === 'childList') {
     //        //    console.log('A child node has been added or removed.');
-    //        //} else 
+    //        //} else
     //        if (mutation.type === 'attributes') {
     //            console.log('The ' + mutation.attributeName + ' attribute was modified.');
     //        }
@@ -294,6 +354,37 @@
 
 </script>
 
+
+
+
+
+ @*//var inboxChat = document.querySelector('inbox_chats');
+    ////debugger;
+    //const mutationConfig = {
+    //    childList: true,
+    //    attributes: true,
+    //    subtree: true,
+    //    characterData: true,
+    //    attributeOldValue: true,
+    //    characterDataOldValue: true,
+    //    attributeFilter: true
+    //        //attributes: true,
+    //        //characterData: true,
+    //        //childList: true,
+    //        //characterDataOldValue: true
+    //    };
+
+    //    var onMutate = function (mutationsList) {
+    //        mutationsList.forEach(mutation => {
+    //            console.log(mutation.type);
+    //            debugger;
+    //            //previous.textContent = mutation.oldValue;
+    //        });
+    //    };
+
+    //var observer = new MutationObserver(onMutate);
+    //observer.observe(inboxChat, mutationConfig);
+    ///try to style notification//////////*@
 
 
 

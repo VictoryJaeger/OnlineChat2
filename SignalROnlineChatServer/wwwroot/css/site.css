@@ -93,7 +93,7 @@ body {
     border-color: #100900
 }
 
-.inbox_chat {
+.inbox_chats {
     height: 600px;
     overflow-y: scroll;
 }
