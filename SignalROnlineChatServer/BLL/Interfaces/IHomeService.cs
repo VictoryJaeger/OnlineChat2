@@ -7,16 +7,14 @@ namespace SignalROnlineChatServer.BLL.Services.Interfaces
 {
     public interface IHomeService
     {
-        Chat CheckPrivateChat(string Id /*string ActiveUserId*/);
+        Chat CheckPrivateChat(string Id);
         Task<Chat> CreateGroupAsync(CreateGroupModelView groupModel);
-        //void CreateMessageAsync(int groupId, string message);
-        Task<Chat> CreatePrivateChatAsync(string ParticipantId/*, string CreatorId*/);
-        IEnumerable<ChatViewModel> GetAllChats(/*string user*/);
+        Task<Chat> CreatePrivateChatAsync(string ParticipantId);
+        IEnumerable<ChatViewModel> GetAllChats();
         ChatViewModel GetChatView(Chat chat);
         Chat GetChat(int id);
         User GetUser(string Id);
-        List<UserViewModel> GetUsers(/*string ActiveUserId*/);
-        //MessageType CheckMessagesType(MessageViewModel model);
+        List<UserViewModel> GetUsers();
         Task<ChatViewModel> ReturnCreatedPrivateChatAsync(string ParticipantId);
         Task<ChatViewModel>ReturnCreatedGroupAsync(CreateGroupModelView groupModel);
         ChatViewModel GetPrivateChat(string Id);

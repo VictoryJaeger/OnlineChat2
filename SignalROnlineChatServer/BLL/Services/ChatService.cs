@@ -46,7 +46,7 @@ namespace SignalROnlineChatServer.BLL.Services
             return messageView;
         }
 
-        public List<string> GetUserConnectionIdList(int chatId/*, string connectionId*/)
+        public List<string> GetUserConnectionIdList(int chatId)
         {
             var chat = _context.Chats
                 .Include(x => x.ChatParticipants).ThenInclude(x => x.User).ThenInclude(x => x.Connections)
@@ -57,10 +57,10 @@ namespace SignalROnlineChatServer.BLL.Services
                .Include(x => x.Connections)
                .Where(x => chat.ChatParticipants
                        .Select(u => u.UserId).ToList()
-                       .Contains(x.Id) /*&& x.Id != connectionId*/)
+                       .Contains(x.Id))
                 .AsNoTracking()
                 .AsEnumerable()
-                .Select(c => c.Connections.Last().ConnectionID)/*.Where(c => c != connectionId)*/.ToList();
+                .Select(c => c.Connections.Last().ConnectionID).ToList();
 
             return connectionIdList;
         }

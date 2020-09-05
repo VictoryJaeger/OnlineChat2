@@ -36,24 +36,9 @@ namespace SignalROnlineChatServer.BLL.Services
                 .Where(x => x.ChatParticipants.Any(y => y.UserId == _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value))
                 .ToList();
 
-            //chats.Sort((a, b) => string.Compare(a.Messages.Last().Timestamp, b.Messages.Last().Timestamp));
             chats = chats.OrderByDescending(x => x?.Messages?.LastOrDefault()?.Timestamp?? DateTime.MinValue).ToList();
 
             var myChats = _mapper.Map<List<ChatViewModel>>(chats);
-
-            //var myChats = new List<ChatViewModel>();
-
-            //foreach (Chat chat in chats)
-            //{
-            //    if (chat.Messages.Count() != 0)
-            //    {
-            //        var chatModel = _mapper.Map<ChatViewModel>(chat);
-            //        myChats.Add(chatModel);
-            //    }
-            //}
-
-            //myChats.Sort((a, b) => string.Compare(a.LastMessageDate, b.LastMessageDate));
-
 
             return myChats;
         }   
@@ -80,22 +65,6 @@ namespace SignalROnlineChatServer.BLL.Services
         {
             return _mapper.Map<ChatViewModel>(chat);
         }
-
-
-        //public async void CreateMessageAsync(int groupId, string message)
-        //{
-
-        //    var newMessage = new Message
-        //    {
-        //        ChatId = groupId,
-        //        Timestamp = DateTime.Now,
-        //        Text = message,
-        //    };
-
-        //    _context.Messages.Add(newMessage);
-        //    await _context.SaveChangesAsync();
-        //}
-
 
         public Chat CheckPrivateChat(string Id)
         {
@@ -140,7 +109,6 @@ namespace SignalROnlineChatServer.BLL.Services
                 UserId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value
             });
 
-            //_context.Messages.Add(chat.Messages.Last());
             _context.Chats.Add(chat);
 
             await _context.SaveChangesAsync();
@@ -180,7 +148,6 @@ namespace SignalROnlineChatServer.BLL.Services
                 Name = "Default"
             });
 
-            //_context.Messages.Add(chat.Messages.Last());
             _context.Chats.Add(chat);
 
             await _context.SaveChangesAsync();
@@ -269,24 +236,3 @@ namespace SignalROnlineChatServer.BLL.Services
 
     }
 }
-
-
-
-////TODO
-//[Route("Home/JoinGroup")]
-//[HttpPost] //("{id}")
-//public async Task<IActionResult> JoinGroupAsync(int id)
-//{
-//    var chatMember = new ChatUser
-//    {
-//        ChatId = id,
-//        UserId = User.FindFirst(ClaimTypes.NameIdentifier).Value,
-//        Role = UserRole.Member
-//    };
-
-//    _context.ChatUsers.Add(chatMember);
-
-//    await _context.SaveChangesAsync();
-
-//    return RedirectToAction("GetChat", "Home"); // new {id = id}
-//}

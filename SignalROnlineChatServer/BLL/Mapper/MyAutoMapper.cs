@@ -38,9 +38,6 @@ namespace SignalROnlineChatServer.BLL.Mapper
                 .ForMember(x => x.Messages, opt => opt.MapFrom(src => src.Messages))
                 .ForMember(x => x.ChatParticipants, opt => opt.MapFrom(src => src.ChatParticipants.Select(x => x.User).ToList()))
                 .AfterMap<SetUnreadMessageCountToCurrentUser>();
-                //.ForMember(x => x.UnreadMessages, opt => opt.MapFrom(src => src.UnreadMessages));
-                //.ForMember(x => x.UnreadMessages, opt => opt//.MapFrom(src => src.UnreadMessages?? 0))
-                //.MapFrom(src => (src.UnreadMessages == 0) ? 0 : src.UnreadMessages));
 
             CreateMap<IQueryable<User>, List<UserViewModel>>();
 
