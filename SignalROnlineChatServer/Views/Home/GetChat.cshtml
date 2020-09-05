@@ -30,7 +30,6 @@
                 {
                     <div class="incoming_message_info">
                         <div class="incoming_user_img">
-                            @*<span id="user_badge" class="badge badge-light user_badge">@message.Name</span>*@
                         </div>
                         <div class="incoming_message">
                             <p class="message_author">
@@ -40,7 +39,7 @@
                                 <p>
                                     @message.Text
                                 </p>
-                                <span class="message_date">@message.Timestamp@*.ToString("hh:mm | d MMM")*@</span>
+                                <span class="message_date">@message.Timestamp</span>
                             </div>
                         </div>
                     </div>
@@ -52,7 +51,7 @@
                             <p>
                                 @message.Text
                             </p>
-                            <span class="message_date">@message.Timestamp@*.ToString("hh:mm | d MMM")*@</span>
+                            <span class="message_date">@message.Timestamp</span>
                         </div>
                     </div>
                 }
@@ -63,7 +62,7 @@
                             <p>
                                 @message.Text
                             </p>
-                            <span class="message_date">@message.Timestamp@*.ToString("hh:mm | d MMM")*@</span>
+                            <span class="message_date">@message.Timestamp</span>
                         </div>
                     </div>
                 }
@@ -75,9 +74,7 @@
             <form class="chat_input" onsubmit="sendMessage(event)" asp-controller="Home" asp-action="CreateMessageAsync">
                 <input type="hidden" name="groupId" value="@Model.Id" />
                 <input type="hidden" name="groupName" value="@Model.Name" />
-                @*<input class="text" type="text" name="message" id="message-input" placeholder="Type a message here..." required />*@
                 <textarea class="form-control message_input" type="text" name="message" id="message-input" placeholder="Type a message here..." required style="resize:none; height:auto"></textarea>
-                @*<button type="submit">Send</button>*@
                 <button type="submit" class="btn btn-light submit">Send</button>
             </form>
         </div>
@@ -89,10 +86,6 @@
 <script src="~/js/site.js"></script>
 <script src="~/lib/jquery/dist/jquery.js"></script>
 
-@*@section scripts{*@
-@*<script src="wwwroot/js/signalr/dist/browser/signalr.js"></script>*@
-
-
 
 <script>
 
@@ -101,31 +94,17 @@
 
     window.onload = function () {
         window.scrollBy(0, window.innerHeight)
-        //window.scrollTo(this.top);
-        document.getElementById('chat_body').scrollBy(0, window.innerHeight);//scrollIntoView();
+        document.getElementById('chat_body').scrollBy(0, window.innerHeight);
     }
 
     var connection = new signalR.HubConnectionBuilder().withUrl("/chatHub")
         .withAutomaticReconnect()
         .build();
-    //var homeConnection = new signalR.HubConnectionBuilder().withUrl("/homeHub")
-    //    .withAutomaticReconnect()
-    //    .build();
-
-    //connection.invoke('GetConnectionId')
-    //    .then(function (connectionId) {
-    //        _connectionId = connectionId
-    //        joinGroup();
-    //    });
-
-
+   
     var _connectionId = '';
-   // var _homeConnectionId = '';
 
     connection.on("ReceiveMessage", function (data, connectionId, groupId) {
-        console.log(data);
 
-        //debugger;
         if (connectionId == _connectionId) {
 
             var messageInfo = document.createElement("div");
@@ -185,23 +164,16 @@
             document.querySelector('.chat_body').append(messageInfo);
             console.log("incoming message: ", data.text);
         }
-
-        //var currentChat = document.getElementById(groupId);
-        //var lastMessage = currentChat.querySelector(".lastMessage");
-        //lastMessage.innerHTML = data.name + " : " + data.text;
-        //document.getElementById("last_message_in_chat").innerHTML = data.name + " : " + data.text;
     })
 
     
 
     var joinGroup = function () {
-        // var url = 'Chat/JoinChatAsync/' + _connectionId + '/@Model.Name'
         const bodyForm = new FormData();
         bodyForm.set('connectionId', _connectionId);
         bodyForm.append('groupName', '@Model.Name');
 
         axios.post('Chat/JoinChatAsync', bodyForm)
-        //axios.post(url,null)
             .then(res => {
                 console.log("Group joined!", res);
             })
@@ -210,19 +182,6 @@
             })
     }
 
-
-
-    //connection.onclose(function () {
-    //    console.log('connecition closed');
-    //});
-
-    //connection.onclose(async () => {
-    //    debugger;
-    //    console.log("need reconnect");
-    //});
-
-    //$.signalR.connectionState
-    //Object { connecting: 0, connected: 1, reconnecting: 2, disconnected: 4 }
 
     connection.start().catch(err => console.log(err))
         .then(function () {
@@ -238,21 +197,7 @@
             console.log(err)
         })
 
-    //homeConnection.start().catch(err => console.log(err))
-    //    .then(function () {
-    //        homeConnection.invoke('GetConnectionId')
-    //            .then(function (homeConnectionId) {
-    //                _homeConnectionId = homeConnectionId
-    //                console.log('connect to homeHub');
-    //                console.log(_homeConnectionId);
-    //                //joinGroup();
-    //            })
-    //    })
-
     connection.serverTimeoutInMilliseconds = 1000 * 60 * 10;
-
-    //homeConnection.serverTimeoutInMilliseconds = 1000 * 60 * 10;
-
 
     var sendMessage = function (event) {
         event.preventDefault();
@@ -277,8 +222,6 @@
 
         var data = new FormData(event.target);
 
-        //data.append("connectionId", _connectionId);
-
         axios.delete('Home/DeleteChatAsync', data)
             .then(res => {
                 console.log("Chat has been deleted");
@@ -290,79 +233,3 @@
 
     }
 </script>
-@*}*@
-
-
-
-
-
-
-@*//async function start() {
-    //    try {
-    //        await connection.start();
-    //        console.log("connected");
-    //    } catch (err) {
-    //        console.log(err);
-    //        settimeout(() => start(), 5000);
-    //    }
-    //};*@
-
-
-
-
-@*<div class="chat-body">
-
-
-        @foreach (var message in Model.Messages)
-        {
-            <div class="message">
-                <header>@message.Name:</header>
-                <p>@message.Text</p>
-                <footer>@message.Timestamp</footer>
-            </div>
-        }
-
-    </div>*@
-@*<form class="chat-input" onsubmit="sendMessage(event)" asp-controller="Home" asp-action="CreateMessageAsync">
-        <input type="hidden" name="groupId" value="@Model.Id" />
-        <input type="text" name="message" id="message-input" />
-        <button type="submit">Send</button>
-
-    </form>*@
-
-
-
-
-
-
-@*//var messageInfo = document.createElement("div");
-    //messageInfo.classList.add("message_info");
-
-    //var userImg = document.createElement("div");
-    //userImg.classList.add("user_img");
-
-    //var message = document.createElement("div");
-    //message.classList.add("message");
-
-    //messageInfo.appendChild(userImg);
-    //messageInfo.appendChild(message);
-
-    //var messageText = document.createElement("div");
-    //messageText.classList.add("message_text");
-
-
-
-    //message.appendChild(messageText);
-    //messageText.appendChild(p);
-    //message.appendChild(message_date);*@
-
-
-@*@message.Timestamp.Hour:@message.Timestamp.Minute|@message.Timestamp. @message.Timestamp.Day*@
-
-@*<img src="https://ptetutorials.com/images/user-profile.png" alt="sunil">*@
-
-@*<div class="message">
-        <header>@message.Name:</header>
-        <p>@message.Text</p>
-        <footer>@message.Timestamp</footer>
-    </div>*@
