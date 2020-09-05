@@ -10,11 +10,6 @@ namespace SignalROnlineChatServer.Models.ModelViews
     [BindProperties(SupportsGet = true)]
     public class LoginViewModel
     {
-        //public LoginViewModel(string login, string password)
-        //{
-        //    Login = login;
-        //    Password = password;
-        //}
         public int Id { get; set; }
 
         [Required]

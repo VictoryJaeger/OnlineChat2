@@ -13,8 +13,6 @@ namespace SignalROnlineChatServer.Models.ModelViews
         public string Name { get; set; }
         public MessageType Type { get; set; }
 
-        //public int ChatId { get; set; }
-        //public string Text { get; set; }
     }
 
     public enum MessageType

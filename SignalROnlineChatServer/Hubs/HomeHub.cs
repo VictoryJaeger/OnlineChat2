@@ -34,12 +34,6 @@ namespace SignalROnlineChatServer.Hubs
 
             user.Connections.Add(connection);
 
-            //user.Connections.Add(new Connection
-            //{
-            //    ConnectionID = GetConnectionId(),
-            //    Connected = true
-            //});
-
             await _context.SaveChangesAsync();
 
             await base.OnConnectedAsync();
