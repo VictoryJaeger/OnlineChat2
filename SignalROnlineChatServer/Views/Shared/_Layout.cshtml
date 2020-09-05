@@ -211,6 +211,10 @@
             var currentChat = document.getElementById(groupId);
             var lastMessage = currentChat.querySelector(".lastMessage");
             lastMessage.innerHTML = data.name + " : " + data.text;
+
+            var chatPointer = currentChat.parentNode;
+            var inboxChat = chatPointer.parentNode;
+            inboxChat.insertBefore(chatPointer, inboxChat.firstChild);
         });
 
     homeConnection.on("PushNotification", function (groupId)
@@ -219,11 +223,6 @@
         var notification = currentChat.querySelector(".badge");
         var count = parseInt(notification.innerHTML);
         notification.innerHTML = count + 1;
-
-
-        var chatPointer = currentChat.parentNode;
-        var inboxChat = chatPointer.parentNode;
-        inboxChat.insertBefore(chatPointer, inboxChat.firstChild);
     });
 
     homeConnection.on("ClearNotification", function (groupId)

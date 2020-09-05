@@ -123,26 +123,28 @@ namespace SignalROnlineChatServer.Controllers
             await _chat.Clients.Group(groupChat.Name).SendAsync("ChatCreated", groupChat);
 
             return Ok();
-
         }
 
 
         [Route("Home/Home/CreatePrivateChatAsync")] 
         [HttpPost]
         public async Task<IActionResult> CreatePrivateChatAsync(string Id, string connectionId)
-        {          
+        {
+            if (ModelState.IsValid)
+            {
+                var chatView = await _homeService.ReturnCreatedPrivateChatAsync(Id);
 
-            var chatView = await _homeService.ReturnCreatedPrivateChatAsync(Id);
+                await _chat.Groups.AddToGroupAsync(connectionId, chatView.Name);
+                await _chat.Groups.AddToGroupAsync(chatView.UsersConnectionId.Last(), chatView.Name);
 
-            await _chat.Groups.AddToGroupAsync(connectionId, chatView.Name);
-            await _chat.Groups.AddToGroupAsync(chatView.UsersConnectionId.Last(), chatView.Name);
+                await _chatService.IncreaseUsersUnreadMessageCount(chatView.Id);
 
-            await _chatService.IncreaseUsersUnreadMessageCount(chatView.Id);
+                await _chat.Clients.Client(connectionId).SendAsync("GetCreatedChat", chatView.Id);
+                await _chat.Clients.Group(chatView.Name).SendAsync("ChatCreated", chatView);
 
-            await _chat.Clients.Client(connectionId).SendAsync("GetCreatedChat", chatView.Id);
-            await _chat.Clients.Group(chatView.Name).SendAsync("ChatCreated", chatView);
-
-            return Ok();
+                return Ok();
+            }
+            return Json(ModelState);
 
         }
 
