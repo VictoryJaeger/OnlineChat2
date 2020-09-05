@@ -11,7 +11,6 @@
     <title>@ViewData["Title"] - SignalROnlineChatServer</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
-    @*<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">*@
 
 </head>
 <body>
@@ -20,7 +19,7 @@
 
             <div class="messaging">
                 <div class="navbar menu">
-                    <div class="navbar-brand" @*asp-area="" asp-controller="Home" asp-action="Index"*@>
+                    <div class="navbar-brand">
                         <div class="dropdown button">
                             <button class="btn btn-secondary" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <svg class="menu_lines_icon" width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-justify lg" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -40,12 +39,10 @@
                         <p>@activeUserName</p>
                     </div>
                     <div class="logout-button">
-                        @*<div></div>*@
                         <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="LogoutAsync">
                             <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-door-open-fill logout_icon" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                 <path fill-rule="evenodd" d="M1.5 15a.5.5 0 0 0 0 1h13a.5.5 0 0 0 0-1H13V2.5A1.5 1.5 0 0 0 11.5 1H11V.5a.5.5 0 0 0-.57-.495l-7 1A.5.5 0 0 0 3 1.5V15H1.5zM11 2v13h1V2.5a.5.5 0 0 0-.5-.5H11zm-2.5 8c-.276 0-.5-.448-.5-1s.224-1 .5-1 .5.448.5 1-.224 1-.5 1z" />
                             </svg>
-                            @*Logout*@
                         </a>
                     </div>
 
@@ -58,11 +55,10 @@
                                 <a class="get_chat_button" asp-controller="Home" asp-action="GetChat" asp-route-id="@chat.Id">
                                     <div id="@chat.Id" class="chat_list_item">
                                         <div class="chat_detail">
-                                            <div class="chat_img"> @*<img src="https://ptetutorials.com/images/user-profile.png" alt="sunil">*@ </div>
+                                            <div class="chat_img"></div>
                                             <div class="chat_detail_info">
                                                 <h5>@chat.Name<span class="chat_date">@chat.LastMessageDate</span></h5>
                                                 <p class="lastMessage" id="last_message_in_chat">
-                                                    @*@chat.Messages.Last().Name : @chat.LastMessage*@
                                                     @chat.LastMessageAuthor : @chat.LastMessage
                                                 </p>
                                             </div>
@@ -96,7 +92,6 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
 
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    @*<script src="~/js/bootstrap.min.js"></script>*@
     <script src="~/js/site.js" asp-append-version="true"></script>
 </body>
 
@@ -109,70 +104,12 @@
 
 <script src="~/js/signalr.min.js"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-@*<script src="~/js/site.js"></script>*@
 
-<script type="text/javascript">
-    /////try to style notification//////////
-    //var inboxChat = document.getElementById('inbox_chats');
-    //$(document).ready(function () {
-    //$(function () {
-    //    $(".badge .badge-light .notification").live("DOMSubtreeModified", startObserve)//{
-    //        //$(document).bind("DOMSubtreeModified", function () {
-            
-    //        //});
-
-    //    function startObserve() {
-    //        alert("ok");
-
-    //        var elem = $(".notification");
-
-    //        //elem.forEach(element => console.log(element));
-    //        elem.each(function () {
-    //            //console.log($(this));
-    //            var innerText = $(this).contents().filter(function () {
-    //                return this.nodeType == Node.TEXT_NODE;
-    //            }).text();
-
-    //            var count = parseInt(innerText);
-
-    //            if (count > 0) {
-    //                $(".notification").css("visibility", "visible");
-    //                //console.log(">0");
-    //                alert(">0");
-    //            }
-    //            else {
-    //                $(".notification").css("visibility", "hidden ");
-    //                //console.log("0");
-    //                alert("0");
-    //            }
-    //        });
-    //        //var innerText = $(".notification").contents().filter(function () {
-    //        //    return this.nodeType == Node.TEXT_NODE;
-    //        //}).text();
-
-    //        //var count = parseInt(innerText);
-    //        ////var element = document.getElementById("notification_badge");
-    //        ////var count = parseInt(element.innerHTML);
-    //        ////debugger;
-    //        //if (count > 0) {
-    //        //    $(".notification").css("visibility", "visible");
-    //        //    alert(">0");
-    //        //}
-    //        //else {
-    //        //    $(".notification").css("visibility", "hidden ");
-    //        //    alert("0");
-    //        //}
-    //    }
-    //});
-
-    
+<script type="text/javascript">    
 
     $(".notification").bind("DOMSubtreeModified", function () {
         var elem = $(".notification");
-        //debugger;
-        //elem.forEach(element => console.log(element));
         elem.each(function () {
-            //console.log($(this));
             var innerText = $(this).contents().filter(function () {
                 return this.nodeType == Node.TEXT_NODE;
             }).text();
@@ -181,16 +118,9 @@
 
             if (count > 0) {
                 $(this).css("visibility", "visible");
-                //$(".notification").css("visibility", "visible");
-                //console.log(">0");
-                console.log(">0");
             }
             else {
                 $(this).css("visibility", "hidden");
-
-                //$(".notification").css("visibility", "hidden ");
-                //console.log("0");
-                console.log("0");
             }
         });
     })
@@ -212,7 +142,6 @@
                     .then(function (connectionId) {
                         _connectionId = connectionId
                         console.log("connected to homeHub with id " + _connectionId);
-                        //createPrivateChat();
                     })
             })
             .catch(function (err) {
@@ -229,7 +158,6 @@
 
             var getChatButton = document.createElement("a");
             getChatButton.class = "get_chat_button"
-            //getChatButton.id = "get_chat_button";
 
             getChatButton.href = '@Url.Action("GetChat", "Home")?id=' + data.id;
 
@@ -237,28 +165,22 @@
             chatListItem.classList.add("chat_list_item");
             chatListItem.id = data.id;
 
-            console.log('1');
             var chatDetail = document.createElement("div");
             chatDetail.classList.add("chat_detail");
 
-            console.log('2');
             var chatImg = document.createElement("div");
             chatImg.classList.add("chat_img");
 
-            console.log('3');
             var chatDetailInfo = document.createElement("div");
             chatDetailInfo.classList.add("chat_detail_info");
 
-            console.log('4');
             var chatName = document.createElement("h5");
             chatName.appendChild(document.createTextNode(data.name));
 
-            console.log('5');
             var chatDate = document.createElement("span");
             chatDate.classList.add("chat_date");
             chatDate.appendChild(document.createTextNode(data.lastMessageDate));
 
-            console.log('6');
             var p = document.createElement("p");
             p.classList.add("lastMessage");
             p.appendChild(document.createTextNode(data.lastMessageAuthor + ' : ' + data.lastMessage));
@@ -269,12 +191,9 @@
             notification.classList.add("notification");
             notification.appendChild(document.createTextNode("1"));
 
-            console.log('create tree');
-
             getChatButton.appendChild(chatListItem);
 
             chatListItem.appendChild(chatDetail);
-            console.log('add chatDetail');
 
             chatDetail.appendChild(chatImg);
             chatDetail.appendChild(chatDetailInfo);
@@ -283,16 +202,12 @@
             chatDetailInfo.appendChild(p);
             chatName.appendChild(chatDate);
 
-
-            console.log('add new chat');
             getChatButton.appendChild(chatListItem);
             var inboxChat = document.querySelector(".inbox_chats");
             inboxChat.insertBefore(getChatButton, inboxChat.firstChild);
-            console.log("data has been displayed");
         })
 
     homeConnection.on("UpdateLastMessage", function (data, groupId) {
-        //debugger;
             var currentChat = document.getElementById(groupId);
             var lastMessage = currentChat.querySelector(".lastMessage");
             lastMessage.innerHTML = data.name + " : " + data.text;
@@ -315,7 +230,6 @@
     {
         var currentChat = document.getElementById(groupId);
         var notification = currentChat.querySelector(".badge");
-        //var count = parseInt(notification.innerHTML);
         notification.innerHTML = 0;
     });
 
@@ -328,113 +242,4 @@
     });
 
 
-    //debugger;
-    //// Конфигурация observer (за какими изменениями наблюдать)
-    //const config = {
-    //    attributes: true
-    //};
-
-    //// Функция обратного вызова при срабатывании мутации
-    //const callback = function (mutationsList, observer) {
-    //    for (let mutation of mutationsList) {
-    //        //if (mutation.type === 'childList') {
-    //        //    console.log('A child node has been added or removed.');
-    //        //} else
-    //        if (mutation.type === 'attributes') {
-    //            console.log('The ' + mutation.attributeName + ' attribute was modified.');
-    //        }
-    //    }
-    //};
-
-    //// Создаем экземпляр наблюдателя с указанной функцией обратного вызова
-    //const observer = new MutationObserver(callback);
-
-    //// Начинаем наблюдение за настроенными изменениями целевого элемента
-    //observer.observe(target, config);
-
 </script>
-
-
-
-
-
- @*//var inboxChat = document.querySelector('inbox_chats');
-    ////debugger;
-    //const mutationConfig = {
-    //    childList: true,
-    //    attributes: true,
-    //    subtree: true,
-    //    characterData: true,
-    //    attributeOldValue: true,
-    //    characterDataOldValue: true,
-    //    attributeFilter: true
-    //        //attributes: true,
-    //        //characterData: true,
-    //        //childList: true,
-    //        //characterDataOldValue: true
-    //    };
-
-    //    var onMutate = function (mutationsList) {
-    //        mutationsList.forEach(mutation => {
-    //            console.log(mutation.type);
-    //            debugger;
-    //            //previous.textContent = mutation.oldValue;
-    //        });
-    //    };
-
-    //var observer = new MutationObserver(onMutate);
-    //observer.observe(inboxChat, mutationConfig);
-    ///try to style notification//////////*@
-
-
-
-
-
-@*<div class="navbar menu">
-        <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">SignalROnlineChatServer</a>
-        <div class="logout-button">
-            <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="LogoutAsync">Logout</a>
-        </div>
-    </div>*@
-
-
-
-@*<script src="~/js/signalr.js/signalr.min.js"></script>*@
-
-@*<script src="Scripts/jquery-3.1.1.min.js"></script>*@
-
-
-
-
-@*<header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">SignalROnlineChatServer</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="logout-button">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="LogoutAsync">Logout</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>*@
-
-
-
-
-@*<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>*@
-
-
-@*<footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2020 - SignalROnlineChatServer - <a asp-area="" asp-page="/Privacy">Privacy</a>
-        </div>
-    </footer>*@
