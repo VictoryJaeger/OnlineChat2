@@ -8,13 +8,9 @@ using Microsoft.AspNetCore.SignalR;
 using SignalROnlineChatServer.Hubs;
 using SignalROnlineChatServer.Models;
 using SignalROnlineChatServer.Models.ModelViews;
-//using SignalROnlineChatServer.Models.ModelViews;
 
 namespace SignalROnlineChatServer.Controllers
 {
-    //[Route("/")]
-    //[Route("[controller]/[action]")]
-
     public class AccountController : Controller
     {
         private readonly IHubContext<ChatHub> _chat;
@@ -28,7 +24,6 @@ namespace SignalROnlineChatServer.Controllers
             _chat = chat;
         }
 
-        //[Route("Account/DisplayLogin")]
         [HttpGet]
         public IActionResult DisplayLogin() => View("Login", new LoginViewModel());
 
@@ -51,7 +46,6 @@ namespace SignalROnlineChatServer.Controllers
             ModelState.AddModelError("", "Incorrect login or password");
 
             return View("Login", loginModel);
-            //return RedirectToAction("DisplayLogin", "Account");
         }
 
         [Route("DisplayRegister")]
@@ -60,7 +54,7 @@ namespace SignalROnlineChatServer.Controllers
 
         [Route("Account/RegisterAsync")]
         [HttpPost]
-        public async Task<IActionResult> RegisterAsync(RegisterViewModel registerModel/*, string connectionId*/) 
+        public async Task<IActionResult> RegisterAsync(RegisterViewModel registerModel) 
         {
             if (ModelState.IsValid)
             {
@@ -70,29 +64,18 @@ namespace SignalROnlineChatServer.Controllers
                     Connections = new List<Connection>()
                 };
 
-                //user.Connections.Add(new Connection
-                //{
-                //    ConnectionID = connectionId.ToString(),
-                //    //UserAgent = Context.Request.Headers["User-Agent"],
-                //    Connected = true
-                //});
-
                 var result = await _userManager.CreateAsync(user, registerModel.Password);
 
                 if (result.Succeeded)
                 {
-                    await _signInManager.SignInAsync(user, false);
-
-                    //RedirectToAction("GoToHomePage");
+                    await _signInManager.SignInAsync(user, false);           
 
                     return RedirectToAction("Index", "Home");
-                    //return Ok();
                 }
             }
             ModelState.AddModelError("", "Error! Please, try another name");
             return View("Register", registerModel);
 
-            //return RedirectToAction("DisplayRegister", "Account");
         }
 
         [Route("Account/LogoutAsync")]

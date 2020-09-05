@@ -16,12 +16,10 @@ using SignalROnlineChatServer.Models.ModelViews;
 namespace SignalROnlineChatServer.Controllers
 {
     [Authorize]
-   // [Route("[controller]")]
     public class ChatController : Controller
     {
         private readonly IHubContext<ChatHub> _chat;
         private readonly IHubContext<HomeHub> _homePage;
-        //private readonly IHomeService _homeService;
         private readonly IChatService _chatService;
         public ChatController(IHubContext<ChatHub> chat, IHubContext<HomeHub> homePage, IChatService chatService)
         {
@@ -39,13 +37,6 @@ namespace SignalROnlineChatServer.Controllers
         }
 
 
-        //[HttpPost("[action]/{connectionId}/{groupName}")]
-        //public async Task<IActionResult> LeaveChatAsync(string connectionId, string groupName)
-        //{
-        //    await _chat.Groups.RemoveFromGroupAsync(connectionId, groupName);
-        //    return Ok();
-        //}
-
         [Route("Home/Home/Chat/SendMessageAsync")]
         [HttpPost]
         public async Task<IActionResult> SendMessageAsync(int groupId, string message, string groupName, string connectionId,[FromServices] OnlineChatDBContext context)
@@ -62,7 +53,7 @@ namespace SignalROnlineChatServer.Controllers
 
         public async Task<IActionResult> NotificateUsers(int groupId, string connectionId, MessageViewModel messageView)
         {
-            var connectionIdList = _chatService.GetUserConnectionIdList(groupId/*, connectionId*/);
+            var connectionIdList = _chatService.GetUserConnectionIdList(groupId);
             connectionIdList.Remove(connectionId);
 
             await _chatService.IncreaseUsersUnreadMessageCount(groupId);
