@@ -13,15 +13,13 @@ namespace SignalROnlineChatServer.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly IHubContext<ChatHub> _chat;
         private UserManager<User> _userManager;
         private SignInManager<User> _signInManager;
 
-        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, IHubContext<ChatHub> chat)
+        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
-            _chat = chat;
         }
 
         [HttpGet]
