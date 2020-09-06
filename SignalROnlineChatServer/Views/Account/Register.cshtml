@@ -33,8 +33,18 @@
     <p class="mt-5 mb-3 text-muted text-center">© 2017-2020</p>
 </form>
 
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+
 @section scripts{
 
     <partial name="_ValidationScriptsPartial" />
+
+<script>
+    $('form').one('submit', function () {
+        var button = 
+            $(this).find("button").attr('disabled', 'disabled');
+        console.log("button is disabled");
+    });
+</script>
 
 }
