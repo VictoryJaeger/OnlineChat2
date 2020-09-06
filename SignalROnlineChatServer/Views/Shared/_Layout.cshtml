@@ -238,6 +238,19 @@
         var chatPointer = currentChat.parentNode;
         var inboxChat = chatPointer.parentNode;
         inboxChat.removeChild(chatPointer);
+
+        //need to review later//
+        var notificationAlert = document.createElement("div");
+        notificationAlert.classList.add("alert");
+        notificationAlert.classList.add("alert-secondary");
+        notificationAlert.setAttribute("role", "alert");
+
+        document.body.appendChild(notificationAlert);
+    });
+
+    homeConnection.on("ReturnOnHomePage", function ()
+    {
+        window.location = "/Home/Index";
     });
 
 

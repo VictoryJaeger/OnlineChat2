@@ -63,6 +63,8 @@ namespace SignalROnlineChatServer.Controllers
             await _chat.Clients.Clients(connectionIdList).SendAsync("DeleteChat", chatId);
 
             await _homeService.DeleteChat(chatId);
+            await _chat.Clients.Clients(connectionIdList).SendAsync("ReturnOnHomePage");
+
             return RedirectToAction("Index");
         }
 

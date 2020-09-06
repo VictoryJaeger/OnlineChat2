@@ -24,7 +24,7 @@
 
 <script src="~/js/signalr.min.js"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
 
 
 <script>
@@ -45,5 +45,10 @@
             })
 
     }
+
+    $('form').one('submit', function () {
+        $(this).find("button").attr('disabled', 'disabled');
+        console.log("button is disabled");
+    });
 
 </script>
