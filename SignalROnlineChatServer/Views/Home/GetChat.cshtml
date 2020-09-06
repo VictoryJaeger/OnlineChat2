@@ -93,7 +93,7 @@
 
 
     window.onload = function () {
-        window.scrollBy(0, window.innerHeight)
+        window.scrollBy(0, window.innerHeight);
         document.getElementById('chat_body').scrollBy(0, window.innerHeight);
     }
 
@@ -125,6 +125,7 @@
             messageText.appendChild(message_date);
 
             document.querySelector('.chat_body').append(messageInfo);
+            
         }
 
         else {
@@ -164,6 +165,8 @@
             document.querySelector('.chat_body').append(messageInfo);
             console.log("incoming message: ", data.text);
         }
+        window.scrollBy(0, window.innerHeight);
+        document.getElementById('chat_body').scrollBy(0, window.innerHeight);
     })
 
     
