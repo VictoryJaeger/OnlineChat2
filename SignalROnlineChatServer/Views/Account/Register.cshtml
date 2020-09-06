@@ -34,16 +34,30 @@
 </form>
 
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
 
 @section scripts{
 
     <partial name="_ValidationScriptsPartial" />
 
-<script>
-    //$('form').one('submit', function () {
-    //    $(this).find("button").attr('disabled', 'disabled');
-    //    console.log("button is disabled");
-    //});
-</script>
+    <script>
+
+        //jQuery.validator.setDefaults({
+        //    debug: true,
+        //    success: "valid"
+        //});
+        //var form = $("#form");
+        //debugger;
+        ////form.validate();
+        //if (form.validate() == true) {
+            $('form').one('submit', function () {
+                $(this).find("button").attr('disabled', 'disabled');
+                console.log("button is disabled");
+            });
+        //}
+
+    </script>
 
 }
