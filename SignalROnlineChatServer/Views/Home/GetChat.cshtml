@@ -173,7 +173,7 @@
         bodyForm.set('connectionId', _connectionId);
         bodyForm.append('groupName', '@Model.Name');
 
-        axios.post('Chat/JoinChatAsync', bodyForm)
+        axios.post('/Chat/JoinChatAsync', bodyForm)
             .then(res => {
                 console.log("Group joined!", res);
             })
@@ -207,7 +207,7 @@
         document.getElementById('message-input').value = '';
         data.append("connectionId", _connectionId);
 
-        axios.post('Chat/SendMessageAsync', data)
+        axios.post('/Chat/SendMessageAsync', data)
             .then(res => {
                 console.log("Message Sent");
             })
@@ -222,11 +222,11 @@
 
         var data = new FormData(event.target);
 
-        axios.delete('Home/DeleteChatAsync', data)
+        axios.delete('/Home/DeleteChatAsync', data)
             .then(res => {
                 console.log("Chat has been deleted");
             })
-            .then(function () { window.location = "Home/Index" })
+            .then(function () { window.location = "/Home/Index" })
             .catch(err => {
                 console.log("Failed to delete chat");
             })

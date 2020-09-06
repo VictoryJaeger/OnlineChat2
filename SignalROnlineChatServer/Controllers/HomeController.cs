@@ -35,7 +35,7 @@ namespace SignalROnlineChatServer.Controllers
             _chatService = chatService;
         }
 
-        [Route("Home/Home/Index")]
+        [Route("/Home/Index")]
         [HttpGet]
         public IActionResult Index()
         {
@@ -44,7 +44,7 @@ namespace SignalROnlineChatServer.Controllers
         }
                 
 
-        [Route("Home/Home/GetChat")]
+        [Route("/Home/GetChat")]
         [HttpGet("{id}")]
         public IActionResult GetChat(int id)
         {
@@ -107,7 +107,7 @@ namespace SignalROnlineChatServer.Controllers
         }
 
 
-        [Route("Home/Home/CreateGroupAsync")]
+        [Route("/Home/CreateGroupAsync")]
         [HttpPost]
         public async Task<IActionResult> CreateGroupAsync(CreateGroupModelView groupModel, string connectionId)
         {
@@ -126,7 +126,7 @@ namespace SignalROnlineChatServer.Controllers
         }
 
 
-        [Route("Home/Home/CreatePrivateChatAsync")] 
+        [Route("/Home/CreatePrivateChatAsync")] 
         [HttpPost]
         public async Task<IActionResult> CreatePrivateChatAsync(string Id, string connectionId)
         {

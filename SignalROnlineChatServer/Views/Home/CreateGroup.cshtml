@@ -35,11 +35,11 @@
         data.append('connectionId', _connectionId);
 
 
-        axios.post('Home/CreateGroupAsync', data)
+        axios.post('/Home/CreateGroupAsync', data)
             .then(res => {
                 console.log("Notification delivered", res);
             })
-            .then(function () { window.location = "Home/Index" })
+            .then(function () { window.location = "/Home/Index" })
             .catch(err => {
                 console.log("Failed to send notification", err);
             })
